@@ -18,6 +18,7 @@ import static com.github.eclipsecolortheme.ColorThemeKeys.WRITE_OCCURRENCE_INDIC
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -68,9 +69,14 @@ public class ColorThemeManager {
 						String contributorPluginId = e.getContributor()
 								.getName();
 						Bundle bundle = Platform.getBundle(contributorPluginId);
-						InputStream input = (InputStream) bundle.getResource(
-								xml).getContent();
-						((GenericMapper) mapper).parseMapping(input);
+						if (bundle != null) {
+							URL resource = bundle.getResource(xml);
+							if (resource != null) {
+								InputStream input = (InputStream) resource
+										.getContent();
+								((GenericMapper) mapper).parseMapping(input);
+							}
+						}
 					}
 					editors.add(mapper);
 				}
