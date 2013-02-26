@@ -4,6 +4,7 @@
    <extension-point id="com.github.eclipsecolortheme.mapper" name="Editor Mapping" schema="schema/com.github.eclipsecolortheme.mapper.exsd"/>
    <extension-point id="com.github.eclipsecolortheme.theme" name="Eclipse Color Theme" schema="schema/com.github.eclipsecolortheme.theme.exsd"/>
 
+    <!-- Just using the core to apply colors.
    <extension
          point="org.eclipse.ui.preferencePages">
       <page
@@ -19,6 +20,7 @@
             class="com.github.eclipsecolortheme.preferences.PreferenceInitializer">
       </initializer>
    </extension>
+   -->
    <extension
          point="com.github.eclipsecolortheme.mapper">
       <mapper
@@ -215,6 +217,7 @@
          xml="mappings/goclipse.xml">
    </mapper>
    </extension>
+   <!-- No themes there for us.
    <extension
          point="com.github.eclipsecolortheme.theme">
       <theme
@@ -287,5 +290,6 @@
             file="themes/retta.xml">
       </theme>
    </extension>
+   -->
 
 </plugin>
