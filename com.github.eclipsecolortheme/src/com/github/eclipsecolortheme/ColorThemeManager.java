@@ -233,9 +233,12 @@ public class ColorThemeManager {
 	 */
 	public void applyTheme(ColorTheme theme) {
 		for (ThemePreferenceMapper editor : editors) {
-			editor.clear();
-			if (theme != null)
-				editor.map(theme.getEntries());
+			if (theme != null) {
+				Map<String, ColorThemeSetting> entries = theme.getEntries();
+				editor.map(entries);
+			} else {
+				editor.clear();
+			}
 
 			try {
 				editor.flush();

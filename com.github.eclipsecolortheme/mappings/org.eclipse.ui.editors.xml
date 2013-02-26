@@ -3,10 +3,12 @@
     <mappings>
         <mapping pluginKey="AbstractTextEditor.Color.Foreground" themeKey="foreground" />
         <mapping pluginKey="AbstractTextEditor.Color.Background" themeKey="background" />
+        
         <mapping pluginKey="AbstractTextEditor.Color.SelectionForeground" themeKey="selectionForeground" />
         <mapping pluginKey="AbstractTextEditor.Color.SelectionBackground" themeKey="selectionBackground" />
         <mapping pluginKey="currentLineColor" themeKey="currentLine" />
         <mapping pluginKey="lineNumberColor" themeKey="lineNumber" />
+        
         <mapping pluginKey="filteredSearchResultIndicationColor" themeKey="filteredSearchResultIndication" />
         <mapping pluginKey="occurrenceIndicationColor" themeKey="occurrenceIndication" />
         <mapping pluginKey="javaScriptOccurrenceIndicationColor" themeKey="occurrenceIndication" />
@@ -14,6 +16,7 @@
         <mapping pluginKey="AbstractTextEditor.Color.FindScope" themeKey="findScope" />
         <mapping pluginKey="printMarginColor" themeKey="lineNumber" />
         <mapping pluginKey="writeOccurrenceIndicationColor" themeKey="writeOccurrenceIndication" />
+        
         <mapping pluginKey="searchResultIndicationColor" themeKey="searchResultIndication" />
         <mapping pluginKey="PHPWriteOccurrenceIndicationColor" themeKey="writeOccurrenceIndication" />
         <mapping pluginKey="PHPReadOccurrenceIndicationColor" themeKey="occurrenceIndication" />

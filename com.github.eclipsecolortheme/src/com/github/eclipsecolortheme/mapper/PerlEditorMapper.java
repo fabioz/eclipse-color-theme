@@ -9,6 +9,9 @@ import com.github.eclipsecolortheme.ColorThemeSetting;
 
 public class PerlEditorMapper extends GenericMapper {
 
+	private static final String ABSTRACT_TEXT_EDITOR_COLOR_FOREGROUND_SYSTEM_DEFAULT = "AbstractTextEditor.Color.Foreground.SystemDefault";
+	private static final String ABSTRACT_TEXT_EDITOR_COLOR_BACKGROUND_SYSTEM_DEFAULT = "AbstractTextEditor.Color.Background.SystemDefault";
+
 	private class Mapping extends ColorThemeMapping {
 
 		public Mapping(String pluginKey, String themeKey) {
@@ -20,21 +23,32 @@ public class PerlEditorMapper extends GenericMapper {
 				ColorThemeSetting setting) {
 			preferences.put(pluginKey, setting.getColor().asRGB());
 			if (setting.isBoldEnabled() != null)
-				preferences.putBoolean(pluginKey + "Bold", setting.isBoldEnabled());
+				preferences.putBoolean(pluginKey + "Bold",
+						setting.isBoldEnabled());
 		}
 
 	}
-	
+
 	@Override
-    protected ColorThemeMapping createMapping(String pluginKey, String themeKey) {
-    	return new Mapping(pluginKey, themeKey);
-    }
-	
+	protected ColorThemeMapping createMapping(String pluginKey, String themeKey) {
+		return new Mapping(pluginKey, themeKey);
+	}
+
 	@Override
 	public void map(Map<String, ColorThemeSetting> theme) {
-		preferences.putBoolean("AbstractTextEditor.Color.Background.SystemDefault", false);
-    	preferences.putBoolean("AbstractTextEditor.Color.Foreground.SystemDefault", false);
+		preferences.putBoolean(
+				ABSTRACT_TEXT_EDITOR_COLOR_BACKGROUND_SYSTEM_DEFAULT, false);
+		preferences.putBoolean(
+				ABSTRACT_TEXT_EDITOR_COLOR_FOREGROUND_SYSTEM_DEFAULT, false);
 		super.map(theme);
 	}
-	
+
+	@Override
+	public void clear() {
+		preferences
+				.remove(ABSTRACT_TEXT_EDITOR_COLOR_BACKGROUND_SYSTEM_DEFAULT);
+		preferences
+				.remove(ABSTRACT_TEXT_EDITOR_COLOR_FOREGROUND_SYSTEM_DEFAULT);
+		super.clear();
+	}
 }

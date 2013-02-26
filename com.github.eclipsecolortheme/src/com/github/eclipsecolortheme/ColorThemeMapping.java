@@ -2,9 +2,8 @@ package com.github.eclipsecolortheme;
 
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 
-
 public class ColorThemeMapping {
-	
+
 	protected String pluginKey;
 	protected String themeKey;
 
@@ -12,10 +11,15 @@ public class ColorThemeMapping {
 		this.pluginKey = pluginKey;
 		this.themeKey = themeKey;
 	}
-	
-	public void putPreferences(IEclipsePreferences preferences, ColorThemeSetting setting) {
+
+	public void putPreferences(IEclipsePreferences preferences,
+			ColorThemeSetting setting) {
 		Color color = setting.getColor();
-		preferences.put(pluginKey, color.toString());
+		String string = color.toString();
+		String curr = preferences.get(pluginKey, "");
+		if (!string.equals(curr)) {
+			preferences.put(pluginKey, string);
+		}
 	}
 
 	public void removePreferences(IEclipsePreferences preferences) {
@@ -25,5 +29,5 @@ public class ColorThemeMapping {
 	public Object getThemeKey() {
 		return themeKey;
 	}
-	
+
 }
