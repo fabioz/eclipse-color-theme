@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<colorTheme id="52" name="Monokai" modified="2011-02-26 10:41:43" author="Truong Xuan Tinh" website="http://www.tinhtruong.info">
-    <searchResultIndication color="#D8D8D8" />
-    <filteredSearchResultIndication color="#D8D8D8" />
+<colorTheme id="14833" name="Monokai PyDev" modified="2013-03-09 20:19:42" author="Fabio Zadrozny" website="http://pydev.org">
+    <searchResultIndication color="#1E90FF" />
+    <filteredSearchResultIndication color="#1E90FF" />
     <occurrenceIndication color="#000000" />
     <writeOccurrenceIndication color="#000000" />
     <findScope color="#000000" />
@@ -10,19 +10,19 @@
     <singleLineComment color="#75715E" italic="false" />
     <multiLineComment color="#75715e" italic="false" />
     <commentTaskTag color="#CCDF32" />
-    <javadoc color="#75715E" italic="false" />
+    <javadoc color="#D9E577" italic="false" />
     <javadocLink color="#D9E577" />
     <javadocTag color="#D9E577" />
     <javadocKeyword color="#D9E577" />
-    <class color="#66CCB3" />
+    <class color="#66D9EF" />
     <interface color="#D197D9" />
-    <method color="#66CCB3" />
+    <method color="#66D9EF" />
     <methodDeclaration color="#BED6FF" />
     <bracket color="#D8D8D8" />
     <number color="#7FB347" />
     <string color="#E6DB74" />
     <operator color="#D8D8D8" />
-    <keyword color="#66CCB3" />
+    <keyword color="#F92672" />
     <annotation color="#FFFFFF" />
     <staticMethod color="#BED6FF" />
     <localVariable color="#79ABFF" />

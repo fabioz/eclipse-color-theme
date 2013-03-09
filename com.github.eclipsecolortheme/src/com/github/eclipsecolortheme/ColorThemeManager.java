@@ -16,6 +16,7 @@ import static com.github.eclipsecolortheme.ColorThemeKeys.MULTI_LINE_COMMENT;
 import static com.github.eclipsecolortheme.ColorThemeKeys.OCCURRENCE_INDICATION;
 import static com.github.eclipsecolortheme.ColorThemeKeys.WRITE_OCCURRENCE_INDICATION;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -30,6 +31,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.osgi.framework.Bundle;
 import org.osgi.service.prefs.BackingStoreException;
 import org.w3c.dom.Document;
@@ -47,11 +49,21 @@ public class ColorThemeManager {
 	private Map<String, ColorTheme> themes;
 	private Set<ThemePreferenceMapper> editors;
 
+	/**
+	 * Cache for stock themes.
+	 */
+	private static Map<String, ColorTheme> stockThemes;
+
 	/** Creates a new color theme manager. */
 	public ColorThemeManager() {
 		themes = new HashMap<String, ColorTheme>();
-		// readStockThemes(themes);
-		// readImportedThemes(themes);
+		if (stockThemes == null) {
+			stockThemes = new HashMap<String, ColorTheme>();
+			readStockThemes(stockThemes);
+
+		}
+		themes.putAll(stockThemes);
+		readImportedThemes(themes);
 
 		editors = new HashSet<ThemePreferenceMapper>();
 		IConfigurationElement[] config = Platform.getExtensionRegistry()
@@ -86,57 +98,56 @@ public class ColorThemeManager {
 		}
 	}
 
-	// We won't be using stock themes
-	// private static void readStockThemes(Map<String, ColorTheme> themes) {
-	// IConfigurationElement[] config = Platform.getExtensionRegistry()
-	// .getConfigurationElementsFor(
-	// Activator.EXTENSION_POINT_ID_THEME);
-	// try {
-	// for (IConfigurationElement e : config) {
-	// String xml = e.getAttribute("file");
-	// String contributorPluginId = e.getContributor().getName();
-	// Bundle bundle = Platform.getBundle(contributorPluginId);
-	// InputStream input = (InputStream) bundle.getResource(xml)
-	// .getContent();
-	// ColorTheme theme = parseTheme(input);
-	// amendThemeEntries(theme.getEntries());
-	// themes.put(theme.getName(), theme);
-	// }
-	// } catch (Exception e) {
-	// e.printStackTrace();
-	// }
-	// }
+	private static void readStockThemes(Map<String, ColorTheme> themes) {
+		IConfigurationElement[] config = Platform
+				.getExtensionRegistry()
+				.getConfigurationElementsFor(Activator.EXTENSION_POINT_ID_THEME);
+		try {
+			for (IConfigurationElement e : config) {
+				String xml = e.getAttribute("file");
+				String contributorPluginId = e.getContributor().getName();
+				Bundle bundle = Platform.getBundle(contributorPluginId);
+				InputStream input = (InputStream) bundle.getResource(xml)
+						.getContent();
+				ColorTheme theme = parseTheme(input);
+				amendThemeEntries(theme.getEntries());
+				themes.put(theme.getName(), theme);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
-	// private static void readImportedThemes(Map<String, ColorTheme> themes) {
-	// IPreferenceStore store = getPreferenceStore();
-	//
-	// for (int i = 1;; i++) {
-	// String xml = store.getString("importedColorTheme" + i);
-	// if (xml == null || xml.length() == 0)
-	// break;
-	// try {
-	// ColorTheme theme = parseTheme(new ByteArrayInputStream(
-	// xml.getBytes()));
-	// amendThemeEntries(theme.getEntries());
-	// themes.put(theme.getName(), theme);
-	// } catch (Exception e) {
-	// System.err.println("Error while parsing imported theme");
-	// e.printStackTrace();
-	// }
-	// }
-	// }
+	private static void readImportedThemes(Map<String, ColorTheme> themes) {
+		IPreferenceStore store = getPreferenceStore();
 
-	// public void clearImportedThemes() {
-	// IPreferenceStore store = getPreferenceStore();
-	// for (int i = 1; store.contains("importedColorTheme" + i); i++)
-	// store.setToDefault("importedColorTheme" + i);
-	// themes.clear();
-	// readStockThemes(themes);
-	// }
+		for (int i = 1;; i++) {
+			String xml = store.getString("importedColorTheme" + i);
+			if (xml == null || xml.length() == 0)
+				break;
+			try {
+				ColorTheme theme = parseTheme(new ByteArrayInputStream(
+						xml.getBytes()));
+				amendThemeEntries(theme.getEntries());
+				themes.put(theme.getName(), theme);
+			} catch (Exception e) {
+				System.err.println("Error while parsing imported theme");
+				e.printStackTrace();
+			}
+		}
+	}
 
-	// private static IPreferenceStore getPreferenceStore() {
-	// return Activator.getDefault().getPreferenceStore();
-	// }
+	public void clearImportedThemes() {
+		IPreferenceStore store = getPreferenceStore();
+		for (int i = 1; store.contains("importedColorTheme" + i); i++)
+			store.setToDefault("importedColorTheme" + i);
+		themes.clear();
+		readStockThemes(themes);
+	}
+
+	private static IPreferenceStore getPreferenceStore() {
+		return Activator.getDefault().getPreferenceStore();
+	}
 
 	public static ColorTheme parseTheme(InputStream input)
 			throws ParserConfigurationException, SAXException, IOException {
@@ -207,27 +218,26 @@ public class ColorThemeManager {
 			theme.put(key, theme.get(defaultKey));
 	}
 
-	// /**
-	// * Returns all available color themes.
-	// *
-	// * @return all available color themes.
-	// */
-	// public Set<ColorTheme> getThemes() {
-	// return new HashSet<ColorTheme>(themes.values());
-	// }
-	//
-	// /**
-	// * Returns the theme stored under the supplied name.
-	// *
-	// * @param name
-	// * The name of the theme.
-	// * @return The requested theme or <code>null</code> if none was stored
-	// under
-	// * the supplied name.
-	// */
-	// public ColorTheme getTheme(String name) {
-	// return themes.get(name);
-	// }
+	/**
+	 * Returns all available color themes.
+	 * 
+	 * @return all available color themes.
+	 */
+	public Set<ColorTheme> getThemes() {
+		return new HashSet<ColorTheme>(themes.values());
+	}
+
+	/**
+	 * Returns the theme stored under the supplied name.
+	 * 
+	 * @param name
+	 *            The name of the theme.
+	 * @return The requested theme or <code>null</code> if none was stored under
+	 *         the supplied name.
+	 */
+	public ColorTheme getTheme(String name) {
+		return themes.get(name);
+	}
 
 	/**
 	 * Changes the preferences of other plugins to apply the color theme.
@@ -255,32 +265,31 @@ public class ColorThemeManager {
 		}
 	}
 
-	// /**
-	// * Adds the color theme to the list and saves it to the preferences.
-	// * Existing themes will be overwritten with the new content.
-	// *
-	// * @param content
-	// * The content of the color theme file.
-	// * @return The saved color theme, or <code>null</code> if the theme was
-	// not
-	// * valid.
-	// */
-	// public ColorTheme saveTheme(String content) {
-	// ColorTheme theme;
-	// try {
-	// theme = ColorThemeManager.parseTheme(new ByteArrayInputStream(
-	// content.getBytes()));
-	// String name = theme.getName();
-	// themes.put(name, theme);
-	// IPreferenceStore store = getPreferenceStore();
-	// for (int i = 1;; i++)
-	// if (!store.contains("importedColorTheme" + i)) {
-	// store.putValue("importedColorTheme" + i, content);
-	// break;
-	// }
-	// return theme;
-	// } catch (Exception e) {
-	// return null;
-	// }
-	// }
+	/**
+	 * Adds the color theme to the list and saves it to the preferences.
+	 * Existing themes will be overwritten with the new content.
+	 * 
+	 * @param content
+	 *            The content of the color theme file.
+	 * @return The saved color theme, or <code>null</code> if the theme was not
+	 *         valid.
+	 */
+	public ColorTheme saveTheme(String content) {
+		ColorTheme theme;
+		try {
+			theme = ColorThemeManager.parseTheme(new ByteArrayInputStream(
+					content.getBytes()));
+			String name = theme.getName();
+			themes.put(name, theme);
+			IPreferenceStore store = getPreferenceStore();
+			for (int i = 1;; i++)
+				if (!store.contains("importedColorTheme" + i)) {
+					store.putValue("importedColorTheme" + i, content);
+					break;
+				}
+			return theme;
+		} catch (Exception e) {
+			return null;
+		}
+	}
 }

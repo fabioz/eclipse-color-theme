@@ -3,50 +3,63 @@ package com.github.eclipsecolortheme;
 import java.util.Map;
 
 public class ColorTheme {
-	
+
 	private String id;
-    private String name;
-    private String author;
-    private String website;
-    private Map<String, ColorThemeSetting> entries;
+	private String name;
+	private String author;
+	private String website;
+	private Map<String, ColorThemeSetting> entries;
 
-    public String getId() {
-    	return id;
-    }
-    
-    public void setId(String id) {
-    	this.id = id;
-    }
-    
-    public String getName() {
-        return name;
-    }
-    
-    public void setName(String name) {
-        this.name = name;
-    }
+	public String getId() {
+		return id;
+	}
 
-    public String getAuthor() {
-        return author;
-    }
-    
-    public void setAuthor(String author) {
-        this.author = author;
-    }
+	public void setId(String id) {
+		this.id = id;
+	}
 
-    public String getWebsite() {
-        return website;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setWebsite(String website) {
-        this.website = website;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public Map<String, ColorThemeSetting> getEntries() {
-        return entries;
-    }
+	public String getAuthor() {
+		return author;
+	}
 
-    public void setEntries(Map<String, ColorThemeSetting> entries) {
-        this.entries = entries;
-    }
+	public void setAuthor(String author) {
+		this.author = author;
+	}
+
+	public String getWebsite() {
+		return website;
+	}
+
+	public void setWebsite(String website) {
+		this.website = website;
+	}
+
+	public Map<String, ColorThemeSetting> getEntries() {
+		return entries;
+	}
+
+	public void setEntries(Map<String, ColorThemeSetting> entries) {
+		this.entries = entries;
+	}
+
+	/**
+	 * @param key
+	 *            the entry (i.e.: "background")
+	 * @return
+	 */
+	public boolean isDarkColor(String key) {
+		ColorThemeSetting colorThemeSetting = entries.get(key);
+		Color color = colorThemeSetting.getColor();
+		double v = (color.getR() / 255.0) * 0.3 + (color.getG() / 255.0) * 0.59
+				+ (color.getB() / 255.0) * 0.11;
+		return v <= 0.5;
+	}
 }

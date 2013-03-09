@@ -12,9 +12,13 @@ public class PythonEditorMapper extends GenericMapper {
 		}
 
 		@Override
-		public void putPreferences(IEclipsePreferences preferences, ColorThemeSetting setting) {
+		public void putPreferences(IEclipsePreferences preferences,
+				ColorThemeSetting setting) {
 			preferences.put(pluginKey, setting.getColor().asRGB());
-			
+			if ("SELF_COLOR".equals(pluginKey)) {
+				setting.setItalicEnabled(true);
+			}
+
 			String styleKey = pluginKey.replaceAll("COLOR", "STYLE");
 			int styleVal = 0;
 			if (setting.isBoldEnabled() != null && setting.isBoldEnabled()) {
@@ -26,9 +30,9 @@ public class PythonEditorMapper extends GenericMapper {
 			preferences.putInt(styleKey, styleVal);
 		}
 	}
-	
+
 	@Override
-    protected ColorThemeMapping createMapping(String pluginKey, String themeKey) {
-    	return new Mapping(pluginKey, themeKey);
-    }
+	protected ColorThemeMapping createMapping(String pluginKey, String themeKey) {
+		return new Mapping(pluginKey, themeKey);
+	}
 }

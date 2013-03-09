@@ -1,5 +1,7 @@
 package com.github.eclipsecolortheme;
 
+import org.eclipse.swt.graphics.RGB;
+
 public class Color {
 
 	private Integer r = new Integer(0);
@@ -55,6 +57,10 @@ public class Color {
 	@Override
 	public String toString() {
 		return r + "," + g + "," + b;
+	}
+
+	public RGB getRGB() {
+		return new RGB(r, g, b);
 	}
 
 }
