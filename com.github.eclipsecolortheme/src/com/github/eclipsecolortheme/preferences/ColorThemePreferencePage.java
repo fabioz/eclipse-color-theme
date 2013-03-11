@@ -42,6 +42,7 @@ import org.eclipse.ui.PlatformUI;
 
 import com.github.eclipsecolortheme.Activator;
 import com.github.eclipsecolortheme.ColorTheme;
+import com.github.eclipsecolortheme.ColorThemeApplier;
 import com.github.eclipsecolortheme.ColorThemeManager;
 
 /** The preference page for managing color themes. */
@@ -206,7 +207,7 @@ public class ColorThemePreferencePage extends PreferencePage implements
 
 			String selectedThemeName = themeSelectionList.getSelection()[0];
 			getPreferenceStore().setValue("colorTheme", selectedThemeName);
-			colorThemeManager.applyTheme(colorThemeManager
+			ColorThemeApplier.applyTheme(colorThemeManager
 					.getTheme(selectedThemeName));
 
 			for (IEditorInput editorInput : editorsToReopen.keySet())

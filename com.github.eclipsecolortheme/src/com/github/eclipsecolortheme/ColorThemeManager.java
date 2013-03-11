@@ -1,25 +1,8 @@
 package com.github.eclipsecolortheme;
 
-import static com.github.eclipsecolortheme.ColorThemeKeys.BACKGROUND;
-import static com.github.eclipsecolortheme.ColorThemeKeys.CURRENT_LINE;
-import static com.github.eclipsecolortheme.ColorThemeKeys.DEBUG_CURRENT_INSTRUCTION_POINTER;
-import static com.github.eclipsecolortheme.ColorThemeKeys.DEBUG_SECONDARY_INSTRUCTION_POINTER;
-import static com.github.eclipsecolortheme.ColorThemeKeys.FIELD;
-import static com.github.eclipsecolortheme.ColorThemeKeys.FOREGROUND;
-import static com.github.eclipsecolortheme.ColorThemeKeys.JAVADOC;
-import static com.github.eclipsecolortheme.ColorThemeKeys.JAVADOC_KEYWORD;
-import static com.github.eclipsecolortheme.ColorThemeKeys.JAVADOC_LINK;
-import static com.github.eclipsecolortheme.ColorThemeKeys.JAVADOC_TAG;
-import static com.github.eclipsecolortheme.ColorThemeKeys.LOCAL_VARIABLE;
-import static com.github.eclipsecolortheme.ColorThemeKeys.METHOD;
-import static com.github.eclipsecolortheme.ColorThemeKeys.MULTI_LINE_COMMENT;
-import static com.github.eclipsecolortheme.ColorThemeKeys.OCCURRENCE_INDICATION;
-import static com.github.eclipsecolortheme.ColorThemeKeys.WRITE_OCCURRENCE_INDICATION;
-
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -32,22 +15,18 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.swt.graphics.RGB;
 import org.osgi.framework.Bundle;
-import org.osgi.service.prefs.BackingStoreException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import com.github.eclipsecolortheme.mapper.GenericMapper;
-import com.github.eclipsecolortheme.mapper.ThemePreferenceMapper;
-
 /** Loads and applies color themes. */
 public class ColorThemeManager {
 
 	private Map<String, ColorTheme> themes;
-	private Set<ThemePreferenceMapper> editors;
 
 	/**
 	 * Cache for stock themes.
@@ -64,38 +43,6 @@ public class ColorThemeManager {
 		}
 		themes.putAll(stockThemes);
 		readImportedThemes(themes);
-
-		editors = new HashSet<ThemePreferenceMapper>();
-		IConfigurationElement[] config = Platform.getExtensionRegistry()
-				.getConfigurationElementsFor(
-						Activator.EXTENSION_POINT_ID_MAPPER);
-		try {
-			for (IConfigurationElement e : config) {
-				final Object o = e.createExecutableExtension("class");
-				if (o instanceof ThemePreferenceMapper) {
-					String pluginId = e.getAttribute("pluginId");
-					ThemePreferenceMapper mapper = (ThemePreferenceMapper) o;
-					mapper.setPluginId(pluginId);
-					if (o instanceof GenericMapper) {
-						String xml = e.getAttribute("xml");
-						String contributorPluginId = e.getContributor()
-								.getName();
-						Bundle bundle = Platform.getBundle(contributorPluginId);
-						if (bundle != null) {
-							URL resource = bundle.getResource(xml);
-							if (resource != null) {
-								InputStream input = (InputStream) resource
-										.getContent();
-								((GenericMapper) mapper).parseMapping(input);
-							}
-						}
-					}
-					editors.add(mapper);
-				}
-			}
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
 	}
 
 	private static void readStockThemes(Map<String, ColorTheme> themes) {
@@ -199,23 +146,47 @@ public class ColorThemeManager {
 	}
 
 	private static void amendThemeEntries(Map<String, ColorThemeSetting> theme) {
-		applyDefault(theme, METHOD, FOREGROUND);
-		applyDefault(theme, FIELD, FOREGROUND);
-		applyDefault(theme, LOCAL_VARIABLE, FOREGROUND);
-		applyDefault(theme, JAVADOC, MULTI_LINE_COMMENT);
-		applyDefault(theme, JAVADOC_LINK, JAVADOC);
-		applyDefault(theme, JAVADOC_TAG, JAVADOC);
-		applyDefault(theme, JAVADOC_KEYWORD, JAVADOC);
-		applyDefault(theme, OCCURRENCE_INDICATION, BACKGROUND);
-		applyDefault(theme, WRITE_OCCURRENCE_INDICATION, OCCURRENCE_INDICATION);
-		applyDefault(theme, DEBUG_CURRENT_INSTRUCTION_POINTER, CURRENT_LINE);
-		applyDefault(theme, DEBUG_SECONDARY_INSTRUCTION_POINTER, CURRENT_LINE);
+		// constants from ColorThemeKeys
+		applyDefault(theme, ColorThemeKeys.METHOD, ColorThemeKeys.FOREGROUND);
+		applyDefault(theme, ColorThemeKeys.FIELD, ColorThemeKeys.FOREGROUND);
+		applyDefault(theme, ColorThemeKeys.LOCAL_VARIABLE,
+				ColorThemeKeys.FOREGROUND);
+		applyDefault(theme, ColorThemeKeys.JAVADOC,
+				ColorThemeKeys.MULTI_LINE_COMMENT);
+		applyDefault(theme, ColorThemeKeys.JAVADOC_LINK, ColorThemeKeys.JAVADOC);
+		applyDefault(theme, ColorThemeKeys.JAVADOC_TAG, ColorThemeKeys.JAVADOC);
+		applyDefault(theme, ColorThemeKeys.JAVADOC_KEYWORD,
+				ColorThemeKeys.JAVADOC);
+		applyDefault(theme, ColorThemeKeys.OCCURRENCE_INDICATION,
+				ColorThemeKeys.BACKGROUND);
+		applyDefault(theme, ColorThemeKeys.WRITE_OCCURRENCE_INDICATION,
+				ColorThemeKeys.OCCURRENCE_INDICATION);
+		applyDefault(theme, ColorThemeKeys.DEBUG_CURRENT_INSTRUCTION_POINTER,
+				ColorThemeKeys.CURRENT_LINE);
+		applyDefault(theme, ColorThemeKeys.DEBUG_SECONDARY_INSTRUCTION_POINTER,
+				ColorThemeKeys.CURRENT_LINE);
+		applyDefault(theme, ColorThemeKeys.STDERR, ColorThemeKeys.KEYWORD);
+		applyDefault(theme, ColorThemeKeys.STDIN, ColorThemeKeys.STRING);
+		applyDefault(theme, ColorThemeKeys.STDOUT, ColorThemeKeys.FOREGROUND);
+
+		applyDefault(theme, ColorThemeKeys.HYPERLINK, ColorThemeKeys.KEYWORD);
+		applyDefault(theme, ColorThemeKeys.ACTIVE_HYPERLINK,
+				ColorThemeKeys.KEYWORD);
+	}
+
+	private static void applyDefault(Map<String, ColorThemeSetting> theme,
+			String key, RGB defaultColor) {
+		if (!theme.containsKey(key)) {
+			ColorThemeSetting setting = new ColorThemeSetting("255,0,0");
+			theme.put(key, setting);
+		}
 	}
 
 	private static void applyDefault(Map<String, ColorThemeSetting> theme,
 			String key, String defaultKey) {
-		if (!theme.containsKey(key))
+		if (!theme.containsKey(key)) {
 			theme.put(key, theme.get(defaultKey));
+		}
 	}
 
 	/**
@@ -237,32 +208,6 @@ public class ColorThemeManager {
 	 */
 	public ColorTheme getTheme(String name) {
 		return themes.get(name);
-	}
-
-	/**
-	 * Changes the preferences of other plugins to apply the color theme.
-	 * 
-	 * @param theme
-	 *            the theme to be applied. If null will just remove the colors
-	 *            set and restore the defaults.
-	 * 
-	 */
-	public void applyTheme(ColorTheme theme) {
-		for (ThemePreferenceMapper editor : editors) {
-			if (theme != null) {
-				Map<String, ColorThemeSetting> entries = theme.getEntries();
-				editor.map(entries);
-			} else {
-				editor.clear();
-			}
-
-			try {
-				editor.flush();
-			} catch (BackingStoreException e) {
-				// TODO: Show a proper error message (StatusManager).
-				e.printStackTrace();
-			}
-		}
 	}
 
 	/**

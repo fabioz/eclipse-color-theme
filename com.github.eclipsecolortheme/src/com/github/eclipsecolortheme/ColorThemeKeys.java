@@ -1,6 +1,7 @@
 package com.github.eclipsecolortheme;
 
 /** Keys that can be used in a colour theme. */
+@SuppressWarnings("nls")
 public class ColorThemeKeys {
 	public static final String FOREGROUND = "foreground";
 	public static final String BACKGROUND = "background";
@@ -48,4 +49,11 @@ public class ColorThemeKeys {
 	public static final String DEBUG_CURRENT_INSTRUCTION_POINTER = "debugCurrentInstructionPointer";
 	public static final String DEBUG_SECONDARY_INSTRUCTION_POINTER = "debugSecondaryInstructionPointer";
 	public static final String CONSTANT = "constant";
+
+	// Colors not in the default (so, all of those must have nice defaults).
+	public static final String STDERR = "stderr";
+	public static final String STDIN = "stdin";
+	public static final String STDOUT = "stdout";
+	public static final String HYPERLINK = "hyperlink";
+	public static final String ACTIVE_HYPERLINK = "active_hyperlink";
 }
