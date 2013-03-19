@@ -55,6 +55,23 @@ public class ColorThemeApplier {
 		}
 	}
 
+	public interface ICallback<X> {
+
+		void call(X arg);
+	}
+
+	/**
+	 * This is the callback called from the preferences page to apply the theme.
+	 * The default implementation just calls the applyThemeInternal, but it may
+	 * be replaced for other clients that want to do more stuff as needed.
+	 */
+	public static ICallback<ColorTheme> applyTheme = new ICallback<ColorTheme>() {
+
+		public void call(ColorTheme theme) {
+			applyThemeInternal(theme);
+		}
+	};
+
 	/**
 	 * Changes the preferences of other plugins to apply the color theme.
 	 * 
@@ -63,7 +80,7 @@ public class ColorThemeApplier {
 	 *            set and restore the defaults.
 	 * 
 	 */
-	public static void applyTheme(ColorTheme theme) {
+	public static void applyThemeInternal(ColorTheme theme) {
 		loadEditors();
 		for (ThemePreferenceMapper editor : editors) {
 			if (theme != null) {

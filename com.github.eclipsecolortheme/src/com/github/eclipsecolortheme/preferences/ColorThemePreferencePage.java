@@ -207,8 +207,8 @@ public class ColorThemePreferencePage extends PreferencePage implements
 
 			String selectedThemeName = themeSelectionList.getSelection()[0];
 			getPreferenceStore().setValue("colorTheme", selectedThemeName);
-			ColorThemeApplier.applyTheme(colorThemeManager
-					.getTheme(selectedThemeName));
+			ColorTheme theme = colorThemeManager.getTheme(selectedThemeName);
+			ColorThemeApplier.applyTheme.call(theme);
 
 			for (IEditorInput editorInput : editorsToReopen.keySet())
 				activePage.openEditor(editorInput,
