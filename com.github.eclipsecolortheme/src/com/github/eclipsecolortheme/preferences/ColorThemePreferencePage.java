@@ -15,10 +15,13 @@ import java.util.Set;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.preference.PreferencePage;
+import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.browser.Browser;
+import org.eclipse.swt.custom.StyleRange;
+import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.program.Program;
@@ -44,6 +47,7 @@ import com.github.eclipsecolortheme.Activator;
 import com.github.eclipsecolortheme.ColorTheme;
 import com.github.eclipsecolortheme.ColorThemeApplier;
 import com.github.eclipsecolortheme.ColorThemeManager;
+import com.github.eclipsecolortheme.preferences.ColorThemePreferencesPageStyledText.IStyledText;
 
 /** The preference page for managing color themes. */
 public class ColorThemePreferencePage extends PreferencePage implements
@@ -55,7 +59,7 @@ public class ColorThemePreferencePage extends PreferencePage implements
 	private Composite themeDetails;
 	private Label authorLabel;
 	private Link websiteLink;
-	private Browser browser;
+	private StyledText styledText;
 
 	/** Creates a new color theme preference page. */
 	public ColorThemePreferencePage() {
@@ -98,9 +102,9 @@ public class ColorThemePreferencePage extends PreferencePage implements
 		themeDetails.setLayout(themeDetailsLayout);
 		gridData = new GridData(GridData.FILL_BOTH);
 		gridData.heightHint = 306;
-		browser = new Browser(themeDetails, SWT.BORDER);
-		browser.setLayoutData(gridData);
-		browser.setText("<html><body></body></html>");
+		styledText = new StyledText(themeDetails, SWT.BORDER);
+		styledText.setLayoutData(gridData);
+		styledText.setText("");
 		authorLabel = new Label(themeDetails, SWT.NONE);
 		GridDataFactory.swtDefaults().grab(true, false).applyTo(authorLabel);
 		websiteLink = new Link(themeDetails, SWT.NONE);
@@ -162,9 +166,28 @@ public class ColorThemePreferencePage extends PreferencePage implements
 				setLinkTarget(websiteLink, website);
 				websiteLink.setVisible(true);
 			}
-			String id = theme.getId();
-			browser.setUrl("http://www.eclipsecolorthemes.org/static/themes/java/"
-					+ id + ".html");
+
+			styledText.setFont(JFaceResources.getTextFont());
+			ColorThemePreferencesPageStyledText.updateStyledText(
+					new IStyledText() {
+
+						public void setText(String text) {
+							styledText.setText(text);
+						}
+
+						public void setStyleRanges(StyleRange[] ranges) {
+							styledText.setStyleRanges(ranges);
+						}
+
+						public void setBackground(Color backgroundSwtColor) {
+							styledText.setBackground(backgroundSwtColor);
+						}
+
+						public void setForeground(Color foregroundColor) {
+							styledText.setForeground(foregroundColor);
+						}
+
+					}, theme);
 			themeDetails.setVisible(true);
 			authorLabel.pack();
 			websiteLink.pack();
