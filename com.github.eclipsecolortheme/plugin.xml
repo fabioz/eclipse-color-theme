@@ -106,6 +106,12 @@
             xml="mappings/org.python.pydev.xml">
       </mapper>
       <mapper
+            class="com.github.eclipsecolortheme.mapper.LiClipseEditorMapper"
+            name="LiClipse"
+            pluginId="com.brainwy.liclipse.editor"
+            xml="mappings/com.brainwy.liclipse.editor.xml">
+      </mapper>
+      <mapper
             class="com.github.eclipsecolortheme.mapper.PerlEditorMapper"
             name="Perl"
             pluginId="org.epic.perleditor"
