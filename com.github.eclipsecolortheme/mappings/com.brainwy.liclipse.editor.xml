@@ -1,21 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <eclipseColorThemeMapping plugin="org.python.pydev" created="2011-01-29 08:31:16">
     <mappings>
-        <mapping pluginKey="__dftl_partition_content_type" themeKey="foreground"/>
+        <mapping pluginKey="foreground" themeKey="foreground"/>
         <mapping pluginKey="multiLineComment" themeKey="multiLineComment"/>
         <mapping pluginKey="singleLineComment" themeKey="singleLineComment"/>
         
         <mapping pluginKey="bracket" themeKey="bracket"/>
         <mapping pluginKey="keyword" themeKey="keyword"/>
-        
-        <mapping pluginKey="SELF_COLOR" themeKey="keyword"/>
-        <mapping pluginKey="FUNC_NAME_COLOR" themeKey="method"/>
-        <mapping pluginKey="BACKQUOTES_COLOR" themeKey="foreground"/>
-        <mapping pluginKey="NUMBER_COLOR" themeKey="number"/>
-        <mapping pluginKey="STRING_COLOR" themeKey="string"/>
-        <mapping pluginKey="DECORATOR_COLOR" themeKey="annotation"/>
-        <mapping pluginKey="CLASS_NAME_COLOR" themeKey="class"/>
-        <mapping pluginKey="PARENS_COLOR" themeKey="operator"/>
-        <mapping pluginKey="OPERATORS_COLOR" themeKey="operator"/>
+        <mapping pluginKey="operator" themeKey="operator"/>
+        <mapping pluginKey="string" themeKey="string"/>
+        <mapping pluginKey="method" themeKey="method"/>
+        <mapping pluginKey="number" themeKey="number"/>
+        <mapping pluginKey="annotation" themeKey="annotation"/>
+        <mapping pluginKey="class" themeKey="class"/>
     </mappings>
 </eclipseColorThemeMapping>
