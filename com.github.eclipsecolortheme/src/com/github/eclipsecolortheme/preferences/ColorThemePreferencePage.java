@@ -8,6 +8,7 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
@@ -194,6 +195,16 @@ public class ColorThemePreferencePage extends PreferencePage implements
 		}
 	}
 
+	private static final Set<String> IDS_FOR_EDITORS_THAT_DONT_NEED_REOPEN = new HashSet<String>();
+	static {
+		IDS_FOR_EDITORS_THAT_DONT_NEED_REOPEN
+				.add("org.eclipse.cdt.ui.editor.CEditor");
+		IDS_FOR_EDITORS_THAT_DONT_NEED_REOPEN
+				.add("com.brainwy.liclipse.editor.common.LiClipseEditor");
+		IDS_FOR_EDITORS_THAT_DONT_NEED_REOPEN
+				.add("org.python.pydev.editor.PythonEditor");
+	}
+
 	@Override
 	public boolean performOk() {
 		IWorkbenchPage activePage = PlatformUI.getWorkbench()
@@ -208,7 +219,7 @@ public class ColorThemePreferencePage extends PreferencePage implements
 				 * C++ editors are not closed/reopened because it messes their
 				 * colors up. TODO: Make this configurable in the mapping file.
 				 */
-				if (!id.equals("org.eclipse.cdt.ui.editor.CEditor")) {
+				if (!IDS_FOR_EDITORS_THAT_DONT_NEED_REOPEN.contains(id)) {
 					editorsToClose.add(editor);
 					editorsToReopen.put(editor.getEditorInput(), id);
 				}
