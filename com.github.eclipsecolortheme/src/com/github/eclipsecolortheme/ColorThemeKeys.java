@@ -55,5 +55,6 @@ public class ColorThemeKeys {
 	public static final String STDIN = "stdin";
 	public static final String STDOUT = "stdout";
 	public static final String HYPERLINK = "hyperlink";
-	public static final String ACTIVE_HYPERLINK = "active_hyperlink";
+	public static final String ACTIVE_HYPERLINK = "activeHyperlink";
+	public static final String MATCHING_BRACKET = "matchingBracket";
 }

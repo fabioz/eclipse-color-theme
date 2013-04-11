@@ -172,6 +172,8 @@ public class ColorThemeManager {
 		applyDefault(theme, ColorThemeKeys.HYPERLINK, ColorThemeKeys.KEYWORD);
 		applyDefault(theme, ColorThemeKeys.ACTIVE_HYPERLINK,
 				ColorThemeKeys.KEYWORD);
+		applyDefault(theme, ColorThemeKeys.MATCHING_BRACKET,
+				ColorThemeKeys.OCCURRENCE_INDICATION);
 	}
 
 	private static void applyDefault(Map<String, ColorThemeSetting> theme,
