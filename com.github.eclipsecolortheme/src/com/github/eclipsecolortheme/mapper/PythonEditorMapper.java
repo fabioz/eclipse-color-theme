@@ -15,16 +15,17 @@ public class PythonEditorMapper extends GenericMapper {
 		public void putPreferences(IEclipsePreferences preferences,
 				ColorThemeSetting setting) {
 			preferences.put(pluginKey, setting.getColor().asRGB());
-			if ("SELF_COLOR".equals(pluginKey)) {
-				setting.setItalicEnabled(true);
-			}
 
 			String styleKey = pluginKey.replaceAll("COLOR", "STYLE");
 			int styleVal = 0;
 			if (setting.isBoldEnabled() != null && setting.isBoldEnabled()) {
 				styleVal += 1;
 			}
-			if (setting.isItalicEnabled() != null && setting.isItalicEnabled()) {
+
+			// SELF always italic.
+			if ("SELF_COLOR".equals(pluginKey)
+					|| (setting.isItalicEnabled() != null && setting
+							.isItalicEnabled())) {
 				styleVal += 2;
 			}
 			preferences.putInt(styleKey, styleVal);

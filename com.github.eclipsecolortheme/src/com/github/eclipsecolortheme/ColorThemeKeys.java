@@ -1,6 +1,6 @@
 package com.github.eclipsecolortheme;
 
-/** Keys that can be used in a colour theme. */
+/** Keys that can be used in a color theme. */
 @SuppressWarnings("nls")
 public class ColorThemeKeys {
 	public static final String FOREGROUND = "foreground";
