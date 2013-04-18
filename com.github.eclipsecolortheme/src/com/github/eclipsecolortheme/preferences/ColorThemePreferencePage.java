@@ -17,6 +17,7 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.jface.resource.JFaceResources;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyleRange;
 import org.eclipse.swt.custom.StyledText;
@@ -49,6 +50,7 @@ import com.github.eclipsecolortheme.ColorTheme;
 import com.github.eclipsecolortheme.ColorThemeApplier;
 import com.github.eclipsecolortheme.ColorThemeManager;
 import com.github.eclipsecolortheme.preferences.ColorThemePreferencesPageStyledText.IStyledText;
+import com.github.eclipsecolortheme.preferences.edition.EditThemeDialog;
 
 /** The preference page for managing color themes. */
 public class ColorThemePreferencePage extends PreferencePage implements
@@ -59,6 +61,7 @@ public class ColorThemePreferencePage extends PreferencePage implements
 	private Composite themeSelection;
 	private Composite themeDetails;
 	private Label authorLabel;
+	private Button editButton;
 	private Link websiteLink;
 	private StyledText styledText;
 
@@ -95,21 +98,46 @@ public class ColorThemePreferencePage extends PreferencePage implements
 		gridData = new GridData(GridData.FILL_BOTH);
 		gridData.widthHint = 400;
 		gridData.verticalAlignment = SWT.TOP;
-		GridLayout themeDetailsLayout = new GridLayout(1, true);
+
+		GridLayout themeDetailsLayout = new GridLayout(2, true);
 		themeDetailsLayout.marginWidth = 0;
 		themeDetailsLayout.marginHeight = 0;
+
 		themeDetails = new Composite(themeSelection, SWT.NONE);
 		themeDetails.setLayoutData(gridData);
 		themeDetails.setLayout(themeDetailsLayout);
 		gridData = new GridData(GridData.FILL_BOTH);
 		gridData.heightHint = 306;
+		gridData.horizontalSpan = 2;
+
 		styledText = new StyledText(themeDetails, SWT.BORDER);
 		styledText.setLayoutData(gridData);
 		styledText.setText("");
+
 		authorLabel = new Label(themeDetails, SWT.NONE);
 		GridDataFactory.swtDefaults().grab(true, false).applyTo(authorLabel);
+
 		websiteLink = new Link(themeDetails, SWT.NONE);
 		GridDataFactory.swtDefaults().grab(true, false).applyTo(websiteLink);
+
+		editButton = new Button(themeDetails, SWT.NONE);
+		editButton.setText("Edit theme");
+		GridData grab = GridDataFactory.swtDefaults().grab(true, false)
+				.create();
+		editButton.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e) {
+				String[] selection = themeSelectionList.getSelection();
+				if (selection != null && selection.length > 0) {
+					EditThemeDialog dialog = new EditThemeDialog(getShell(),
+							colorThemeManager.getTheme(selection[0]));
+					if (dialog.open() == Window.OK) {
+						// apply
+					}
+				}
+			}
+		});
+		grab.horizontalAlignment = SWT.FILL;
+		editButton.setLayoutData(grab);
 
 		themeSelectionList.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {

@@ -29,6 +29,12 @@ public class Color {
 		}
 	}
 
+	public Color(RGB colorValue) {
+		this.r = colorValue.red;
+		this.g = colorValue.green;
+		this.b = colorValue.blue;
+	}
+
 	public Integer getR() {
 		return r;
 	}
