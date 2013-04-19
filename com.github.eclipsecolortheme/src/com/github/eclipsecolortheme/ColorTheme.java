@@ -1,5 +1,6 @@
 package com.github.eclipsecolortheme;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -79,5 +80,43 @@ public class ColorTheme {
 		}
 		copy.entries = map;
 		return copy;
+	}
+
+	@SuppressWarnings("nls")
+	public String toXML() {
+		StringBuffer buf = new StringBuffer();
+		System.currentTimeMillis();
+		Calendar calendar = Calendar.getInstance();
+
+		String modified = calendar.get(Calendar.YEAR) + 1900 + "-"
+				+ calendar.get(Calendar.MONTH) + "-"
+				+ calendar.get(Calendar.DAY_OF_MONTH) + " "
+				+ calendar.get(Calendar.HOUR_OF_DAY) + ":"
+				+ calendar.get(Calendar.MINUTE) + ":"
+				+ calendar.get(Calendar.SECOND);
+
+		buf.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+		buf.append("<colorTheme id=\"1\" name=\"" + name + "\" modified=\""
+				+ modified + "\" author=\"" + author + "\" website=\""
+				+ website + "/?p=" + id + "\">\n");
+		Map<String, ColorThemeSetting> entries2 = this.getEntries();
+		Set<Entry<String, ColorThemeSetting>> entrySet = entries2.entrySet();
+		for (Entry<String, ColorThemeSetting> entry : entrySet) {
+			ColorThemeSetting setting = entry.getValue();
+			buf.append("    <" + entry.getKey() + " color=\""
+					+ setting.getColor().asHex() + "\" ");
+
+			buf.append(" bold=").append('"').append(setting.isBoldEnabled())
+					.append('"');
+			buf.append(" underline=").append('"')
+					.append(setting.isUnderlineEnabled()).append('"');
+			buf.append(" strikethrough=").append('"')
+					.append(setting.isStrikethroughEnabled()).append('"');
+			buf.append(" italic=").append('"')
+					.append(setting.isItalicEnabled()).append('"');
+			buf.append("/>\n");
+		}
+		buf.append("</colorTheme>\n");
+		return buf.toString();
 	}
 }

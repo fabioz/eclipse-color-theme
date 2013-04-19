@@ -3,7 +3,10 @@ package com.github.eclipsecolortheme.preferences.edition;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
@@ -12,6 +15,8 @@ import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyleRange;
 import org.eclipse.swt.custom.StyledText;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -23,9 +28,10 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.Tree;
+import org.eclipse.swt.widgets.TreeItem;
 
 import com.github.eclipsecolortheme.Color;
 import com.github.eclipsecolortheme.ColorTheme;
@@ -40,18 +46,58 @@ public class EditThemeDialog extends TitleAreaDialog {
 	private ColorTheme theme;
 	private Text author;
 	private Text website;
+	private Text name;
 	private ColorEditor fAppearanceColorEditor;
 	private Button fAppearanceColorDefault;
 	private Button fFontBoldCheckBox;
 	private Button fFontItalicCheckBox;
 	private Button fFontStrikeThroughCheckBox;
 	private Button fFontUnderlineCheckBox;
-	private List fAppearanceColorList;
+	private Tree fAppearanceColorList;
 	private StyledText styledText;
+	private Map<RGB, org.eclipse.swt.graphics.Color> colors = new HashMap<RGB, org.eclipse.swt.graphics.Color>();
+	private Set<String> existingThemeNames;
+	private KeyListener listener = new KeyListener() {
 
-	public EditThemeDialog(Shell parentShell, ColorTheme theme) {
+		public void keyReleased(KeyEvent e) {
+			isValidInput();
+		}
+
+		public void keyPressed(KeyEvent e) {
+		}
+	};
+
+	@Override
+	public boolean close() {
+		boolean ret = super.close();
+		Set<Entry<RGB, org.eclipse.swt.graphics.Color>> entrySet = colors
+				.entrySet();
+		for (Entry<RGB, org.eclipse.swt.graphics.Color> entry : entrySet) {
+			entry.getValue().dispose();
+		}
+		colors.clear();
+		return ret;
+	}
+
+	private org.eclipse.swt.graphics.Color getColor(RGB colorValue) {
+		org.eclipse.swt.graphics.Color color = colors.get(colorValue);
+		if (color != null && !color.isDisposed()) {
+			return color;
+		}
+		color = new org.eclipse.swt.graphics.Color(Display.getCurrent(),
+				colorValue);
+		colors.put(colorValue, color);
+		return color;
+	}
+
+	public EditThemeDialog(Shell parentShell, ColorTheme theme,
+			Set<ColorTheme> set) {
 		super(parentShell);
 		this.theme = theme.createCopy();
+		this.existingThemeNames = new HashSet<String>();
+		for (ColorTheme t : set) {
+			existingThemeNames.add(t.getName());
+		}
 	}
 
 	@Override
@@ -76,12 +122,21 @@ public class EditThemeDialog extends TitleAreaDialog {
 		gridData.horizontalAlignment = GridData.FILL;
 
 		Label label1 = new Label(parent, SWT.NONE);
+		label1.setText("Name");
+
+		name = new Text(parent, SWT.BORDER);
+		name.setLayoutData(gridData);
+		name.setText("");
+		name.addKeyListener(listener);
+
+		label1 = new Label(parent, SWT.NONE);
 		label1.setText("Author");
 
 		author = new Text(parent, SWT.BORDER);
 		author.setLayoutData(gridData);
 		author.setText(this.theme.getAuthor() != null ? this.theme.getAuthor()
 				: "");
+		author.addKeyListener(listener);
 
 		label1 = new Label(parent, SWT.NONE);
 		label1.setText("Website");
@@ -90,6 +145,7 @@ public class EditThemeDialog extends TitleAreaDialog {
 		website.setLayoutData(gridData);
 		website.setText(this.theme.getWebsite() != null ? this.theme
 				.getWebsite() : "");
+		website.addKeyListener(listener);
 
 		createColorOptions(parent);
 		initializeList();
@@ -110,14 +166,17 @@ public class EditThemeDialog extends TitleAreaDialog {
 		ArrayList<String> keys = new ArrayList<String>(entries.keySet());
 		Collections.sort(keys);
 		for (String entry : keys) {
-			fAppearanceColorList.add(entry);
+			TreeItem item = new TreeItem(fAppearanceColorList, SWT.NONE);
+			item.setText(entry);
+			updateTreeItem(item, entry, entries, entries.get(entry).getColor()
+					.getRGB());
 		}
 
 		fAppearanceColorList.getDisplay().asyncExec(new Runnable() {
 			public void run() {
 				if (fAppearanceColorList != null
 						&& !fAppearanceColorList.isDisposed()) {
-					fAppearanceColorList.select(0);
+					fAppearanceColorList.select(fAppearanceColorList.getItem(0));
 					handleAppearanceColorListSelection();
 				}
 			}
@@ -151,7 +210,7 @@ public class EditThemeDialog extends TitleAreaDialog {
 		gd.grabExcessVerticalSpace = true;
 		editorComposite.setLayoutData(gd);
 
-		fAppearanceColorList = new List(editorComposite, SWT.SINGLE
+		fAppearanceColorList = new Tree(editorComposite, SWT.SINGLE
 				| SWT.V_SCROLL | SWT.BORDER);
 		gd = new GridData(GridData.VERTICAL_ALIGN_BEGINNING
 				| GridData.FILL_BOTH);
@@ -185,7 +244,7 @@ public class EditThemeDialog extends TitleAreaDialog {
 				boolean systemDefault = fAppearanceColorDefault.getSelection();
 				fAppearanceColorEditor.getButton().setEnabled(!systemDefault);
 
-				int i = fAppearanceColorList.getSelectionIndex();
+				// int i = fAppearanceColorList.getSelectionIndex();
 				// String key = fAppearanceColorListModel[i][2];
 				// if (key != null) {
 				// fOverlayStore.setValue(key, systemDefault);
@@ -221,12 +280,13 @@ public class EditThemeDialog extends TitleAreaDialog {
 			}
 
 			public void widgetSelected(SelectionEvent e) {
-				int i = fAppearanceColorList.getSelectionIndex();
-				String key = fAppearanceColorList.getItem(i);
-				Map<String, ColorThemeSetting> entries = theme.getEntries();
-				ColorThemeSetting setting = entries.get(key);
-				RGB colorValue = fAppearanceColorEditor.getColorValue();
-				entries.put(key, setting.createCopy(colorValue));
+				TreeItem selectedTreeItem = getSelectedTreeItem();
+				if (selectedTreeItem == null) {
+					return;
+				}
+				String key = selectedTreeItem.getText();
+				updateEntry(selectedTreeItem, key);
+
 				onAppearanceRelatedPreferenceChanged();
 			}
 		});
@@ -244,8 +304,12 @@ public class EditThemeDialog extends TitleAreaDialog {
 		}
 
 		public void widgetSelected(SelectionEvent e) {
-			int i = fAppearanceColorList.getSelectionIndex();
-			String key = fAppearanceColorList.getItem(i);
+			TreeItem selectedTreeItem = getSelectedTreeItem();
+			if (selectedTreeItem == null) {
+				return;
+			}
+			String key = selectedTreeItem.getText();
+
 			Map<String, ColorThemeSetting> entries = theme.getEntries();
 			ColorThemeSetting setting = entries.get(key);
 
@@ -259,8 +323,11 @@ public class EditThemeDialog extends TitleAreaDialog {
 	};
 
 	protected void handleAppearanceColorListSelection() {
-		int i = fAppearanceColorList.getSelectionIndex();
-		String key = fAppearanceColorList.getItem(i);
+		TreeItem selectedTreeItem = getSelectedTreeItem();
+		if (selectedTreeItem == null) {
+			return;
+		}
+		String key = selectedTreeItem.getText();
 
 		Map<String, ColorThemeSetting> entries = theme.getEntries();
 		ColorThemeSetting setting = entries.get(key);
@@ -375,14 +442,21 @@ public class EditThemeDialog extends TitleAreaDialog {
 
 	private boolean isValidInput() {
 		boolean valid = true;
-		// if (firstNameText.getText().length() == 0) {
-		// setErrorMessage("Please maintain the first name");
-		// valid = false;
-		// }
-		// if (lastNameText.getText().length() == 0) {
-		// setErrorMessage("Please maintain the last name");
-		// valid = false;
-		// }
+		if (name.getText().length() == 0) {
+			setErrorMessage("Please provide a name for the theme.");
+			valid = false;
+		}
+		if (name.getText().length() > 30) {
+			setErrorMessage("The name of the theme should have at most 30 chars.");
+			valid = false;
+		}
+		if (existingThemeNames.contains(name.getText())) {
+			setErrorMessage("Please provide a different name for the theme.");
+			valid = false;
+		}
+		if (valid) {
+			setErrorMessage(null);
+		}
 		return valid;
 	}
 
@@ -392,8 +466,9 @@ public class EditThemeDialog extends TitleAreaDialog {
 	}
 
 	private void saveInput() {
-		// firstName = firstNameText.getText();
-		// lastName = lastNameText.getText();
+		theme.setName(name.getText());
+		theme.setAuthor(author.getText());
+		theme.setWebsite(website.getText());
 	}
 
 	@Override
@@ -402,20 +477,66 @@ public class EditThemeDialog extends TitleAreaDialog {
 		super.okPressed();
 	}
 
+	private TreeItem getSelectedTreeItem() {
+		TreeItem[] selection = fAppearanceColorList.getSelection();
+		if (selection != null && selection.length > 0) {
+			return selection[0];
+		}
+		return null;
+	}
+
+	private void updateEntry(TreeItem selectedTreeItem, String key) {
+		Map<String, ColorThemeSetting> entries = theme.getEntries();
+
+		ColorThemeSetting setting = entries.get(key);
+		RGB colorValue = fAppearanceColorEditor.getColorValue();
+		entries.put(key, setting.createCopy(colorValue));
+
+		updateTreeItem(selectedTreeItem, key, entries, colorValue);
+	}
+
+	private void updateTreeItem(TreeItem selectedTreeItem, String key,
+			Map<String, ColorThemeSetting> entries, RGB colorValue) {
+		org.eclipse.swt.graphics.Color foreground;
+		org.eclipse.swt.graphics.Color background;
+
+		if (key.equals(ColorThemeKeys.BACKGROUND)) {
+			foreground = getColor(colorValue);
+			background = getColor(entries.get(ColorThemeKeys.FOREGROUND)
+					.getColor().getRGB());
+
+			TreeItem[] items = fAppearanceColorList.getItems();
+			for (TreeItem treeItem : items) {
+				treeItem.setBackground(foreground);
+			}
+			fAppearanceColorList.setBackground(foreground);
+
+		} else {
+			background = getColor(entries.get(ColorThemeKeys.BACKGROUND)
+					.getColor().getRGB());
+			foreground = getColor(colorValue);
+
+		}
+		selectedTreeItem.setForeground(foreground);
+		selectedTreeItem.setBackground(background);
+	}
+
 	public static void main(String[] args) {
 		Display display = new Display();
 		Shell shell = new Shell(display);
 
 		ColorTheme t = new ColorTheme();
-
+		t.setName("theme");
 		Map<String, ColorThemeSetting> entries = new HashMap<String, ColorThemeSetting>();
 		t.setEntries(entries);
 		entries.put(ColorThemeKeys.BACKGROUND, new ColorThemeSetting("#000000"));
 		entries.put(ColorThemeKeys.FOREGROUND, new ColorThemeSetting("#ffffff"));
-		entries.put(ColorThemeKeys.KEYWORD, new ColorThemeSetting("#ffffff"));
+		entries.put(ColorThemeKeys.KEYWORD, new ColorThemeSetting("#ff0000"));
 
 		t.setEntries(entries);
-		EditThemeDialog dialog = new EditThemeDialog(shell, t);
+		Set<ColorTheme> s = new HashSet<ColorTheme>();
+		s.add(t);
+		EditThemeDialog dialog = new EditThemeDialog(shell, t, s);
 		dialog.open();
 		// while (!shell.isDisposed()) {
 		// if (!display.readAndDispatch()) {
@@ -423,5 +544,9 @@ public class EditThemeDialog extends TitleAreaDialog {
 		// }
 		// }
 		display.dispose();
+	}
+
+	public ColorTheme getTheme() {
+		return this.theme;
 	}
 }

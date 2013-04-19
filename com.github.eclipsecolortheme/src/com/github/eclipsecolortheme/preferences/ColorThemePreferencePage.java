@@ -129,9 +129,12 @@ public class ColorThemePreferencePage extends PreferencePage implements
 				String[] selection = themeSelectionList.getSelection();
 				if (selection != null && selection.length > 0) {
 					EditThemeDialog dialog = new EditThemeDialog(getShell(),
-							colorThemeManager.getTheme(selection[0]));
+							colorThemeManager.getTheme(selection[0]),
+							colorThemeManager.getThemes());
 					if (dialog.open() == Window.OK) {
-						// apply
+						ColorTheme theme = dialog.getTheme();
+						String content = theme.toXML();
+						importThemeFromContents(content);
 					}
 				}
 			}
@@ -303,20 +306,13 @@ public class ColorThemePreferencePage extends PreferencePage implements
 				FileDialog dialog = new FileDialog(getShell());
 				String file = dialog.open();
 				ColorTheme theme;
+				String content;
 				try {
-					String content = readFile(new File(file));
-					theme = colorThemeManager.saveTheme(content);
+					content = readFile(new File(file));
 				} catch (IOException e) {
-					theme = null;
+					content = null;
 				}
-				if (theme != null) {
-					reloadThemeSelectionList();
-				} else {
-					MessageBox box = new MessageBox(getShell(), SWT.OK);
-					box.setText("Theme not imported");
-					box.setMessage("This is not a valid theme file.");
-					box.open();
-				}
+				importThemeFromContents(content);
 			}
 		});
 	}
@@ -327,6 +323,21 @@ public class ColorThemePreferencePage extends PreferencePage implements
 		themeSelectionList.setSelection(new String[] { "Default" });
 		updateDetails(null);
 		container.pack();
+	}
+
+	private void importThemeFromContents(String content) {
+		ColorTheme theme;
+		if (content != null) {
+			theme = colorThemeManager.saveTheme(content);
+			if (theme != null) {
+				reloadThemeSelectionList();
+			} else {
+				MessageBox box = new MessageBox(getShell(), SWT.OK);
+				box.setText("Theme not imported");
+				box.setMessage("This is not a valid theme file.");
+				box.open();
+			}
+		}
 	}
 
 	private static String readFile(File file) throws IOException {
