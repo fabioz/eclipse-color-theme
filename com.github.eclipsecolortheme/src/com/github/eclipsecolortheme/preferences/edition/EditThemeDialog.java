@@ -318,6 +318,7 @@ public class EditThemeDialog extends TitleAreaDialog {
 			setting.setUnderlineEnabled(fFontUnderlineCheckBox.getSelection());
 			setting.setStrikethroughEnabled(fFontStrikeThroughCheckBox
 					.getSelection());
+
 			onAppearanceRelatedPreferenceChanged();
 		}
 	};
@@ -358,6 +359,12 @@ public class EditThemeDialog extends TitleAreaDialog {
 		} else {
 			fFontStrikeThroughCheckBox.setSelection(false);
 		}
+
+		boolean enable = !ColorThemeKeys.KEYS_WITHOUT_STYLE.contains(key);
+		fFontBoldCheckBox.setEnabled(enable);
+		fFontItalicCheckBox.setEnabled(enable);
+		fFontUnderlineCheckBox.setEnabled(enable);
+		fFontStrikeThroughCheckBox.setEnabled(enable);
 	}
 
 	private void onAppearanceRelatedPreferenceChanged() {
@@ -512,9 +519,21 @@ public class EditThemeDialog extends TitleAreaDialog {
 			fAppearanceColorList.setBackground(foreground);
 
 		} else {
-			background = getColor(entries.get(ColorThemeKeys.BACKGROUND)
-					.getColor().getRGB());
-			foreground = getColor(colorValue);
+
+			if (ColorThemeKeys.KEYS_WITHOUT_STYLE.contains(selectedTreeItem
+					.getText())) {
+				if (Color.isDarkColor(colorValue.red, colorValue.green,
+						colorValue.blue)) {
+					foreground = getColor(new RGB(255, 255, 255));
+				} else {
+					foreground = getColor(new RGB(0, 0, 0));
+				}
+				background = getColor(colorValue);
+			} else {
+				foreground = getColor(colorValue);
+				background = getColor(entries.get(ColorThemeKeys.BACKGROUND)
+						.getColor().getRGB());
+			}
 
 		}
 		selectedTreeItem.setForeground(foreground);

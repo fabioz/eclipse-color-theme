@@ -1,5 +1,8 @@
 package com.github.eclipsecolortheme;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /** Keys that can be used in a color theme. */
 @SuppressWarnings("nls")
 public class ColorThemeKeys {
@@ -57,4 +60,28 @@ public class ColorThemeKeys {
 	public static final String HYPERLINK = "hyperlink";
 	public static final String ACTIVE_HYPERLINK = "activeHyperlink";
 	public static final String MATCHING_BRACKET = "matchingBracket";
+
+	public static final Set<String> KEYS_WITHOUT_STYLE = new HashSet<String>();
+	static {
+		KEYS_WITHOUT_STYLE.add(BACKGROUND);
+		KEYS_WITHOUT_STYLE.add(SELECTION_FOREGROUND);
+		KEYS_WITHOUT_STYLE.add(SELECTION_BACKGROUND);
+		KEYS_WITHOUT_STYLE.add(CURRENT_LINE);
+		KEYS_WITHOUT_STYLE.add(LINE_NUMBER);
+		KEYS_WITHOUT_STYLE.add(SEARCH_RESULT_INDICATION);
+		KEYS_WITHOUT_STYLE.add(FILTERED_SEARCH_RESULT_INDICATION);
+		KEYS_WITHOUT_STYLE.add(OCCURRENCE_INDICATION);
+		KEYS_WITHOUT_STYLE.add(WRITE_OCCURRENCE_INDICATION);
+		KEYS_WITHOUT_STYLE.add(FIND_SCOPE);
+		KEYS_WITHOUT_STYLE.add(SOURCE_HOVER_BACKGROUND);
+		KEYS_WITHOUT_STYLE.add(DEBUG_CURRENT_INSTRUCTION_POINTER);
+		KEYS_WITHOUT_STYLE.add(DEBUG_SECONDARY_INSTRUCTION_POINTER);
+
+		KEYS_WITHOUT_STYLE.add(STDERR);
+		KEYS_WITHOUT_STYLE.add(STDIN);
+		KEYS_WITHOUT_STYLE.add(STDOUT);
+		KEYS_WITHOUT_STYLE.add(HYPERLINK);
+		KEYS_WITHOUT_STYLE.add(ACTIVE_HYPERLINK);
+		KEYS_WITHOUT_STYLE.add(MATCHING_BRACKET);
+	}
 }

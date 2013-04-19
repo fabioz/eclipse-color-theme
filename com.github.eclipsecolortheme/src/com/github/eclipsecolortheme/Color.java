@@ -69,4 +69,13 @@ public class Color {
 		return new RGB(r, g, b);
 	}
 
+	public boolean isDarkColor() {
+		return isDarkColor(r, g, b);
+	}
+
+	public static boolean isDarkColor(int r, int g, int b) {
+		double v = (r / 255.0) * 0.3 + (g / 255.0) * 0.59 + (b / 255.0) * 0.11;
+		return v <= 0.5;
+	}
+
 }

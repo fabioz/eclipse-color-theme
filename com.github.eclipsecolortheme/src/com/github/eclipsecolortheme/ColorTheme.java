@@ -62,9 +62,7 @@ public class ColorTheme {
 	public boolean isDarkColor(String key) {
 		ColorThemeSetting colorThemeSetting = entries.get(key);
 		Color color = colorThemeSetting.getColor();
-		double v = (color.getR() / 255.0) * 0.3 + (color.getG() / 255.0) * 0.59
-				+ (color.getB() / 255.0) * 0.11;
-		return v <= 0.5;
+		return color.isDarkColor();
 	}
 
 	public ColorTheme createCopy() {
