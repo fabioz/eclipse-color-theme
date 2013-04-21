@@ -228,12 +228,9 @@ public class ColorThemePreferencePage extends PreferencePage implements
 
 	private static final Set<String> IDS_FOR_EDITORS_THAT_DONT_NEED_REOPEN = new HashSet<String>();
 	static {
-		IDS_FOR_EDITORS_THAT_DONT_NEED_REOPEN
-				.add("org.eclipse.cdt.ui.editor.CEditor");
-		IDS_FOR_EDITORS_THAT_DONT_NEED_REOPEN
-				.add("com.brainwy.liclipse.editor.common.LiClipseEditor");
-		IDS_FOR_EDITORS_THAT_DONT_NEED_REOPEN
-				.add("org.python.pydev.editor.PythonEditor");
+		IDS_FOR_EDITORS_THAT_DONT_NEED_REOPEN.add("org.eclipse.cdt.ui.editor.");
+		IDS_FOR_EDITORS_THAT_DONT_NEED_REOPEN.add("com.brainwy.liclipse.");
+		IDS_FOR_EDITORS_THAT_DONT_NEED_REOPEN.add("org.python.pydev.editor.");
 	}
 
 	@Override
@@ -250,7 +247,14 @@ public class ColorThemePreferencePage extends PreferencePage implements
 				 * C++ editors are not closed/reopened because it messes their
 				 * colors up. TODO: Make this configurable in the mapping file.
 				 */
-				if (!IDS_FOR_EDITORS_THAT_DONT_NEED_REOPEN.contains(id)) {
+				boolean needsStart = true;
+				for (String editorId : IDS_FOR_EDITORS_THAT_DONT_NEED_REOPEN) {
+					if (id.startsWith(editorId)) {
+						needsStart = false;
+						break;
+					}
+				}
+				if (needsStart) {
 					editorsToClose.add(editor);
 					editorsToReopen.put(editor.getEditorInput(), id);
 				}
@@ -290,7 +294,7 @@ public class ColorThemePreferencePage extends PreferencePage implements
 	protected void performDefaults() {
 		getPreferenceStore().setToDefault("colorTheme");
 		colorThemeManager.clearImportedThemes();
-		reloadThemeSelectionList();
+		reloadThemeSelectionList(null);
 		super.performDefaults();
 	}
 
@@ -317,11 +321,18 @@ public class ColorThemePreferencePage extends PreferencePage implements
 		});
 	}
 
-	private void reloadThemeSelectionList() {
+	private void reloadThemeSelectionList(ColorTheme newTheme) {
 		themeSelectionList.removeAll();
 		fillThemeSelectionList();
-		themeSelectionList.setSelection(new String[] { "Default" });
-		updateDetails(null);
+		if (newTheme == null) {
+			themeSelectionList.setSelection(new String[] { "Default" });
+
+		} else {
+			themeSelectionList
+					.setSelection(new String[] { newTheme.getName() });
+
+		}
+		updateDetails(newTheme);
 		container.pack();
 	}
 
@@ -330,7 +341,7 @@ public class ColorThemePreferencePage extends PreferencePage implements
 		if (content != null) {
 			theme = colorThemeManager.saveTheme(content);
 			if (theme != null) {
-				reloadThemeSelectionList();
+				reloadThemeSelectionList(theme);
 			} else {
 				MessageBox box = new MessageBox(getShell(), SWT.OK);
 				box.setText("Theme not imported");

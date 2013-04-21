@@ -20,6 +20,7 @@ import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -27,7 +28,9 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
@@ -53,7 +56,7 @@ public class EditThemeDialog extends TitleAreaDialog {
 	private Button fFontItalicCheckBox;
 	private Button fFontStrikeThroughCheckBox;
 	private Button fFontUnderlineCheckBox;
-	private Tree fAppearanceColorList;
+	private Tree fAppearanceColorTree;
 	private StyledText styledText;
 	private Map<RGB, org.eclipse.swt.graphics.Color> colors = new HashMap<RGB, org.eclipse.swt.graphics.Color>();
 	private Set<String> existingThemeNames;
@@ -166,17 +169,17 @@ public class EditThemeDialog extends TitleAreaDialog {
 		ArrayList<String> keys = new ArrayList<String>(entries.keySet());
 		Collections.sort(keys);
 		for (String entry : keys) {
-			TreeItem item = new TreeItem(fAppearanceColorList, SWT.NONE);
+			TreeItem item = new TreeItem(fAppearanceColorTree, SWT.NONE);
 			item.setText(entry);
 			updateTreeItem(item, entry, entries, entries.get(entry).getColor()
 					.getRGB());
 		}
 
-		fAppearanceColorList.getDisplay().asyncExec(new Runnable() {
+		fAppearanceColorTree.getDisplay().asyncExec(new Runnable() {
 			public void run() {
-				if (fAppearanceColorList != null
-						&& !fAppearanceColorList.isDisposed()) {
-					fAppearanceColorList.select(fAppearanceColorList.getItem(0));
+				if (fAppearanceColorTree != null
+						&& !fAppearanceColorTree.isDisposed()) {
+					fAppearanceColorTree.select(fAppearanceColorTree.getItem(0));
 					handleAppearanceColorListSelection();
 				}
 			}
@@ -210,14 +213,37 @@ public class EditThemeDialog extends TitleAreaDialog {
 		gd.grabExcessVerticalSpace = true;
 		editorComposite.setLayoutData(gd);
 
-		fAppearanceColorList = new Tree(editorComposite, SWT.SINGLE
+		fAppearanceColorTree = new Tree(editorComposite, SWT.SINGLE
 				| SWT.V_SCROLL | SWT.BORDER);
 		gd = new GridData(GridData.VERTICAL_ALIGN_BEGINNING
 				| GridData.FILL_BOTH);
 		gd.grabExcessVerticalSpace = true;
 		gd.grabExcessHorizontalSpace = true;
 		gd.heightHint = convertHeightInCharsToPixels(8);
-		fAppearanceColorList.setLayoutData(gd);
+		fAppearanceColorTree.setLayoutData(gd);
+
+		fAppearanceColorTree.addListener(SWT.EraseItem, new Listener() {
+			public void handleEvent(Event event) {
+				event.detail &= ~SWT.HOT;
+				if ((event.detail & SWT.SELECTED) == 0)
+					return; // / item not selected
+
+				Tree table = (Tree) event.widget;
+				TreeItem item = (TreeItem) event.item;
+				int clientWidth = table.getClientArea().width;
+
+				GC gc = event.gc;
+
+				// gc.setBackground(colorBackground);
+				// gc.setForeground(colorForeground);
+				//
+				gc.setForeground(item.getForeground());
+				gc.setBackground(item.getBackground());
+				gc.fillRectangle(0, event.y, clientWidth - 1, event.height - 1);
+				gc.drawRectangle(0, event.y, clientWidth - 1, event.height - 1);
+				event.detail &= ~SWT.SELECTED;
+			}
+		});
 
 		Composite stylesComposite = new Composite(editorComposite, SWT.NONE);
 		layout = new GridLayout();
@@ -265,7 +291,7 @@ public class EditThemeDialog extends TitleAreaDialog {
 		fAppearanceColorDefault
 				.addSelectionListener(colorDefaultSelectionListener);
 
-		fAppearanceColorList.addSelectionListener(new SelectionListener() {
+		fAppearanceColorTree.addSelectionListener(new SelectionListener() {
 			public void widgetDefaultSelected(SelectionEvent e) {
 				// do nothing
 			}
@@ -485,7 +511,7 @@ public class EditThemeDialog extends TitleAreaDialog {
 	}
 
 	private TreeItem getSelectedTreeItem() {
-		TreeItem[] selection = fAppearanceColorList.getSelection();
+		TreeItem[] selection = fAppearanceColorTree.getSelection();
 		if (selection != null && selection.length > 0) {
 			return selection[0];
 		}
@@ -508,31 +534,42 @@ public class EditThemeDialog extends TitleAreaDialog {
 		org.eclipse.swt.graphics.Color background;
 
 		if (key.equals(ColorThemeKeys.BACKGROUND)) {
-			foreground = getColor(colorValue);
-			background = getColor(entries.get(ColorThemeKeys.FOREGROUND)
+			foreground = getColor(entries.get(ColorThemeKeys.FOREGROUND)
 					.getColor().getRGB());
+			background = getColor(colorValue);
 
-			TreeItem[] items = fAppearanceColorList.getItems();
+			// update the background of the needed items
+			TreeItem[] items = fAppearanceColorTree.getItems();
 			for (TreeItem treeItem : items) {
-				treeItem.setBackground(foreground);
+				if (!ColorThemeKeys.KEYS_BACKGROUND_RELATED.contains(treeItem
+						.getText(0))) {
+					treeItem.setBackground(background);
+				}
 			}
-			fAppearanceColorList.setBackground(foreground);
+			fAppearanceColorTree.setBackground(background);
 
 		} else {
 
-			if (ColorThemeKeys.KEYS_WITHOUT_STYLE.contains(selectedTreeItem
-					.getText())) {
-				if (Color.isDarkColor(colorValue.red, colorValue.green,
-						colorValue.blue)) {
-					foreground = getColor(new RGB(255, 255, 255));
-				} else {
-					foreground = getColor(new RGB(0, 0, 0));
-				}
+			if (ColorThemeKeys.KEYS_BACKGROUND_RELATED
+					.contains(selectedTreeItem.getText())) {
+				foreground = getColor(entries.get(ColorThemeKeys.FOREGROUND)
+						.getColor().getRGB());
 				background = getColor(colorValue);
 			} else {
 				foreground = getColor(colorValue);
 				background = getColor(entries.get(ColorThemeKeys.BACKGROUND)
 						.getColor().getRGB());
+			}
+
+			// update the foreground of the needed items
+			if (key.equals(ColorThemeKeys.FOREGROUND)) {
+				TreeItem[] items = fAppearanceColorTree.getItems();
+				for (TreeItem treeItem : items) {
+					if (ColorThemeKeys.KEYS_BACKGROUND_RELATED
+							.contains(treeItem.getText(0))) {
+						treeItem.setForeground(foreground);
+					}
+				}
 			}
 
 		}

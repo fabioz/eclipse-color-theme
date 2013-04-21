@@ -2,11 +2,11 @@
 <colorTheme id="14833" name="Monokai PyDev" modified="2013-03-09 20:19:42" author="Fabio Zadrozny" website="http://pydev.org">
     <searchResultIndication color="#1E90FF" />
     <filteredSearchResultIndication color="#1E90FF" />
-    <occurrenceIndication color="#000000" />
-    <writeOccurrenceIndication color="#000000" />
-    <findScope color="#000000" />
+    <occurrenceIndication color="#909090" />
+    <writeOccurrenceIndication color="#909090" />
+    <findScope color="#909090" />
     <deletionIndication color="#D25252" />
-    <sourceHoverBackground color="#000000" />
+    <sourceHoverBackground color="#909090" />
     <singleLineComment color="#75715E" italic="false" />
     <multiLineComment color="#75715e" italic="false" />
     <commentTaskTag color="#CCDF32" />
@@ -43,5 +43,5 @@
     <foreground color="#F8F8F2" />
     <lineNumber color="#F8F8F2" />
     <selectionBackground color="#757575" />
-    <selectionForeground color="#D0D0D0" />
+    <selectionForeground color="#E0E0E0" />
 </colorTheme>

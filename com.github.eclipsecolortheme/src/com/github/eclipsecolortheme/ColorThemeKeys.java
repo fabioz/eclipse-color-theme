@@ -6,6 +6,7 @@ import java.util.Set;
 /** Keys that can be used in a color theme. */
 @SuppressWarnings("nls")
 public class ColorThemeKeys {
+	// Editor related colors.
 	public static final String FOREGROUND = "foreground";
 	public static final String BACKGROUND = "background";
 	public static final String SELECTION_FOREGROUND = "selectionForeground";
@@ -60,6 +61,22 @@ public class ColorThemeKeys {
 	public static final String HYPERLINK = "hyperlink";
 	public static final String ACTIVE_HYPERLINK = "activeHyperlink";
 	public static final String MATCHING_BRACKET = "matchingBracket";
+
+	public static final Set<String> KEYS_BACKGROUND_RELATED = new HashSet<String>();
+	static {
+		KEYS_BACKGROUND_RELATED.add(BACKGROUND);
+		KEYS_BACKGROUND_RELATED.add(SELECTION_BACKGROUND);
+		KEYS_BACKGROUND_RELATED.add(CURRENT_LINE);
+		KEYS_BACKGROUND_RELATED.add(SEARCH_RESULT_INDICATION);
+		KEYS_BACKGROUND_RELATED.add(FILTERED_SEARCH_RESULT_INDICATION);
+		KEYS_BACKGROUND_RELATED.add(OCCURRENCE_INDICATION);
+		KEYS_BACKGROUND_RELATED.add(WRITE_OCCURRENCE_INDICATION);
+		KEYS_BACKGROUND_RELATED.add(FIND_SCOPE);
+		KEYS_BACKGROUND_RELATED.add(SOURCE_HOVER_BACKGROUND);
+		KEYS_BACKGROUND_RELATED.add(DEBUG_CURRENT_INSTRUCTION_POINTER);
+		KEYS_BACKGROUND_RELATED.add(DEBUG_SECONDARY_INSTRUCTION_POINTER);
+		KEYS_BACKGROUND_RELATED.add(MATCHING_BRACKET);
+	}
 
 	public static final Set<String> KEYS_WITHOUT_STYLE = new HashSet<String>();
 	static {
