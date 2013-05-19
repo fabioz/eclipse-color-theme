@@ -13,6 +13,11 @@ public class ColorTheme {
 	private String author;
 	private String website;
 	private Map<String, ColorThemeSetting> entries;
+	/**
+	 * This is the id of the theme in the preferences store. If a theme was not
+	 * loaded from the preferences store, the importedThemeId is null.
+	 */
+	private String importedThemeId;
 
 	public String getId() {
 		return id;
@@ -44,6 +49,18 @@ public class ColorTheme {
 
 	public void setWebsite(String website) {
 		this.website = website;
+	}
+
+	/**
+	 * This is the id of the theme in the preferences store. If a theme was not
+	 * loaded from the preferences store, the importedThemeId is null.
+	 */
+	public void setImportedThemeId(String importedThemeId) {
+		this.importedThemeId = importedThemeId;
+	}
+
+	public String getImportedThemeId() {
+		return importedThemeId;
 	}
 
 	public Map<String, ColorThemeSetting> getEntries() {
@@ -117,4 +134,5 @@ public class ColorTheme {
 		buf.append("</colorTheme>\n");
 		return buf.toString();
 	}
+
 }

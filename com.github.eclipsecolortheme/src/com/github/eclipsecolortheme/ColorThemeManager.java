@@ -69,12 +69,14 @@ public class ColorThemeManager {
 		IPreferenceStore store = getPreferenceStore();
 
 		for (int i = 1;; i++) {
-			String xml = store.getString("importedColorTheme" + i);
+			String importedThemeId = "importedColorTheme" + i;
+			String xml = store.getString(importedThemeId);
 			if (xml == null || xml.length() == 0)
 				break;
 			try {
 				ColorTheme theme = parseTheme(new ByteArrayInputStream(
 						xml.getBytes()));
+				theme.setImportedThemeId(importedThemeId);
 				amendThemeEntries(theme.getEntries());
 				themes.put(theme.getName(), theme);
 			} catch (Exception e) {
@@ -86,8 +88,9 @@ public class ColorThemeManager {
 
 	public void clearImportedThemes() {
 		IPreferenceStore store = getPreferenceStore();
-		for (int i = 1; store.contains("importedColorTheme" + i); i++)
+		for (int i = 1; store.contains("importedColorTheme" + i); i++) {
 			store.setToDefault("importedColorTheme" + i);
+		}
 		themes.clear();
 		readStockThemes(themes);
 	}
@@ -226,16 +229,60 @@ public class ColorThemeManager {
 		try {
 			theme = ColorThemeManager.parseTheme(new ByteArrayInputStream(
 					content.getBytes()));
-			String name = theme.getName();
-			themes.put(name, theme);
-			IPreferenceStore store = getPreferenceStore();
-			for (int i = 1;; i++)
-				if (!store.contains("importedColorTheme" + i)) {
-					store.putValue("importedColorTheme" + i, content);
-					break;
-				}
+			saveTheme(content, theme);
 			return theme;
 		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	/**
+	 * Save the theme having the contents already parsed.
+	 */
+	private void saveTheme(String content, ColorTheme theme) {
+		String name = theme.getName();
+		themes.put(name, theme);
+		IPreferenceStore store = getPreferenceStore();
+		for (int i = 1;; i++) {
+			String importedThemeId = "importedColorTheme" + i;
+			if (!store.contains(importedThemeId)) {
+				store.putValue(importedThemeId, content);
+				theme.setImportedThemeId(importedThemeId);
+				break;
+			}
+		}
+	}
+
+	public ColorTheme saveEditedTheme(String content) {
+		ColorTheme theme;
+		try {
+			theme = ColorThemeManager.parseTheme(new ByteArrayInputStream(
+					content.getBytes()));
+			String name = theme.getName();
+
+			ColorTheme existingWithSameName = themes.get(name);
+
+			if (existingWithSameName != null) {
+				String importedThemeId = existingWithSameName
+						.getImportedThemeId();
+				if (importedThemeId != null) {
+					// it's an existing theme in the preference store: we have
+					// to save it overriding the old one that had the same name.
+					themes.put(name, theme);
+					IPreferenceStore store = getPreferenceStore();
+					store.putValue(importedThemeId, content);
+					theme.setImportedThemeId(importedThemeId);
+					return theme;
+				}
+			}
+
+			// if it got here, it's a new theme.
+			saveTheme(content, theme);
+			return theme;
+
+		} catch (Exception e) {
+			e.printStackTrace();
 			return null;
 		}
 	}

@@ -134,7 +134,7 @@ public class ColorThemePreferencePage extends PreferencePage implements
 					if (dialog.open() == Window.OK) {
 						ColorTheme theme = dialog.getTheme();
 						String content = theme.toXML();
-						importThemeFromContents(content);
+						saveEditedTheme(content);
 					}
 				}
 			}
@@ -334,6 +334,24 @@ public class ColorThemePreferencePage extends PreferencePage implements
 		}
 		updateDetails(newTheme);
 		container.pack();
+	}
+
+	/**
+	 * If the name already exists, replace it, otherwise create a new one.
+	 */
+	private void saveEditedTheme(String content) {
+		ColorTheme theme;
+		if (content != null) {
+			theme = colorThemeManager.saveEditedTheme(content);
+			if (theme != null) {
+				reloadThemeSelectionList(theme);
+			} else {
+				MessageBox box = new MessageBox(getShell(), SWT.OK);
+				box.setText("Theme not saved");
+				box.setMessage("Contents not vallid.");
+				box.open();
+			}
+		}
 	}
 
 	private void importThemeFromContents(String content) {

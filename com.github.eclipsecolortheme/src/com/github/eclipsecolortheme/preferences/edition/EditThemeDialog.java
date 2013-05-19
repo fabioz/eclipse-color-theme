@@ -475,22 +475,29 @@ public class EditThemeDialog extends TitleAreaDialog {
 
 	private boolean isValidInput() {
 		boolean valid = true;
-		if (name.getText().length() == 0) {
+		String currName = getName();
+		if (currName.length() == 0) {
 			setErrorMessage("Please provide a name for the theme.");
 			valid = false;
 		}
-		if (name.getText().length() > 30) {
+		if (currName.length() > 30) {
 			setErrorMessage("The name of the theme should have at most 30 chars.");
 			valid = false;
 		}
-		if (existingThemeNames.contains(name.getText())) {
-			setErrorMessage("Please provide a different name for the theme.");
-			valid = false;
+		if (existingThemeNames.contains(currName)) {
+			setMessage("Note: will override a theme with the same name.",
+					IMessageProvider.INFORMATION);
+		} else {
+			setMessage(null, IMessageProvider.INFORMATION);
 		}
 		if (valid) {
 			setErrorMessage(null);
 		}
 		return valid;
+	}
+
+	private String getName() {
+		return name.getText().trim();
 	}
 
 	@Override
@@ -499,7 +506,7 @@ public class EditThemeDialog extends TitleAreaDialog {
 	}
 
 	private void saveInput() {
-		theme.setName(name.getText());
+		theme.setName(getName());
 		theme.setAuthor(author.getText());
 		theme.setWebsite(website.getText());
 	}
