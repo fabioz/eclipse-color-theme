@@ -61,6 +61,7 @@ public class ColorThemeKeys {
 	public static final String HYPERLINK = "hyperlink";
 	public static final String ACTIVE_HYPERLINK = "activeHyperlink";
 	public static final String MATCHING_BRACKET = "matchingBracket";
+	public static final String SEARCH_VIEW_MATCH_HIGHLIGHT = "searchViewMatchHighlight";
 
 	public static final Set<String> KEYS_BACKGROUND_RELATED = new HashSet<String>();
 	static {
@@ -76,6 +77,7 @@ public class ColorThemeKeys {
 		KEYS_BACKGROUND_RELATED.add(DEBUG_CURRENT_INSTRUCTION_POINTER);
 		KEYS_BACKGROUND_RELATED.add(DEBUG_SECONDARY_INSTRUCTION_POINTER);
 		KEYS_BACKGROUND_RELATED.add(MATCHING_BRACKET);
+		KEYS_BACKGROUND_RELATED.add(SEARCH_VIEW_MATCH_HIGHLIGHT);
 	}
 
 	public static final Set<String> KEYS_WITHOUT_STYLE = new HashSet<String>();
@@ -100,5 +102,6 @@ public class ColorThemeKeys {
 		KEYS_WITHOUT_STYLE.add(HYPERLINK);
 		KEYS_WITHOUT_STYLE.add(ACTIVE_HYPERLINK);
 		KEYS_WITHOUT_STYLE.add(MATCHING_BRACKET);
+		KEYS_WITHOUT_STYLE.add(SEARCH_VIEW_MATCH_HIGHLIGHT);
 	}
 }

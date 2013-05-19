@@ -64,6 +64,8 @@ public class ColorThemePreferencePage extends PreferencePage implements
 	private Button editButton;
 	private Link websiteLink;
 	private StyledText styledText;
+	private Label themeDefaultMessageLabel;
+	private java.util.List<Control> invisibleWhenDefaultSelected = new ArrayList<Control>();
 
 	/** Creates a new color theme preference page. */
 	public ColorThemePreferencePage() {
@@ -106,6 +108,15 @@ public class ColorThemePreferencePage extends PreferencePage implements
 		themeDetails = new Composite(themeSelection, SWT.NONE);
 		themeDetails.setLayoutData(gridData);
 		themeDetails.setLayout(themeDetailsLayout);
+
+		// Message for default.
+		themeDefaultMessageLabel = new Label(themeDetails, SWT.NONE);
+		themeDefaultMessageLabel.setText("");
+		GridDataFactory.swtDefaults().grab(true, false)
+				.applyTo(themeDefaultMessageLabel);
+		themeDefaultMessageLabel.setVisible(false);
+		// End Message for default.
+
 		gridData = new GridData(GridData.FILL_BOTH);
 		gridData.heightHint = 306;
 		gridData.horizontalSpan = 2;
@@ -113,15 +124,19 @@ public class ColorThemePreferencePage extends PreferencePage implements
 		styledText = new StyledText(themeDetails, SWT.BORDER);
 		styledText.setLayoutData(gridData);
 		styledText.setText("");
+		invisibleWhenDefaultSelected.add(styledText);
 
 		authorLabel = new Label(themeDetails, SWT.NONE);
 		GridDataFactory.swtDefaults().grab(true, false).applyTo(authorLabel);
+		invisibleWhenDefaultSelected.add(authorLabel);
 
 		websiteLink = new Link(themeDetails, SWT.NONE);
 		GridDataFactory.swtDefaults().grab(true, false).applyTo(websiteLink);
+		invisibleWhenDefaultSelected.add(websiteLink);
 
 		editButton = new Button(themeDetails, SWT.NONE);
 		editButton.setText("Edit theme");
+		invisibleWhenDefaultSelected.add(editButton);
 		GridData grab = GridDataFactory.swtDefaults().grab(true, false)
 				.create();
 		editButton.addSelectionListener(new SelectionAdapter() {
@@ -183,9 +198,18 @@ public class ColorThemePreferencePage extends PreferencePage implements
 	}
 
 	private void updateDetails(ColorTheme theme) {
-		if (theme == null)
-			themeDetails.setVisible(false);
-		else {
+		if (theme == null) {
+			// themeDetails.setVisible(false);
+			for (Control c : invisibleWhenDefaultSelected) {
+				c.setVisible(false);
+			}
+			themeDefaultMessageLabel
+					.setText("When default is chosen, applying the choice will reset all colors\n"
+							+ "(from all the plugins) to the default Eclipse configuration.\n"
+							+ "\n" + "A restart may be required afterwards.");
+
+			this.themeDefaultMessageLabel.setVisible(true);
+		} else {
 			authorLabel.setText("Created by " + theme.getAuthor());
 			String website = theme.getWebsite();
 			if (website == null || website.length() == 0)
@@ -220,10 +244,16 @@ public class ColorThemePreferencePage extends PreferencePage implements
 						}
 
 					}, theme);
-			themeDetails.setVisible(true);
-			authorLabel.pack();
-			websiteLink.pack();
+			// themeDetails.setVisible(true);
+			for (Control c : invisibleWhenDefaultSelected) {
+				c.setVisible(true);
+			}
+			themeDefaultMessageLabel.setText("");
+			this.themeDefaultMessageLabel.setVisible(false);
 		}
+		themeDefaultMessageLabel.pack();
+		authorLabel.pack();
+		websiteLink.pack();
 	}
 
 	private static final Set<String> IDS_FOR_EDITORS_THAT_DONT_NEED_REOPEN = new HashSet<String>();

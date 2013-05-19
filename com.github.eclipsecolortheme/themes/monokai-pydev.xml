@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <colorTheme id="14833" name="Monokai PyDev" modified="2013-03-09 20:19:42" author="Fabio Zadrozny" website="http://pydev.org">
-    <searchResultIndication color="#1E90FF" />
-    <filteredSearchResultIndication color="#1E90FF" />
+    <searchResultIndication color="#003871" />
+    <filteredSearchResultIndication color="#003871" />
     <occurrenceIndication color="#909090" />
     <writeOccurrenceIndication color="#909090" />
     <findScope color="#909090" />

@@ -177,6 +177,8 @@ public class ColorThemeManager {
 				ColorThemeKeys.KEYWORD);
 		applyDefault(theme, ColorThemeKeys.MATCHING_BRACKET,
 				ColorThemeKeys.OCCURRENCE_INDICATION);
+		applyDefault(theme, ColorThemeKeys.SEARCH_VIEW_MATCH_HIGHLIGHT,
+				ColorThemeKeys.OCCURRENCE_INDICATION);
 	}
 
 	private static void applyDefault(Map<String, ColorThemeSetting> theme,
