@@ -1,6 +1,11 @@
+<!--
+Note: these settings are applied separately because we'll only do it if the user asks to apply to
+the whole IDE.
+
 <?xml version="1.0" encoding="utf-8"?>
 <eclipseColorThemeMapping plugin="org.eclipse.ui.workbench" created="2013-05-19 09:00:00">
     <mappings>
         <mapping pluginKey="org.eclipse.search.ui.match.highlight" themeKey="searchViewMatchHighlight" />
     </mappings>
 </eclipseColorThemeMapping>
+-->

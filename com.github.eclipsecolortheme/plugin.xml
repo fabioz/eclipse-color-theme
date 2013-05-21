@@ -70,12 +70,6 @@
             xml="mappings/org.eclipse.ui.editors.xml">
       </mapper>
       <mapper
-            class="com.github.eclipsecolortheme.mapper.GenericMapper"
-            name="Workbench"
-            pluginId="org.eclipse.ui.workbench"
-            xml="mappings/org.eclipse.ui.workbench.xml">
-      </mapper>
-      <mapper
             class="com.github.eclipsecolortheme.mapper.WebEditorMapper"
             name="CSS"
             pluginId="org.eclipse.wst.css.ui"
