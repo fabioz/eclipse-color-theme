@@ -2,6 +2,9 @@ package com.github.eclipsecolortheme;
 
 import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -53,6 +56,31 @@ public class ColorThemeApplier {
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
+
+		// printEditors();
+	}
+
+	/**
+	 * Helper function. Should not be used in final code!
+	 */
+	private static void printEditors() {
+		if (editors == null) {
+			System.out.println("NULL editors");
+		} else {
+			ArrayList<ThemePreferenceMapper> lst = new ArrayList<ThemePreferenceMapper>(
+					editors);
+			Collections.sort(lst, new Comparator<ThemePreferenceMapper>() {
+
+				public int compare(ThemePreferenceMapper o1,
+						ThemePreferenceMapper o2) {
+					return o1.getPluginId().compareTo(o2.getPluginId());
+				}
+			});
+			for (ThemePreferenceMapper editor : lst) {
+				System.out.println("Editor for plugin:" + editor.getPluginId());
+			}
+		}
+
 	}
 
 	public interface ICallback<X> {
@@ -72,6 +100,10 @@ public class ColorThemeApplier {
 		}
 	};
 
+	public static void applyThemeInternal(ColorTheme theme) {
+		applyThemeInternal(theme, null);
+	}
+
 	/**
 	 * Changes the preferences of other plugins to apply the color theme.
 	 * 
@@ -80,21 +112,41 @@ public class ColorThemeApplier {
 	 *            set and restore the defaults.
 	 * 
 	 */
-	public static void applyThemeInternal(ColorTheme theme) {
+	public static void applyThemeInternal(ColorTheme theme,
+			String applyToPluginId) {
 		loadEditors();
-		for (ThemePreferenceMapper editor : editors) {
-			if (theme != null) {
-				Map<String, ColorThemeSetting> entries = theme.getEntries();
-				editor.map(entries);
-			} else {
-				editor.clear();
-			}
 
+		for (ThemePreferenceMapper editor : editors) {
+			boolean restorePluginId = false;
+			if (applyToPluginId != null) {
+				String editorPluginId = editor.getPluginId();
+				if (editorPluginId.equals("org.eclipse.ui.editors")) {
+					restorePluginId = true;
+					editor.setPluginId(applyToPluginId);
+				} else {
+					if (!applyToPluginId.equals(editorPluginId)) {
+						continue;
+					}
+				}
+			}
 			try {
-				editor.flush();
-			} catch (BackingStoreException e) {
-				// TODO: Show a proper error message (StatusManager).
-				e.printStackTrace();
+				if (theme != null) {
+					Map<String, ColorThemeSetting> entries = theme.getEntries();
+					editor.map(entries);
+				} else {
+					editor.clear();
+				}
+
+				try {
+					editor.flush();
+				} catch (BackingStoreException e) {
+					// TODO: Show a proper error message (StatusManager).
+					e.printStackTrace();
+				}
+			} finally {
+				if (restorePluginId) {
+					editor.setPluginId("org.eclipse.ui.editors");
+				}
 			}
 		}
 	}

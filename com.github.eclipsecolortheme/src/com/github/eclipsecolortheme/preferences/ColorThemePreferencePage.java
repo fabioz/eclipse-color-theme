@@ -15,6 +15,7 @@ import java.util.Set;
 
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.layout.GridDataFactory;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.window.Window;
@@ -28,6 +29,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.program.Program;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
@@ -65,7 +67,9 @@ public class ColorThemePreferencePage extends PreferencePage implements
 	private Link websiteLink;
 	private StyledText styledText;
 	private Label themeDefaultMessageLabel;
+	private Combo applyTo;
 	private java.util.List<Control> invisibleWhenDefaultSelected = new ArrayList<Control>();
+	private int initiallyApplyTo;
 
 	/** Creates a new color theme preference page. */
 	public ColorThemePreferencePage() {
@@ -109,10 +113,26 @@ public class ColorThemePreferencePage extends PreferencePage implements
 		themeDetails.setLayoutData(gridData);
 		themeDetails.setLayout(themeDetailsLayout);
 
+		// Option to apply preferences to the whole ide
+		applyTo = new Combo(themeDetails, SWT.READ_ONLY);
+		applyTo.setText("Apply theme to:");
+		applyTo.setToolTipText("Please choose where the colors should be applied to.\n\n"
+				+ "Note: Applying only to LiClipse editors may end with some \neditor-related colors in the default color.\n\n"
+				+ "Applying to the whole IDE will also change the Appearance\ntheme to the Base LiClipse Theme and may need a restart.");
+		applyTo.add("Apply only to LiClipse Editors");
+		applyTo.add("Apply to all Editors");
+		applyTo.add("Apply to the whole IDE (including views and preferences).");
+		GridDataFactory.swtDefaults().grab(true, false).span(2, 1)
+				.applyTo(applyTo);
+		IPreferenceStore store = getPreferenceStore();
+		initiallyApplyTo = store.getInt(Activator.APPLY_THEME_TO);
+		applyTo.select(initiallyApplyTo);
+		// End Option to apply preferences to the whole ide
+
 		// Message for default.
 		themeDefaultMessageLabel = new Label(themeDetails, SWT.NONE);
 		themeDefaultMessageLabel.setText("");
-		GridDataFactory.swtDefaults().grab(true, false)
+		GridDataFactory.swtDefaults().span(2, 1).grab(true, false)
 				.applyTo(themeDefaultMessageLabel);
 		themeDefaultMessageLabel.setVisible(false);
 		// End Message for default.
@@ -127,7 +147,8 @@ public class ColorThemePreferencePage extends PreferencePage implements
 		invisibleWhenDefaultSelected.add(styledText);
 
 		authorLabel = new Label(themeDetails, SWT.NONE);
-		GridDataFactory.swtDefaults().grab(true, false).applyTo(authorLabel);
+		GridDataFactory.swtDefaults().grab(true, false).span(2, 1)
+				.applyTo(authorLabel);
 		invisibleWhenDefaultSelected.add(authorLabel);
 
 		websiteLink = new Link(themeDetails, SWT.NONE);
@@ -175,6 +196,11 @@ public class ColorThemePreferencePage extends PreferencePage implements
 		ectLink.setText("Download more themes or create your own on "
 				+ "<a>eclipsecolorthemes.org</a>.");
 		setLinkTarget(ectLink, "http://eclipsecolorthemes.org");
+
+		// store the selection!
+		lastSelectedThemeName = themeSelectionList.getSelection()[0];
+		lastApplyToWholeIDESelected = applyTo.getSelectionIndex();
+
 		return container;
 	}
 
@@ -204,8 +230,9 @@ public class ColorThemePreferencePage extends PreferencePage implements
 				c.setVisible(false);
 			}
 			themeDefaultMessageLabel
-					.setText("When default is chosen, applying the choice will reset all colors\n"
-							+ "(from all the plugins) to the default Eclipse configuration.\n"
+					.setText("When default is chosen, applying the choice will\n"
+							+ "reset all colors to the default Eclipse configuration\n"
+							+ "(but only on the scope selected above).\n"
 							+ "\n" + "A restart may be required afterwards.");
 
 			this.themeDefaultMessageLabel.setVisible(true);
@@ -259,8 +286,23 @@ public class ColorThemePreferencePage extends PreferencePage implements
 	private static final Set<String> IDS_FOR_EDITORS_THAT_DONT_NEED_REOPEN = new HashSet<String>();
 	static {
 		IDS_FOR_EDITORS_THAT_DONT_NEED_REOPEN.add("org.eclipse.cdt.ui.editor.");
-		IDS_FOR_EDITORS_THAT_DONT_NEED_REOPEN.add("com.brainwy.liclipse.");
-		IDS_FOR_EDITORS_THAT_DONT_NEED_REOPEN.add("org.python.pydev.editor.");
+		// -- the colors for the folding bar is not updated properly, so, leave
+		// the ones below there!
+		// IDS_FOR_EDITORS_THAT_DONT_NEED_REOPEN.add("com.brainwy.liclipse.");
+		// IDS_FOR_EDITORS_THAT_DONT_NEED_REOPEN.add("org.python.pydev.editor.");
+	}
+
+	private String lastSelectedThemeName = null;
+	private int lastApplyToWholeIDESelected = -1;
+
+	@Override
+	protected void performApply() {
+		// force it to happen!
+		lastSelectedThemeName = null;
+		lastApplyToWholeIDESelected = -1;
+		performOk();
+		lastSelectedThemeName = themeSelectionList.getSelection()[0];
+		lastApplyToWholeIDESelected = applyTo.getSelectionIndex();
 	}
 
 	@Override
@@ -269,10 +311,19 @@ public class ColorThemePreferencePage extends PreferencePage implements
 				.getActiveWorkbenchWindow().getActivePage();
 
 		try {
+			String selectedThemeName = themeSelectionList.getSelection()[0];
+			int applyToWholeIDESelected = applyTo.getSelectionIndex();
+			boolean onlyLiClipseEditors = applyToWholeIDESelected == Activator.APPLY_THEME_TO_LICLIPSE;
+
 			java.util.List<IEditorReference> editorsToClose = new ArrayList<IEditorReference>();
 			Map<IEditorInput, String> editorsToReopen = new HashMap<IEditorInput, String>();
 			for (IEditorReference editor : activePage.getEditorReferences()) {
 				String id = editor.getId();
+				if (onlyLiClipseEditors) {
+					if (!id.startsWith("com.brainwy.liclipse.")) {
+						continue;
+					}
+				}
 				/*
 				 * C++ editors are not closed/reopened because it messes their
 				 * colors up. TODO: Make this configurable in the mapping file.
@@ -290,28 +341,57 @@ public class ColorThemePreferencePage extends PreferencePage implements
 				}
 			}
 
-			if (!editorsToClose.isEmpty()) {
-				if (!MessageDialog
-						.openConfirm(
-								getShell(),
-								"Reopen Editors",
-								"In order to change the color theme, some editors have to be closed and reopened.")) {
-					return false;
+			if (lastSelectedThemeName != null
+					&& lastSelectedThemeName.equals(selectedThemeName)) {
+				if (lastApplyToWholeIDESelected == applyTo.getSelectionIndex()) {
+					// everything matches: as we already applied, do nothing and
+					// return.
+					return true;
 				}
-
-				activePage.closeEditors(editorsToClose
-						.toArray(new IEditorReference[editorsToClose.size()]),
-						true);
 			}
 
-			String selectedThemeName = themeSelectionList.getSelection()[0];
-			getPreferenceStore().setValue("colorTheme", selectedThemeName);
+			getPreferenceStore().setValue(Activator.CURRENT_COLOR_THEME,
+					selectedThemeName);
+			getPreferenceStore().setValue(Activator.APPLY_THEME_TO,
+					applyToWholeIDESelected);
+			if (applyToWholeIDESelected != initiallyApplyTo
+					&& (initiallyApplyTo == Activator.APPLY_THEME_TO_WHOLE_IDE || applyToWholeIDESelected == Activator.APPLY_THEME_TO_WHOLE_IDE)) {
+				if (MessageDialog
+						.openQuestion(
+								getShell(),
+								"Restart?",
+								"A restart may be required to properly apply changes when setting to apply to the whole IDE is checked.\n\nRestart now?")) {
+					PlatformUI.getWorkbench().restart();
+					return true;
+				}
+			}
+			boolean reopen = true;
+
+			if (!editorsToClose.isEmpty()) {
+				if (MessageDialog
+						.openQuestion(
+								getShell(),
+								"Reopen Editors",
+								"In order to update the colors properly, some editors may have to be closed and reopened.\n\nDo you want to close/reopen the editors?")) {
+					reopen = true;
+					activePage
+							.closeEditors(
+									editorsToClose
+											.toArray(new IEditorReference[editorsToClose
+													.size()]), true);
+				}
+
+			}
+
 			ColorTheme theme = colorThemeManager.getTheme(selectedThemeName);
 			ColorThemeApplier.applyTheme.call(theme);
 
-			for (IEditorInput editorInput : editorsToReopen.keySet())
-				activePage.openEditor(editorInput,
-						editorsToReopen.get(editorInput));
+			if (reopen) {
+				for (IEditorInput editorInput : editorsToReopen.keySet()) {
+					activePage.openEditor(editorInput,
+							editorsToReopen.get(editorInput));
+				}
+			}
 		} catch (PartInitException e) {
 			// TODO: Show a proper error message (StatusManager).
 			e.printStackTrace();
@@ -322,7 +402,8 @@ public class ColorThemePreferencePage extends PreferencePage implements
 
 	@Override
 	protected void performDefaults() {
-		getPreferenceStore().setToDefault("colorTheme");
+		getPreferenceStore().setToDefault(Activator.CURRENT_COLOR_THEME);
+		getPreferenceStore().setToDefault(Activator.APPLY_THEME_TO);
 		colorThemeManager.clearImportedThemes();
 		reloadThemeSelectionList(null);
 		super.performDefaults();

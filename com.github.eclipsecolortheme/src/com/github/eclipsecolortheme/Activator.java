@@ -8,6 +8,12 @@ import org.osgi.framework.BundleContext;
 public class Activator extends AbstractUIPlugin {
 
 	public static final String CURRENT_COLOR_THEME = "colorTheme";
+
+	public static final String APPLY_THEME_TO = "APPLY_THEME_TO";
+	public static final int APPLY_THEME_TO_LICLIPSE = 0;
+	public static final int APPLY_THEME_TO_ALL_EDITORS = 1;
+	public static final int APPLY_THEME_TO_WHOLE_IDE = 2;
+
 	public static final String PLUGIN_ID = "com.github.eclipsecolortheme";
 	public static final String EXTENSION_POINT_ID_MAPPER = PLUGIN_ID
 			+ ".mapper";

@@ -100,7 +100,6 @@ public class ColorTheme {
 	@SuppressWarnings("nls")
 	public String toXML() {
 		StringBuffer buf = new StringBuffer();
-		System.currentTimeMillis();
 		Calendar calendar = Calendar.getInstance();
 
 		String modified = calendar.get(Calendar.YEAR) + 1900 + "-"

@@ -15,6 +15,7 @@ public class TextEditorMapper extends GenericMapper {
 
 	@Override
 	public void map(Map<String, ColorThemeSetting> theme) {
+		// System.out.println("Applying: " + preferences);
 		putBoolean(preferences,
 				ABSTRACT_TEXT_EDITOR_COLOR_BACKGROUND_SYSTEM_DEFAULT, false);
 		putBoolean(preferences,
@@ -37,6 +38,7 @@ public class TextEditorMapper extends GenericMapper {
 
 	@Override
 	public void clear() {
+		// System.out.println("Clearing TextEditorMapper: " + preferences);
 		preferences
 				.remove(ABSTRACT_TEXT_EDITOR_COLOR_BACKGROUND_SYSTEM_DEFAULT);
 		preferences

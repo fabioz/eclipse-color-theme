@@ -284,7 +284,7 @@
             file="themes/monokai.xml">
       </theme>
       <theme
-            file="themes/monokai-pydev.xml">
+            file="themes/liclipse-dark.xml">
       </theme>
       <theme
             file="themes/roboticket.xml">

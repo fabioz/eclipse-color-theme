@@ -6,6 +6,7 @@ import com.github.eclipsecolortheme.ColorThemeMapping;
 import com.github.eclipsecolortheme.ColorThemeSetting;
 
 public class LiClipseEditorMapper extends GenericMapper {
+
 	private class Mapping extends ColorThemeMapping {
 
 		public static final int NORMAL = 0;
@@ -61,4 +62,5 @@ public class LiClipseEditorMapper extends GenericMapper {
 			preferences.remove(pluginKey + "_STYLE");
 		}
 	}
+
 }
