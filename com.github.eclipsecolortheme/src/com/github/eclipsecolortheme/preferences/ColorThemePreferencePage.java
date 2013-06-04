@@ -122,8 +122,7 @@ public class ColorThemePreferencePage extends PreferencePage implements
 		applyTo.add("Apply only to LiClipse Editors");
 		applyTo.add("Apply to all Editors");
 		applyTo.add("Apply to the whole IDE (including views and preferences).");
-		GridDataFactory.swtDefaults().grab(true, false).span(2, 1)
-				.applyTo(applyTo);
+		createGridDataFactory().applyTo(applyTo);
 		IPreferenceStore store = getPreferenceStore();
 		initiallyApplyTo = store.getInt(Activator.APPLY_THEME_TO);
 		applyTo.select(initiallyApplyTo);
@@ -147,19 +146,17 @@ public class ColorThemePreferencePage extends PreferencePage implements
 		invisibleWhenDefaultSelected.add(styledText);
 
 		authorLabel = new Label(themeDetails, SWT.NONE);
-		GridDataFactory.swtDefaults().grab(true, false).span(2, 1)
-				.applyTo(authorLabel);
+		createGridDataFactory().applyTo(authorLabel);
 		invisibleWhenDefaultSelected.add(authorLabel);
 
 		websiteLink = new Link(themeDetails, SWT.NONE);
-		GridDataFactory.swtDefaults().grab(true, false).applyTo(websiteLink);
+		createGridDataFactory().applyTo(websiteLink);
 		invisibleWhenDefaultSelected.add(websiteLink);
 
 		editButton = new Button(themeDetails, SWT.NONE);
 		editButton.setText("Edit theme");
 		invisibleWhenDefaultSelected.add(editButton);
-		GridData grab = GridDataFactory.swtDefaults().grab(true, false)
-				.create();
+		GridData grab = createGridDataFactory().create();
 		editButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				String[] selection = themeSelectionList.getSelection();
@@ -202,6 +199,10 @@ public class ColorThemePreferencePage extends PreferencePage implements
 		lastApplyToWholeIDESelected = applyTo.getSelectionIndex();
 
 		return container;
+	}
+
+	private GridDataFactory createGridDataFactory() {
+		return GridDataFactory.swtDefaults().grab(true, false).span(2, 1);
 	}
 
 	private void fillThemeSelectionList() {
@@ -278,9 +279,11 @@ public class ColorThemePreferencePage extends PreferencePage implements
 			themeDefaultMessageLabel.setText("");
 			this.themeDefaultMessageLabel.setVisible(false);
 		}
+		applyTo.pack();
 		themeDefaultMessageLabel.pack();
 		authorLabel.pack();
 		websiteLink.pack();
+		themeDetails.pack();
 	}
 
 	private static final Set<String> IDS_FOR_EDITORS_THAT_DONT_NEED_REOPEN = new HashSet<String>();
