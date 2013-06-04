@@ -357,6 +357,7 @@ public class ColorThemePreferencePage extends PreferencePage implements
 					selectedThemeName);
 			getPreferenceStore().setValue(Activator.APPLY_THEME_TO,
 					applyToWholeIDESelected);
+			boolean restart = false;
 			if (applyToWholeIDESelected != initiallyApplyTo
 					&& (initiallyApplyTo == Activator.APPLY_THEME_TO_WHOLE_IDE || applyToWholeIDESelected == Activator.APPLY_THEME_TO_WHOLE_IDE)) {
 				if (MessageDialog
@@ -364,31 +365,34 @@ public class ColorThemePreferencePage extends PreferencePage implements
 								getShell(),
 								"Restart?",
 								"A restart may be required to properly apply changes when setting to apply to the whole IDE is checked.\n\nRestart now?")) {
-					PlatformUI.getWorkbench().restart();
-					return true;
+					restart = true;
 				}
 			}
-			boolean reopen = true;
 
-			if (!editorsToClose.isEmpty()) {
-				if (MessageDialog
-						.openQuestion(
-								getShell(),
-								"Reopen Editors",
-								"In order to update the colors properly, some editors may have to be closed and reopened.\n\nDo you want to close/reopen the editors?")) {
-					reopen = true;
-					activePage
-							.closeEditors(
-									editorsToClose
-											.toArray(new IEditorReference[editorsToClose
-													.size()]), true);
+			boolean reopen = false;
+			if (!restart) {
+				// only check editors if we won't be restarting
+				if (!editorsToClose.isEmpty()) {
+					if (MessageDialog
+							.openQuestion(
+									getShell(),
+									"Reopen Editors",
+									"In order to update the colors properly, some editors may have to be closed and reopened.\n\nDo you want to close/reopen the editors?")) {
+						reopen = true;
+						activePage.closeEditors(editorsToClose
+								.toArray(new IEditorReference[editorsToClose
+										.size()]), true);
+					}
+
 				}
-
 			}
-
 			ColorTheme theme = colorThemeManager.getTheme(selectedThemeName);
 			ColorThemeApplier.applyTheme.call(theme);
 
+			if (restart) {
+				PlatformUI.getWorkbench().restart();
+				return true;
+			}
 			if (reopen) {
 				for (IEditorInput editorInput : editorsToReopen.keySet()) {
 					activePage.openEditor(editorInput,
