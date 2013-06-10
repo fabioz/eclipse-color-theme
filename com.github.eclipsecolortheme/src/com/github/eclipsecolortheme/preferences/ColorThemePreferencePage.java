@@ -121,6 +121,7 @@ public class ColorThemePreferencePage extends PreferencePage implements
 				+ "Applying to the whole IDE will also change the Appearance\ntheme to the Base LiClipse Theme and may need a restart.");
 		applyTo.add("Apply only to LiClipse Editors");
 		applyTo.add("Apply to all Editors");
+		applyTo.add("Apply to all Editors and Known Views");
 		applyTo.add("Apply to the whole IDE (including views and preferences).");
 		createGridDataFactory().applyTo(applyTo);
 		IPreferenceStore store = getPreferenceStore();
@@ -359,7 +360,8 @@ public class ColorThemePreferencePage extends PreferencePage implements
 					applyToWholeIDESelected);
 			boolean restart = false;
 			if (applyToWholeIDESelected != initiallyApplyTo
-					&& (initiallyApplyTo == Activator.APPLY_THEME_TO_WHOLE_IDE || applyToWholeIDESelected == Activator.APPLY_THEME_TO_WHOLE_IDE)) {
+					&& (initiallyApplyTo == Activator.APPLY_THEME_TO_WHOLE_IDE || applyToWholeIDESelected == Activator.APPLY_THEME_TO_WHOLE_IDE
+					|| initiallyApplyTo == Activator.APPLY_THEME_TO_KNOWN_PARTS || applyToWholeIDESelected == Activator.APPLY_THEME_TO_KNOWN_PARTS)) {
 				if (MessageDialog
 						.openQuestion(
 								getShell(),
