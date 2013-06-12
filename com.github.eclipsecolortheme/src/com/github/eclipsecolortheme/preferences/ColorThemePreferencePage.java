@@ -490,12 +490,13 @@ public class ColorThemePreferencePage extends PreferencePage implements
 	}
 
 	private static String readFile(File file) throws IOException {
-		Reader in = new BufferedReader(new FileReader(file));
-		StringBuilder sb = new StringBuilder();
-		char[] chars = new char[1 << 16];
-		int length;
-		while ((length = in.read(chars)) > 0)
-			sb.append(chars, 0, length);
-		return sb.toString();
+	    Reader in = new BufferedReader(new FileReader(file));
+	    StringBuilder sb = new StringBuilder();
+	    char[] chars = new char[1 << 16];
+	    int length;
+	    while ((length = in.read(chars)) > 0)
+	        sb.append(chars, 0, length);
+	    in.close();
+	    return sb.toString();
 	}
 }
