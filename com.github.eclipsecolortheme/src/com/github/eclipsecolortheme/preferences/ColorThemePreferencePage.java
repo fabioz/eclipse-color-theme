@@ -39,11 +39,13 @@ import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.MessageBox;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorReference;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPreferencePage;
+import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
@@ -70,6 +72,7 @@ public class ColorThemePreferencePage extends PreferencePage implements
 	private Combo applyTo;
 	private java.util.List<Control> invisibleWhenDefaultSelected = new ArrayList<Control>();
 	private int initiallyApplyTo;
+	private Shell shell;
 
 	/** Creates a new color theme preference page. */
 	public ColorThemePreferencePage() {
@@ -79,8 +82,20 @@ public class ColorThemePreferencePage extends PreferencePage implements
 	public void init(IWorkbench workbench) {
 	}
 
+	public void setShell(Shell shell){
+		this.shell = shell;
+	}
+	
 	@Override
-	protected Control createContents(Composite parent) {
+	public Shell getShell() {
+		if(this.shell != null){
+			return this.shell;
+		}
+		return super.getShell();
+	}
+	
+	@Override
+	public Control createContents(Composite parent) {
 		container = new Composite(parent, SWT.NONE);
 		GridData gridData = new GridData();
 		GridLayout containerLayout = new GridLayout(1, true);
@@ -117,12 +132,11 @@ public class ColorThemePreferencePage extends PreferencePage implements
 		applyTo = new Combo(themeDetails, SWT.READ_ONLY);
 		applyTo.setText("Apply theme to:");
 		applyTo.setToolTipText("Please choose where the colors should be applied to.\n\n"
-				+ "Note: Applying only to LiClipse editors may end with some \neditor-related colors in the default color.\n\n"
-				+ "Applying to the whole IDE will also change the Appearance\ntheme to the Base LiClipse Theme and may need a restart.");
+				+ "Applying to all views / whole IDE will also change the Appearance\ntheme to the Base LiClipse Theme and may need a restart.");
 		applyTo.add("Apply only to LiClipse Editors");
 		applyTo.add("Apply to all Editors");
 		applyTo.add("Apply to all Editors and Known Views");
-		applyTo.add("Apply to the whole IDE (including views and preferences).");
+		applyTo.add("Experimental: Apply to the whole IDE (including preferences and dialogs).");
 		createGridDataFactory().applyTo(applyTo);
 		IPreferenceStore store = getPreferenceStore();
 		initiallyApplyTo = store.getInt(Activator.APPLY_THEME_TO);
@@ -311,8 +325,16 @@ public class ColorThemePreferencePage extends PreferencePage implements
 
 	@Override
 	public boolean performOk() {
-		IWorkbenchPage activePage = PlatformUI.getWorkbench()
-				.getActiveWorkbenchWindow().getActivePage();
+		performOk(true);
+		return super.performOk();
+	}
+	
+	/**
+	 * @param canAskQuestions whether we can ask questions to the user here.
+	 * @return a boolean where true means we should've asked for a restart but didn't.
+	 */
+	public boolean performOk(boolean canAskQuestions) {
+		boolean shouldHaveAskedRestart = false;
 
 		try {
 			String selectedThemeName = themeSelectionList.getSelection()[0];
@@ -321,27 +343,30 @@ public class ColorThemePreferencePage extends PreferencePage implements
 
 			java.util.List<IEditorReference> editorsToClose = new ArrayList<IEditorReference>();
 			Map<IEditorInput, String> editorsToReopen = new HashMap<IEditorInput, String>();
-			for (IEditorReference editor : activePage.getEditorReferences()) {
-				String id = editor.getId();
-				if (onlyLiClipseEditors) {
-					if (!id.startsWith("com.brainwy.liclipse.")) {
-						continue;
+			IWorkbenchPage activePage = getActivePage();
+			if(activePage != null){
+				for (IEditorReference editor : activePage.getEditorReferences()) {
+					String id = editor.getId();
+					if (onlyLiClipseEditors) {
+						if (!id.startsWith("com.brainwy.liclipse.")) {
+							continue;
+						}
 					}
-				}
-				/*
-				 * C++ editors are not closed/reopened because it messes their
-				 * colors up. TODO: Make this configurable in the mapping file.
-				 */
-				boolean needsStart = true;
-				for (String editorId : IDS_FOR_EDITORS_THAT_DONT_NEED_REOPEN) {
-					if (id.startsWith(editorId)) {
-						needsStart = false;
-						break;
+					/*
+					 * C++ editors are not closed/reopened because it messes their
+					 * colors up. TODO: Make this configurable in the mapping file.
+					 */
+					boolean needsStart = true;
+					for (String editorId : IDS_FOR_EDITORS_THAT_DONT_NEED_REOPEN) {
+						if (id.startsWith(editorId)) {
+							needsStart = false;
+							break;
+						}
 					}
-				}
-				if (needsStart) {
-					editorsToClose.add(editor);
-					editorsToReopen.put(editor.getEditorInput(), id);
+					if (needsStart && canAskQuestions) { //if we can't ask, don't collect editors
+						editorsToClose.add(editor);
+						editorsToReopen.put(editor.getEditorInput(), id);
+					}
 				}
 			}
 
@@ -362,12 +387,16 @@ public class ColorThemePreferencePage extends PreferencePage implements
 			if (applyToWholeIDESelected != initiallyApplyTo
 					&& (initiallyApplyTo == Activator.APPLY_THEME_TO_WHOLE_IDE || applyToWholeIDESelected == Activator.APPLY_THEME_TO_WHOLE_IDE
 					|| initiallyApplyTo == Activator.APPLY_THEME_TO_KNOWN_PARTS || applyToWholeIDESelected == Activator.APPLY_THEME_TO_KNOWN_PARTS)) {
-				if (MessageDialog
-						.openQuestion(
-								getShell(),
-								"Restart?",
-								"A restart may be required to properly apply changes when setting to apply to the whole IDE is checked.\n\nRestart now?")) {
-					restart = true;
+				if(canAskQuestions){
+					if (MessageDialog
+							.openQuestion(
+									getShell(),
+									"Restart?",
+									"A restart may be required to properly apply the required changes.\n\nRestart now?")) {
+						restart = true;
+					}
+				}else{
+					shouldHaveAskedRestart = true;
 				}
 			}
 
@@ -406,7 +435,18 @@ public class ColorThemePreferencePage extends PreferencePage implements
 			e.printStackTrace();
 		}
 
-		return super.performOk();
+		return shouldHaveAskedRestart;
+	}
+
+	private IWorkbenchPage getActivePage() {
+		IWorkbench workbench = PlatformUI.getWorkbench();
+		if(workbench != null){
+			IWorkbenchWindow activeWorkbenchWindow = workbench.getActiveWorkbenchWindow();
+			if(activeWorkbenchWindow != null){
+				return activeWorkbenchWindow.getActivePage();
+			}
+		}
+		return null;
 	}
 
 	@Override
