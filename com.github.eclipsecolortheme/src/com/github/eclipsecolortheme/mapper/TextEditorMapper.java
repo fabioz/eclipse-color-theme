@@ -12,6 +12,7 @@ public class TextEditorMapper extends GenericMapper {
 	private static final String ABSTRACT_TEXT_EDITOR_COLOR_SELECTION_BACKGROUND_SYSTEM_DEFAULT = "AbstractTextEditor.Color.SelectionBackground.SystemDefault";
 	private static final String ABSTRACT_TEXT_EDITOR_COLOR_FOREGROUND_SYSTEM_DEFAULT = "AbstractTextEditor.Color.Foreground.SystemDefault";
 	private static final String ABSTRACT_TEXT_EDITOR_COLOR_BACKGROUND_SYSTEM_DEFAULT = "AbstractTextEditor.Color.Background.SystemDefault";
+	private static final String ABSTRACT_TEXT_EDITOR_COLOR_HYPERLINK_SYSTEM_DEFAULT = "hyperlinkColor.SystemDefault";
 
 	@Override
 	public void map(Map<String, ColorThemeSetting> theme) {
@@ -25,6 +26,9 @@ public class TextEditorMapper extends GenericMapper {
 				false);
 		putBoolean(preferences,
 				ABSTRACT_TEXT_EDITOR_COLOR_SELECTION_FOREGROUND_SYSTEM_DEFAULT,
+				false);
+		putBoolean(preferences,
+				ABSTRACT_TEXT_EDITOR_COLOR_HYPERLINK_SYSTEM_DEFAULT,
 				false);
 		super.map(theme);
 	}
@@ -47,6 +51,8 @@ public class TextEditorMapper extends GenericMapper {
 				.remove(ABSTRACT_TEXT_EDITOR_COLOR_SELECTION_BACKGROUND_SYSTEM_DEFAULT);
 		preferences
 				.remove(ABSTRACT_TEXT_EDITOR_COLOR_SELECTION_FOREGROUND_SYSTEM_DEFAULT);
+		preferences
+				.remove(ABSTRACT_TEXT_EDITOR_COLOR_HYPERLINK_SYSTEM_DEFAULT);
 		super.clear();
 	}
 
