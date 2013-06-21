@@ -15,7 +15,11 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.util.IPropertyChangeListener;
+import org.eclipse.jface.util.PropertyChangeEvent;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
+import org.eclipse.swt.widgets.Display;
 import org.osgi.framework.Bundle;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -24,18 +28,49 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /** Loads and applies color themes. */
-public class ColorThemeManager {
+public class ColorThemeManager implements IPropertyChangeListener {
 
 	private Map<String, ColorTheme> themes;
+
+	private IPreferenceStore preferenceStore;
+
+	/**
+	 * Can be null if we have no current theme!
+	 */
+	private String currentThemeName;
 
 	/**
 	 * Cache for stock themes.
 	 */
 	private static Map<String, ColorTheme> stockThemes;
+	
+	private static ColorThemeManager singleton;
+	
+	public static ColorThemeManager getSingleton(){
+		if(singleton == null){
+			singleton =  new ColorThemeManager();
+		}
+		return singleton;
+	}
+
+	public void propertyChange(PropertyChangeEvent event) {
+		if(Activator.CURRENT_COLOR_THEME.equals(event.getProperty())){
+			Object newValue = event.getNewValue();
+			if(newValue!=null){
+				currentThemeName = newValue.toString();
+			}else{
+				currentThemeName = null;
+			}
+		}
+	}
 
 	/** Creates a new color theme manager. */
-	public ColorThemeManager() {
+	private ColorThemeManager() {
 		themes = new HashMap<String, ColorTheme>();
+		preferenceStore = Activator.getDefault().getPreferenceStore();
+		currentThemeName = preferenceStore.getString(Activator.CURRENT_COLOR_THEME);
+		preferenceStore.addPropertyChangeListener(this);
+
 		if (stockThemes == null) {
 			stockThemes = new HashMap<String, ColorTheme>();
 			readStockThemes(stockThemes);
@@ -65,7 +100,7 @@ public class ColorThemeManager {
 		}
 	}
 
-	private static void readImportedThemes(Map<String, ColorTheme> themes) {
+	private void readImportedThemes(Map<String, ColorTheme> themes) {
 		IPreferenceStore store = getPreferenceStore();
 
 		for (int i = 1;; i++) {
@@ -95,8 +130,8 @@ public class ColorThemeManager {
 		readStockThemes(themes);
 	}
 
-	private static IPreferenceStore getPreferenceStore() {
-		return Activator.getDefault().getPreferenceStore();
+	private IPreferenceStore getPreferenceStore() {
+		return preferenceStore;
 	}
 
 	public static ColorTheme parseTheme(InputStream input)
@@ -288,4 +323,34 @@ public class ColorThemeManager {
 			return null;
 		}
 	}
+
+	public ColorTheme getCurrentTheme() {
+		return getTheme(currentThemeName);
+	}
+
+    protected Map<com.github.eclipsecolortheme.Color, Color> cache = 
+    		new HashMap<com.github.eclipsecolortheme.Color, Color>(10);
+
+    public Color getColor(com.github.eclipsecolortheme.Color colorInTheme) {
+        Color color = cache.get(colorInTheme);
+        if (color == null || color.isDisposed()) {
+            color = new Color(Display.getCurrent(), colorInTheme.getR(), colorInTheme.getG(), colorInTheme.getB());
+            cache.put(colorInTheme, color);
+        }
+        return color;
+    }
+	
+	/**
+	 * Returns the SWT color to be used. Can be null if not available or no active theme is set.
+	 */
+	public org.eclipse.swt.graphics.Color getSWTColor(String key) {
+		ColorTheme currentTheme = getCurrentTheme();
+		if(currentTheme != null){
+			ColorThemeSetting themeSetting = currentTheme.getEntries().get(key);
+			return getColor(themeSetting.getColor());
+		}
+		return null;
+		
+	}
+
 }

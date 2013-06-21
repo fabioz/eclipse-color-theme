@@ -47,8 +47,6 @@ public class Activator extends AbstractUIPlugin {
 	}
 
 	public ColorTheme getCurrentTheme() {
-		String currentThemeName = getPreferenceStore().getString(
-				CURRENT_COLOR_THEME);
-		return new ColorThemeManager().getTheme(currentThemeName);
+		return ColorThemeManager.getSingleton().getCurrentTheme();
 	}
 }

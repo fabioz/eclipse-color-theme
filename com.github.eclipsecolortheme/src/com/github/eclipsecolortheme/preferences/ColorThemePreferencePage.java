@@ -59,7 +59,7 @@ import com.github.eclipsecolortheme.preferences.edition.EditThemeDialog;
 /** The preference page for managing color themes. */
 public class ColorThemePreferencePage extends PreferencePage implements
 		IWorkbenchPreferencePage {
-	private ColorThemeManager colorThemeManager = new ColorThemeManager();
+	private ColorThemeManager colorThemeManager = ColorThemeManager.getSingleton();
 	private Composite container;
 	private List themeSelectionList;
 	private Composite themeSelection;

@@ -2,11 +2,11 @@ package com.github.eclipsecolortheme;
 
 import org.eclipse.swt.graphics.RGB;
 
-public class Color {
+public final class Color {
 
-	private Integer r = new Integer(0);
-	private Integer g = new Integer(0);
-	private Integer b = new Integer(0);
+	private final int r;
+	private final int g;
+	private final int b;
 
 	public Color(String value) {
 		if (value != null) {
@@ -24,8 +24,15 @@ public class Color {
 
 				} else {
 					System.err.println("Unable to recognize: " + value);
+					r = 0;
+					g = 0;
+					b = 0;
 				}
 			}
+		}else{
+			r = 0;
+			g = 0;
+			b = 0;
 		}
 	}
 
@@ -35,15 +42,15 @@ public class Color {
 		this.b = colorValue.blue;
 	}
 
-	public Integer getR() {
+	public int getR() {
 		return r;
 	}
 
-	public Integer getG() {
+	public int getG() {
 		return g;
 	}
 
-	public Integer getB() {
+	public int getB() {
 		return b;
 	}
 
@@ -76,6 +83,21 @@ public class Color {
 	public static boolean isDarkColor(int r, int g, int b) {
 		double v = (r / 255.0) * 0.3 + (g / 255.0) * 0.59 + (b / 255.0) * 0.11;
 		return v <= 0.5;
+	}
+
+	public boolean equals(Object object) {
+		if (object == this){
+			return true;
+		}
+		if (!(object instanceof Color)){
+			return false;
+		}
+		Color other = (Color)object;
+		return (other.r == this.r) && (other.g == this.g) && (other.b == this.b);
+	}
+
+	public int hashCode() {
+		return (b << 16) | (g << 8) | r;
 	}
 
 }
