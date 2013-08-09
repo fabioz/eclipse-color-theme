@@ -12,7 +12,7 @@
     <commentTaskTag color="#CCDF32" />
     <javadoc color="#D9E577" italic="false" />
     <javadocLink color="#D9E577" />
-    <javadocTag color="#D9E577" />
+    <javadocTag color="#D9E577" bold="true" italic="true"/>
     <javadocKeyword color="#D9E577" />
     <class color="#66D9EF" />
     <interface color="#D197D9" />

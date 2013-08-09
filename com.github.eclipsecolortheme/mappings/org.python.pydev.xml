@@ -14,5 +14,6 @@
         <mapping pluginKey="CLASS_NAME_COLOR" themeKey="class"/>
         <mapping pluginKey="PARENS_COLOR" themeKey="operator"/>
         <mapping pluginKey="OPERATORS_COLOR" themeKey="operator"/>
+        <mapping pluginKey="DOCSTRING_MARKUP_COLOR" themeKey="javadocTag"/>
     </mappings>
 </eclipseColorThemeMapping>
