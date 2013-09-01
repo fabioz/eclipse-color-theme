@@ -13,5 +13,6 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 		store.setDefault(Activator.CURRENT_COLOR_THEME, "default");
 		store.setDefault(Activator.APPLY_THEME_TO,
 				Activator.APPLY_THEME_TO_LICLIPSE);
+		store.setDefault("forceDefaultBG", false);
 	}
 }

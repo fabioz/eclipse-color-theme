@@ -79,8 +79,8 @@ public class ColorThemePreferencePage extends PreferencePage implements
 		setPreferenceStore(Activator.getDefault().getPreferenceStore());
 	}
 
-	public void init(IWorkbench workbench) {
-	}
+    public void init(IWorkbench workbench) {
+    }
 
 	public void setShell(Shell shell){
 		this.shell = shell;
@@ -529,14 +529,17 @@ public class ColorThemePreferencePage extends PreferencePage implements
 		}
 	}
 
-	private static String readFile(File file) throws IOException {
-	    Reader in = new BufferedReader(new FileReader(file));
-	    StringBuilder sb = new StringBuilder();
-	    char[] chars = new char[1 << 16];
-	    int length;
-	    while ((length = in.read(chars)) > 0)
-	        sb.append(chars, 0, length);
-	    in.close();
-	    return sb.toString();
-	}
+    private static String readFile(File file) throws IOException {
+        Reader in = new BufferedReader(new FileReader(file));
+        StringBuilder sb = new StringBuilder();
+        char[] chars = new char[1 << 16];
+        int length;
+        try {
+            while ((length = in.read(chars)) > 0)
+                sb.append(chars, 0, length);
+        } finally {
+            in.close();
+        }
+        return sb.toString();
+    }
 }
