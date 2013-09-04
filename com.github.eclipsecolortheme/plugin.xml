@@ -159,12 +159,12 @@
             pluginId="winterwell.markdown"
             xml="mappings/winterwell.markdown.xml">
       </mapper>
-      <mapper
+      <!-- <mapper
             class="com.github.eclipsecolortheme.mapper.GenericMapper"
             name="Console"
             pluginId="org.eclipse.debug.ui"
             xml="mappings/org.eclipse.debug.ui.xml">
-      </mapper>
+      </mapper> -->
       <mapper
             class="com.github.eclipsecolortheme.mapper.GenericMapper"
             name="CVS"
@@ -183,7 +183,7 @@
             pluginId="com.spket.xml"
             xml="mappings/com.spket.xml.xml">
       </mapper>
-      
+
       <mapper
             class="com.github.eclipsecolortheme.mapper.WebEditorMapper"
             name="XSL"
