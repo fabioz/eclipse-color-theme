@@ -85,7 +85,7 @@ public class ColorThemePreferencePage extends PreferencePage implements
 	public void setShell(Shell shell){
 		this.shell = shell;
 	}
-	
+
 	@Override
 	public Shell getShell() {
 		if(this.shell != null){
@@ -93,7 +93,7 @@ public class ColorThemePreferencePage extends PreferencePage implements
 		}
 		return super.getShell();
 	}
-	
+
 	@Override
 	public Control createContents(Composite parent) {
 		container = new Composite(parent, SWT.NONE);
@@ -328,7 +328,7 @@ public class ColorThemePreferencePage extends PreferencePage implements
 		performOk(true);
 		return super.performOk();
 	}
-	
+
 	/**
 	 * @param canAskQuestions whether we can ask questions to the user here.
 	 * @return a boolean where true means we should've asked for a restart but didn't.
@@ -541,5 +541,55 @@ public class ColorThemePreferencePage extends PreferencePage implements
             in.close();
         }
         return sb.toString();
+    }
+
+
+//    @Override
+//    protected void contributeButtons(Composite parent) {
+//          ((GridLayout) parent.getLayout()).numColumns++;
+//
+//        Button button = new Button(parent, SWT.NONE);
+//        button.setText("&Import a theme...");
+//        button.addSelectionListener(new SelectionAdapter() {
+//            @Override
+//            public void widgetSelected(SelectionEvent event) {
+//                FileDialog dialog = new FileDialog(getShell());
+//                String file = dialog.open();
+//                BufferedInputStream bufferedFileStream = null;
+//                try {
+//                    bufferedFileStream = new BufferedInputStream(new FileInputStream(file));
+//                    colorThemeManager.saveTheme(bufferedFileStream);
+//                } catch (CharConversionException e) {
+//                    showErrorMessage("Invalid file encoding.");
+//                    return;
+//                } catch (Exception e) {
+//                    showErrorMessage("This is not a valid theme file.");
+//                    return;
+//                } finally {
+//                    try {
+//                        if(bufferedFileStream != null)
+//                            bufferedFileStream.close();
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//                reloadThemeSelectionList();
+//            }
+//        });
+//    }
+
+    protected void showErrorMessage(String message) {
+        MessageBox box = new MessageBox(getShell(), SWT.OK);
+        box.setText("Theme not imported");
+        box.setMessage(message);
+        box.open();
+    }
+
+    private void reloadThemeSelectionList() {
+        themeSelectionList.removeAll();
+        fillThemeSelectionList();
+        themeSelectionList.setSelection(new String[]{"Default"});
+        updateDetails(null);
+        container.pack();
     }
 }
