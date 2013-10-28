@@ -3,6 +3,7 @@ package com.github.eclipsecolortheme;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -11,6 +12,12 @@ import java.util.Set;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.Platform;
@@ -43,9 +50,9 @@ public class ColorThemeManager implements IPropertyChangeListener {
 	 * Cache for stock themes.
 	 */
 	private static Map<String, ColorTheme> stockThemes;
-	
+
 	private static ColorThemeManager singleton;
-	
+
 	public static ColorThemeManager getSingleton(){
 		if(singleton == null){
 			singleton =  new ColorThemeManager();
@@ -91,9 +98,9 @@ public class ColorThemeManager implements IPropertyChangeListener {
 				Bundle bundle = Platform.getBundle(contributorPluginId);
 				InputStream input = (InputStream) bundle.getResource(xml)
 						.getContent();
-				ColorTheme theme = parseTheme(input);
-				amendThemeEntries(theme.getEntries());
-				themes.put(theme.getName(), theme);
+				ParsedTheme theme = parseTheme(input, false);
+				amendThemeEntries(theme.getTheme().getEntries());
+				themes.put(theme.getTheme().getName(), theme.getTheme());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -109,11 +116,10 @@ public class ColorThemeManager implements IPropertyChangeListener {
 			if (xml == null || xml.length() == 0)
 				break;
 			try {
-				ColorTheme theme = parseTheme(new ByteArrayInputStream(
-						xml.getBytes()));
-				theme.setImportedThemeId(importedThemeId);
-				amendThemeEntries(theme.getEntries());
-				themes.put(theme.getName(), theme);
+				ParsedTheme theme = parseTheme(new ByteArrayInputStream(xml.getBytes("UTF-8")), false);
+				theme.getTheme().setImportedThemeId(importedThemeId);
+				amendThemeEntries(theme.getTheme().getEntries());
+				themes.put(theme.getTheme().getName(), theme.getTheme());
 			} catch (Exception e) {
 				System.err.println("Error while parsing imported theme");
 				e.printStackTrace();
@@ -134,8 +140,14 @@ public class ColorThemeManager implements IPropertyChangeListener {
 		return preferenceStore;
 	}
 
-	public static ColorTheme parseTheme(InputStream input)
-			throws ParserConfigurationException, SAXException, IOException {
+	/**
+	 * Parses theme file.
+	 * @param input The input for theme file.
+	 * @param loadSource Specify if should load original XML source.
+	 * @return Parsed theme
+	 */
+	public static ParsedTheme parseTheme(InputStream input, boolean loadSource)
+			throws ParserConfigurationException, SAXException, IOException, TransformerException {
 		ColorTheme theme = new ColorTheme();
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder builder = factory.newDocumentBuilder();
@@ -180,7 +192,9 @@ public class ColorThemeManager implements IPropertyChangeListener {
 		amendThemeEntries(entries);
 		theme.setEntries(entries);
 
-		return theme;
+		ParsedTheme parsedTheme = new ParsedTheme(theme);
+		if (loadSource) parsedTheme.setSource(documentToString(document));
+		return parsedTheme;
 	}
 
 	private static void amendThemeEntries(Map<String, ColorThemeSetting> theme) {
@@ -233,7 +247,7 @@ public class ColorThemeManager implements IPropertyChangeListener {
 
 	/**
 	 * Returns all available color themes.
-	 * 
+	 *
 	 * @return all available color themes.
 	 */
 	public Set<ColorTheme> getThemes() {
@@ -242,7 +256,7 @@ public class ColorThemeManager implements IPropertyChangeListener {
 
 	/**
 	 * Returns the theme stored under the supplied name.
-	 * 
+	 *
 	 * @param name
 	 *            The name of the theme.
 	 * @return The requested theme or <code>null</code> if none was stored under
@@ -255,7 +269,7 @@ public class ColorThemeManager implements IPropertyChangeListener {
 	/**
 	 * Adds the color theme to the list and saves it to the preferences.
 	 * Existing themes will be overwritten with the new content.
-	 * 
+	 *
 	 * @param content
 	 *            The content of the color theme file.
 	 * @return The saved color theme, or <code>null</code> if the theme was not
@@ -265,7 +279,7 @@ public class ColorThemeManager implements IPropertyChangeListener {
 		ColorTheme theme;
 		try {
 			theme = ColorThemeManager.parseTheme(new ByteArrayInputStream(
-					content.getBytes()));
+					content.getBytes("utf-8")), false).getTheme();
 			saveTheme(content, theme);
 			return theme;
 		} catch (Exception e) {
@@ -295,7 +309,7 @@ public class ColorThemeManager implements IPropertyChangeListener {
 		ColorTheme theme;
 		try {
 			theme = ColorThemeManager.parseTheme(new ByteArrayInputStream(
-					content.getBytes()));
+					content.getBytes("utf-8")), false).getTheme();
 			String name = theme.getName();
 
 			ColorTheme existingWithSameName = themes.get(name);
@@ -328,7 +342,7 @@ public class ColorThemeManager implements IPropertyChangeListener {
 		return getTheme(currentThemeName);
 	}
 
-    protected Map<com.github.eclipsecolortheme.Color, Color> cache = 
+    protected Map<com.github.eclipsecolortheme.Color, Color> cache =
     		new HashMap<com.github.eclipsecolortheme.Color, Color>(10);
 
     public Color getColor(com.github.eclipsecolortheme.Color colorInTheme) {
@@ -339,7 +353,7 @@ public class ColorThemeManager implements IPropertyChangeListener {
         }
         return color;
     }
-	
+
 	/**
 	 * Returns the SWT color to be used. Can be null if not available or no active theme is set.
 	 */
@@ -350,7 +364,32 @@ public class ColorThemeManager implements IPropertyChangeListener {
 			return getColor(themeSetting.getColor());
 		}
 		return null;
-		
+}
+
+	/**
+	 * @param input The input for theme file.
+	 * @throws TransformerException
+	 * @throws IOException
+	 * @throws SAXException
+	 * @throws ParserConfigurationException
+	 */
+	public void saveTheme(InputStream input) throws ParserConfigurationException, SAXException, IOException, TransformerException {
+		ParsedTheme theme = ColorThemeManager.parseTheme(input, true);
+		themes.put(theme.getTheme().getName(), theme.getTheme());
+		IPreferenceStore store = getPreferenceStore();
+		for (int i = 1;; i++)
+			if (!store.contains("importedColorTheme" + i)) {
+				store.putValue("importedColorTheme" + i, theme.getSource());
+				break;
+			}
+	}
+
+	protected static String documentToString(Document document) throws TransformerException {
+	    StringWriter writer = new StringWriter();
+	    Transformer transformer = TransformerFactory.newInstance().newTransformer();
+	    transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+	    transformer.transform(new DOMSource(document), new StreamResult(writer));
+	    return writer.toString();
 	}
 
 }
