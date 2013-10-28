@@ -20,19 +20,19 @@ public class ColorThemeSetting {
     public void setBoldEnabled(Boolean boldEnabled) {
         this.boldEnabled = boldEnabled;
     }
-    
+
     public void setItalicEnabled(Boolean italicEnabled) {
         this.italicEnabled = italicEnabled;
     }
-    
+
     public void setStrikethroughEnabled(Boolean strikethroughEnabled) {
         this.strikethroughEnabled = strikethroughEnabled;
     }
-    
+
     public void setUnderlineEnabled(Boolean underlineEnabled) {
         this.underlineEnabled = underlineEnabled;
     }
-    
+
     public Color getColor() {
         return color;
     }
@@ -43,7 +43,7 @@ public class ColorThemeSetting {
         }
         return color.asHex();
     }
-    
+
     public String getHexColorOrEmpty() {
         if (color == null) {
             return "";
@@ -83,4 +83,8 @@ public class ColorThemeSetting {
 		return copy;
 	}
 
+	@Override
+	public String toString() {
+		return "ColorThemeSetting: "+getColor().getRGB();
+	}
 }
