@@ -130,9 +130,9 @@ public class EditThemeDialog extends TitleAreaDialog {
 		name = new Text(parent, SWT.BORDER);
 		name.setLayoutData(gridData);
 		String themeName = this.theme.getName();
-		if (!themeName.endsWith("*")) {
-			themeName += '*';
-		}
+//		if (!themeName.endsWith("*")) {
+//			themeName += '*';
+//		}
 		name.setText(themeName);
 		name.addKeyListener(listener);
 

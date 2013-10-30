@@ -131,7 +131,7 @@ public class ColorThemeManager implements IPropertyChangeListener {
 
 	public void clearImportedThemes() {
 		IPreferenceStore store = getPreferenceStore();
-		for (int i = 1; store.contains("importedColorTheme" + i); i++) {
+		for (int i = 1; i < 100; i++) {
 			store.setToDefault("importedColorTheme" + i);
 		}
 		themes.clear();
