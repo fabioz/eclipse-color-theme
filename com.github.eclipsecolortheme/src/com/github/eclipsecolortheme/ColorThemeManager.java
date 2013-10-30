@@ -110,11 +110,13 @@ public class ColorThemeManager implements IPropertyChangeListener {
 	private void readImportedThemes(Map<String, ColorTheme> themes) {
 		IPreferenceStore store = getPreferenceStore();
 
-		for (int i = 1;; i++) {
+		//try to read 100 themes always (ok, we may fail if he has more than 100 themes, 
+		//but that seems a reasonable tradeoff now that we can remove themes, so, we can have 'holes' in the numbering).
+		for (int i = 1;i<100; i++) { 
 			String importedThemeId = "importedColorTheme" + i;
 			String xml = store.getString(importedThemeId);
 			if (xml == null || xml.length() == 0)
-				break;
+				continue;
 			try {
 				ParsedTheme theme = parseTheme(new ByteArrayInputStream(xml.getBytes("UTF-8")), false);
 				theme.getTheme().setImportedThemeId(importedThemeId);
@@ -304,6 +306,27 @@ public class ColorThemeManager implements IPropertyChangeListener {
 			}
 		}
 	}
+	
+	public void removeTheme(ColorTheme theme) {
+		try {
+			String name = theme.getName();
+			
+			ColorTheme existingWithName = themes.get(name);
+			
+			if (existingWithName != null) {
+				String importedThemeId = existingWithName.getImportedThemeId();
+				if (importedThemeId != null) {
+					themes.remove(name);
+					IPreferenceStore store = getPreferenceStore();
+					store.setToDefault(importedThemeId);
+					theme.setImportedThemeId(importedThemeId);
+				}
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	public ColorTheme saveEditedTheme(String content) {
 		ColorTheme theme;
@@ -364,7 +387,7 @@ public class ColorThemeManager implements IPropertyChangeListener {
 			return getColor(themeSetting.getColor());
 		}
 		return null;
-}
+	}
 
 	/**
 	 * @param input The input for theme file.

@@ -112,7 +112,7 @@ public class ColorTheme {
 		buf.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
 		buf.append("<colorTheme id=\"1\" name=\"" + name + "\" modified=\""
 				+ modified + "\" author=\"" + author + "\" website=\""
-				+ website + "/?p=" + id + "\">\n");
+				+ website + "\">\n");
 		Map<String, ColorThemeSetting> entries2 = this.getEntries();
 		Set<Entry<String, ColorThemeSetting>> entrySet = entries2.entrySet();
 		for (Entry<String, ColorThemeSetting> entry : entrySet) {

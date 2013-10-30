@@ -1,7 +1,10 @@
 package com.github.eclipsecolortheme.preferences;
 
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
@@ -66,6 +69,7 @@ public class ColorThemePreferencePage extends PreferencePage implements
 	private Composite themeDetails;
 	private Label authorLabel;
 	private Button editButton;
+	private Button removeButton;
 	private Link websiteLink;
 	private StyledText styledText;
 	private Label themeDefaultMessageLabel;
@@ -171,7 +175,7 @@ public class ColorThemePreferencePage extends PreferencePage implements
 		editButton = new Button(themeDetails, SWT.NONE);
 		editButton.setText("Edit theme");
 		invisibleWhenDefaultSelected.add(editButton);
-		GridData grab = createGridDataFactory().create();
+		GridData grab = createGridDataFactoryNoSpan().create();
 		editButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				String[] selection = themeSelectionList.getSelection();
@@ -190,6 +194,30 @@ public class ColorThemePreferencePage extends PreferencePage implements
 		grab.horizontalAlignment = SWT.FILL;
 		editButton.setLayoutData(grab);
 
+		removeButton = new Button(themeDetails, SWT.NONE);
+		removeButton.setText("Remove theme");
+		invisibleWhenDefaultSelected.add(removeButton);
+		grab = createGridDataFactoryNoSpan().create();
+		removeButton.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e) {
+				String[] selection = themeSelectionList.getSelection();
+				if (selection != null && selection.length > 0) {
+					ColorTheme themeToRemove = colorThemeManager.getTheme(selection[0]);
+					String importedThemeId = themeToRemove.getImportedThemeId();
+					if(importedThemeId == null || importedThemeId.length() == 0){
+						MessageDialog.openInformation(shell, "Unable to remove", "Builtin themes cannot be removed.");
+						return;
+					}
+					if (MessageDialog.openQuestion(
+							shell, "Confirm removal", "Are you sure you want to remove the theme: "+themeToRemove.getName())) {
+						removeTheme(themeToRemove);
+					}
+				}
+			}
+		});
+		grab.horizontalAlignment = SWT.FILL;
+		removeButton.setLayoutData(grab);
+		
 		themeSelectionList.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
 				updateDetails(colorThemeManager.getTheme(themeSelectionList
@@ -218,6 +246,10 @@ public class ColorThemePreferencePage extends PreferencePage implements
 
 	private GridDataFactory createGridDataFactory() {
 		return GridDataFactory.swtDefaults().grab(true, false).span(2, 1);
+	}
+	
+	private GridDataFactory createGridDataFactoryNoSpan() {
+		return GridDataFactory.swtDefaults().grab(true, false).span(1, 1);
 	}
 
 	private void fillThemeSelectionList() {
@@ -294,11 +326,11 @@ public class ColorThemePreferencePage extends PreferencePage implements
 			themeDefaultMessageLabel.setText("");
 			this.themeDefaultMessageLabel.setVisible(false);
 		}
-		applyTo.pack();
-		themeDefaultMessageLabel.pack();
-		authorLabel.pack();
-		websiteLink.pack();
-		themeDetails.pack();
+		applyTo.pack(true);
+		themeDefaultMessageLabel.pack(true);
+		authorLabel.pack(true);
+		websiteLink.pack(true);
+		themeDetails.pack(true);
 	}
 
 	private static final Set<String> IDS_FOR_EDITORS_THAT_DONT_NEED_REOPEN = new HashSet<String>();
@@ -451,8 +483,11 @@ public class ColorThemePreferencePage extends PreferencePage implements
 
 	@Override
 	protected void performDefaults() {
+		if(!MessageDialog.openConfirm(getShell(), "Confirm", "Are you sure?\nPressing Ok will remove all imported themes as well as any theme you created.")){
+			return;
+		}
 		getPreferenceStore().setToDefault(Activator.CURRENT_COLOR_THEME);
-		getPreferenceStore().setToDefault(Activator.APPLY_THEME_TO);
+		//getPreferenceStore().setToDefault(Activator.APPLY_THEME_TO);
 		colorThemeManager.clearImportedThemes();
 		reloadThemeSelectionList(null);
 		super.performDefaults();
@@ -460,7 +495,7 @@ public class ColorThemePreferencePage extends PreferencePage implements
 
 	@Override
 	protected void contributeButtons(Composite parent) {
-		((GridLayout) parent.getLayout()).numColumns++;
+		((GridLayout) parent.getLayout()).numColumns+=2;
 
 		Button button = new Button(parent, SWT.NONE);
 		button.setText("&Import a theme...");
@@ -469,14 +504,59 @@ public class ColorThemePreferencePage extends PreferencePage implements
 			public void widgetSelected(SelectionEvent event) {
 				FileDialog dialog = new FileDialog(getShell());
 				String file = dialog.open();
-				ColorTheme theme;
-				String content;
-				try {
-					content = readFile(new File(file));
-				} catch (IOException e) {
-					content = null;
+				if(file != null){
+					ColorTheme theme;
+					String content;
+					try {
+						content = readFile(new File(file));
+					} catch (IOException e) {
+						content = null;
+					}
+					importThemeFromContents(content);
 				}
-				importThemeFromContents(content);
+			}
+		});
+		
+		button = new Button(parent, SWT.NONE);
+		button.setText("&Export selected theme...");
+		button.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent event) {
+				FileDialog dialog = new FileDialog(getShell(), SWT.SAVE);
+				String file = dialog.open();
+				if(file!= null){
+					String[] selection = themeSelectionList.getSelection();
+					if (selection != null && selection.length > 0) {
+						ColorTheme themeToExport = colorThemeManager.getTheme(selection[0]);
+						if(themeToExport != null){
+							String xml = themeToExport.toXML();
+							File file2 = new File(file);
+							if(file2.exists()){
+								if(!MessageDialog.openQuestion(getShell(), "File exists", "File: "+file2+" already exists.\nOverride?")){
+									return;
+								}
+							}
+							try {
+								
+								FileOutputStream fileOutputStream = new FileOutputStream(file2);
+								try {
+									BufferedOutputStream buf = new BufferedOutputStream(fileOutputStream);
+									try {
+										buf.write(xml.getBytes("utf-8"));
+									} finally {
+										buf.close();
+									}
+								} finally {
+									fileOutputStream.close();
+								}
+							} catch (Exception e) {
+								MessageDialog.openError(getShell(), "Error exporting theme", "Error exporting theme: "+e.getMessage());
+								return;
+							}
+							MessageDialog.openInformation(getShell(), "Theme exported", "Theme "+themeToExport.getName()+" exported.");
+						}
+					}
+				}
 			}
 		});
 	}
@@ -493,7 +573,17 @@ public class ColorThemePreferencePage extends PreferencePage implements
 
 		}
 		updateDetails(newTheme);
-		container.pack();
+//		container.pack(true);
+	}
+	
+	/**
+	 * Remove an existing theme.
+	 */
+	private void removeTheme(ColorTheme theme) {
+		if (theme != null) {
+			colorThemeManager.removeTheme(theme);
+			reloadThemeSelectionList(null);
+		}
 	}
 
 	/**
@@ -590,6 +680,6 @@ public class ColorThemePreferencePage extends PreferencePage implements
         fillThemeSelectionList();
         themeSelectionList.setSelection(new String[]{"Default"});
         updateDetails(null);
-        container.pack();
+//        container.pack(true);
     }
 }
