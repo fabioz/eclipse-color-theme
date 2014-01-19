@@ -68,8 +68,26 @@ public class ColorThemeKeys {
 	public static final String COMPARE_EDITOR_INCOMING_COLOR = "compareIncoming";
 	public static final String COMPARE_EDITOR_CONFLICTING_COLOR = "compareConflicting";
 	public static final String COMPARE_EDITOR_RESOLVED_COLOR = "compareResolved";
-	
-	
+
+	// Not in default: EGit (VCS = version control system)
+	public static final String VCS_UNCOMMITED_CHANGE_FOREGROUND = "vcsUncommitedForeground";
+	public static final String VCS_UNCOMMITED_CHANGE_BACKGROUND = "vcsUncommitedBackground";
+
+	public static final String VCS_DIFF_HUNK_FOREGROUND = "vcsDiffHunkForeground";
+	public static final String VCS_DIFF_HUNK_BACKGROUND = "vcsDiffHunkBackground";
+
+	public static final String VCS_DIFF_ADD_FOREGROUND = "vcsDiffAddForeground";
+	public static final String VCS_DIFF_ADD_BACKGROUND = "vcsDiffAddBackground";
+
+	public static final String VCS_DIFF_REMOVE_FOREGROUND = "vcsDiffRemoveForeground";
+	public static final String VCS_DIFF_REMOVE_BACKGROUND = "vcsDiffRemoveBackground";
+
+	public static final String VCS_DIFF_HEADLINE_FOREGROUND = "vcsDiffHeadlineForeground";
+	public static final String VCS_DIFF_HEADLINE_BACKGROUND = "vcsDiffHeadlineBackground";
+
+	public static final String VCS_RESOURCE_IGNORED_FOREGROUND = "vcsResourceIgnoredForeground";
+	public static final String VCS_RESOURCE_IGNORED_BACKGROUND = "vcsResourceIgnoredBackground";
+
 	public static final Set<String> KEYS_BACKGROUND_RELATED = new HashSet<String>();
 	static {
 		KEYS_BACKGROUND_RELATED.add(BACKGROUND);
@@ -88,7 +106,7 @@ public class ColorThemeKeys {
 	}
 
 	public static final Set<String> KEYS_WITHOUT_STYLE = new HashSet<String>();
-	
+
 	static {
 		KEYS_WITHOUT_STYLE.add(BACKGROUND);
 		KEYS_WITHOUT_STYLE.add(SELECTION_FOREGROUND);
@@ -111,10 +129,24 @@ public class ColorThemeKeys {
 		KEYS_WITHOUT_STYLE.add(ACTIVE_HYPERLINK);
 		KEYS_WITHOUT_STYLE.add(MATCHING_BRACKET);
 		KEYS_WITHOUT_STYLE.add(SEARCH_VIEW_MATCH_HIGHLIGHT);
-		
+
 		KEYS_WITHOUT_STYLE.add(COMPARE_EDITOR_OUTGOING_COLOR);
 		KEYS_WITHOUT_STYLE.add(COMPARE_EDITOR_INCOMING_COLOR);
 		KEYS_WITHOUT_STYLE.add(COMPARE_EDITOR_CONFLICTING_COLOR);
 		KEYS_WITHOUT_STYLE.add(COMPARE_EDITOR_RESOLVED_COLOR);
+
+		KEYS_WITHOUT_STYLE.add(VCS_UNCOMMITED_CHANGE_FOREGROUND);
+		KEYS_WITHOUT_STYLE.add(VCS_UNCOMMITED_CHANGE_BACKGROUND);
+		KEYS_WITHOUT_STYLE.add(VCS_DIFF_HUNK_FOREGROUND);
+		KEYS_WITHOUT_STYLE.add(VCS_DIFF_HUNK_BACKGROUND);
+		KEYS_WITHOUT_STYLE.add(VCS_DIFF_ADD_FOREGROUND);
+		KEYS_WITHOUT_STYLE.add(VCS_DIFF_ADD_BACKGROUND);
+		KEYS_WITHOUT_STYLE.add(VCS_DIFF_REMOVE_FOREGROUND);
+		KEYS_WITHOUT_STYLE.add(VCS_DIFF_REMOVE_BACKGROUND);
+		KEYS_WITHOUT_STYLE.add(VCS_DIFF_HEADLINE_FOREGROUND);
+		KEYS_WITHOUT_STYLE.add(VCS_DIFF_HEADLINE_BACKGROUND);
+		KEYS_WITHOUT_STYLE.add(VCS_RESOURCE_IGNORED_FOREGROUND);
+		KEYS_WITHOUT_STYLE.add(VCS_RESOURCE_IGNORED_BACKGROUND);
+
 	}
 }

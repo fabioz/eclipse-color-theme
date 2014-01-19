@@ -223,11 +223,31 @@ public class ColorThemeManager implements IPropertyChangeListener {
 		applyDefault(theme, ColorThemeKeys.STDIN, ColorThemeKeys.STRING);
 		applyDefault(theme, ColorThemeKeys.STDOUT, ColorThemeKeys.FOREGROUND);
 		
+		//Compare editor
 		applyDefault(theme, ColorThemeKeys.COMPARE_EDITOR_CONFLICTING_COLOR, ColorThemeKeys.STDERR);
 		applyDefault(theme, ColorThemeKeys.COMPARE_EDITOR_RESOLVED_COLOR, ColorThemeKeys.STRING);
 		applyDefault(theme, ColorThemeKeys.COMPARE_EDITOR_OUTGOING_COLOR, ColorThemeKeys.FOREGROUND);
 		applyDefault(theme, ColorThemeKeys.COMPARE_EDITOR_INCOMING_COLOR, ColorThemeKeys.NUMBER);
-
+		
+		//Egit (VCS)
+		applyDefault(theme, ColorThemeKeys.VCS_DIFF_ADD_FOREGROUND, ColorThemeKeys.COMPARE_EDITOR_INCOMING_COLOR);
+		applyDefault(theme, ColorThemeKeys.VCS_DIFF_ADD_BACKGROUND, ColorThemeKeys.BACKGROUND);
+		
+		applyDefault(theme, ColorThemeKeys.VCS_DIFF_HEADLINE_FOREGROUND, ColorThemeKeys.FOREGROUND);
+		applyDefault(theme, ColorThemeKeys.VCS_DIFF_HEADLINE_BACKGROUND, ColorThemeKeys.BACKGROUND);
+		
+		applyDefault(theme, ColorThemeKeys.VCS_DIFF_REMOVE_FOREGROUND, ColorThemeKeys.STDERR);
+		applyDefault(theme, ColorThemeKeys.VCS_DIFF_REMOVE_BACKGROUND, ColorThemeKeys.BACKGROUND);
+		
+		applyDefault(theme, ColorThemeKeys.VCS_RESOURCE_IGNORED_FOREGROUND, ColorThemeKeys.FOREGROUND);
+		applyDefault(theme, ColorThemeKeys.VCS_RESOURCE_IGNORED_BACKGROUND, ColorThemeKeys.BACKGROUND);
+		
+		applyDefault(theme, ColorThemeKeys.VCS_UNCOMMITED_CHANGE_FOREGROUND, ColorThemeKeys.FOREGROUND);
+		applyDefault(theme, ColorThemeKeys.VCS_UNCOMMITED_CHANGE_BACKGROUND, ColorThemeKeys.BACKGROUND);
+		
+		applyDefault(theme, ColorThemeKeys.VCS_DIFF_HUNK_FOREGROUND, ColorThemeKeys.COMMENT_TASK_TAG);
+		applyDefault(theme, ColorThemeKeys.VCS_DIFF_HUNK_BACKGROUND, ColorThemeKeys.BACKGROUND);
+		
 		applyDefault(theme, ColorThemeKeys.HYPERLINK, ColorThemeKeys.KEYWORD);
 		applyDefault(theme, ColorThemeKeys.ACTIVE_HYPERLINK,
 				ColorThemeKeys.KEYWORD);
