@@ -222,6 +222,11 @@ public class ColorThemeManager implements IPropertyChangeListener {
 		applyDefault(theme, ColorThemeKeys.STDERR, ColorThemeKeys.KEYWORD);
 		applyDefault(theme, ColorThemeKeys.STDIN, ColorThemeKeys.STRING);
 		applyDefault(theme, ColorThemeKeys.STDOUT, ColorThemeKeys.FOREGROUND);
+		
+		applyDefault(theme, ColorThemeKeys.COMPARE_EDITOR_CONFLICTING_COLOR, ColorThemeKeys.STDERR);
+		applyDefault(theme, ColorThemeKeys.COMPARE_EDITOR_RESOLVED_COLOR, ColorThemeKeys.STRING);
+		applyDefault(theme, ColorThemeKeys.COMPARE_EDITOR_OUTGOING_COLOR, ColorThemeKeys.FOREGROUND);
+		applyDefault(theme, ColorThemeKeys.COMPARE_EDITOR_INCOMING_COLOR, ColorThemeKeys.NUMBER);
 
 		applyDefault(theme, ColorThemeKeys.HYPERLINK, ColorThemeKeys.KEYWORD);
 		applyDefault(theme, ColorThemeKeys.ACTIVE_HYPERLINK,

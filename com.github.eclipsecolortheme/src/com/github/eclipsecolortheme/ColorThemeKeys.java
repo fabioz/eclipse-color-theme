@@ -63,6 +63,13 @@ public class ColorThemeKeys {
 	public static final String MATCHING_BRACKET = "matchingBracket";
 	public static final String SEARCH_VIEW_MATCH_HIGHLIGHT = "searchViewMatchHighlight";
 
+	// Not in default: compare editor
+	public static final String COMPARE_EDITOR_OUTGOING_COLOR = "compareOutgoing";
+	public static final String COMPARE_EDITOR_INCOMING_COLOR = "compareIncoming";
+	public static final String COMPARE_EDITOR_CONFLICTING_COLOR = "compareConflicting";
+	public static final String COMPARE_EDITOR_RESOLVED_COLOR = "compareResolved";
+	
+	
 	public static final Set<String> KEYS_BACKGROUND_RELATED = new HashSet<String>();
 	static {
 		KEYS_BACKGROUND_RELATED.add(BACKGROUND);
@@ -81,6 +88,7 @@ public class ColorThemeKeys {
 	}
 
 	public static final Set<String> KEYS_WITHOUT_STYLE = new HashSet<String>();
+	
 	static {
 		KEYS_WITHOUT_STYLE.add(BACKGROUND);
 		KEYS_WITHOUT_STYLE.add(SELECTION_FOREGROUND);
@@ -103,5 +111,10 @@ public class ColorThemeKeys {
 		KEYS_WITHOUT_STYLE.add(ACTIVE_HYPERLINK);
 		KEYS_WITHOUT_STYLE.add(MATCHING_BRACKET);
 		KEYS_WITHOUT_STYLE.add(SEARCH_VIEW_MATCH_HIGHLIGHT);
+		
+		KEYS_WITHOUT_STYLE.add(COMPARE_EDITOR_OUTGOING_COLOR);
+		KEYS_WITHOUT_STYLE.add(COMPARE_EDITOR_INCOMING_COLOR);
+		KEYS_WITHOUT_STYLE.add(COMPARE_EDITOR_CONFLICTING_COLOR);
+		KEYS_WITHOUT_STYLE.add(COMPARE_EDITOR_RESOLVED_COLOR);
 	}
 }
