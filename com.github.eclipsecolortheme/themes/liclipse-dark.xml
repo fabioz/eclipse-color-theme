@@ -45,4 +45,5 @@
     <selectionBackground color="#757575" />
     <selectionForeground color="#E0E0E0" />
     <vcsUncommitedBackground color="#2C5656" />
+    <hyperlink color="#8ABC54" />
 </colorTheme>
