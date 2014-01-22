@@ -9,7 +9,7 @@
         <mapping pluginKey="BACKQUOTES_COLOR" themeKey="foreground"/>
         <mapping pluginKey="NUMBER_COLOR" themeKey="number"/>
         <mapping pluginKey="STRING_COLOR" themeKey="string"/>
-        <mapping pluginKey="COMMENT_COLOR" themeKey="multiLineComment"/>
+        <mapping pluginKey="COMMENT_COLOR" themeKey="singleLineComment"/>
         <mapping pluginKey="DECORATOR_COLOR" themeKey="annotation"/>
         <mapping pluginKey="CLASS_NAME_COLOR" themeKey="class"/>
         <mapping pluginKey="PARENS_COLOR" themeKey="operator"/>

@@ -372,6 +372,9 @@
             file="themes/liclipse-dark.xml">
       </theme>
       <theme
+            file="themes/aptana3.xml">
+      </theme>
+      <theme
             file="themes/roboticket.xml">
       </theme>
       <theme
