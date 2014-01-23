@@ -24,6 +24,7 @@
         <mapping pluginKey="currentIPColor" themeKey="debugCurrentInstructionPointer" />
         <mapping pluginKey="secondaryIPColor" themeKey="debugSecondaryInstructionPointer" />
         <mapping pluginKey="pydevOccurrenceIndicationColor" themeKey="occurrenceIndication" />
+        <mapping pluginKey="liclipseOccurrenceIndicationColor" themeKey="occurrenceIndication" />
         <mapping pluginKey="matchingTagIndicationColor" themeKey="occurrenceIndication" />
         <mapping pluginKey="asOccurencesIndicationColor" themeKey="occurrenceIndication" />
         <mapping pluginKey="occurrenceAnnotation.color" themeKey="occurenceIndication" />
