@@ -3,7 +3,6 @@ package com.github.eclipsecolortheme.preferences;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
@@ -74,6 +73,7 @@ public class ColorThemePreferencePage extends PreferencePage implements
 	private StyledText styledText;
 	private Label themeDefaultMessageLabel;
 	private Combo applyTo;
+	private Combo reapplyOnRestart;
 	private java.util.List<Control> invisibleWhenDefaultSelected = new ArrayList<Control>();
 	private int initiallyApplyTo;
 	private Shell shell;
@@ -122,6 +122,8 @@ public class ColorThemePreferencePage extends PreferencePage implements
 
 		gridData = new GridData(GridData.FILL_BOTH);
 		gridData.widthHint = 400;
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.grabExcessVerticalSpace = true;
 		gridData.verticalAlignment = SWT.TOP;
 
 		GridLayout themeDetailsLayout = new GridLayout(2, true);
@@ -133,18 +135,29 @@ public class ColorThemePreferencePage extends PreferencePage implements
 		themeDetails.setLayout(themeDetailsLayout);
 
 		// Option to apply preferences to the whole ide
+		// Apply theme to:
 		applyTo = new Combo(themeDetails, SWT.READ_ONLY);
-		applyTo.setText("Apply theme to:");
 		applyTo.setToolTipText("Please choose where the colors should be applied to.\n\n"
 				+ "Applying to all views / whole IDE will also change the Appearance\ntheme to the Base LiClipse Theme and may need a restart.");
 		applyTo.add("Apply only to LiClipse Editors");
 		applyTo.add("Apply to all Editors");
 		applyTo.add("Apply to all Editors and Known Views");
 		applyTo.add("Experimental: Apply to the whole IDE (including preferences and dialogs).");
-		createGridDataFactory().applyTo(applyTo);
+		createGridDataFactory().align(SWT.FILL, SWT.CENTER).applyTo(applyTo);
 		IPreferenceStore store = getPreferenceStore();
 		initiallyApplyTo = store.getInt(Activator.APPLY_THEME_TO);
 		applyTo.select(initiallyApplyTo);
+		
+		// On Restart:
+		reapplyOnRestart = new Combo(themeDetails, SWT.READ_ONLY);
+		reapplyOnRestart.setText("Reapply settings on restart.");
+		reapplyOnRestart.add("Reapply settings on restart");
+		reapplyOnRestart.setToolTipText(
+				"By default, the settings are re-applied on a restart to keep up with new plugins and changes in the theme,\n"
+				+ "but if you wish to manually configure colors or have different colors for each plugin, this may be turned off.");
+		reapplyOnRestart.add("Don't reapply settings on restart");
+		createGridDataFactory().align(SWT.FILL, SWT.CENTER).applyTo(reapplyOnRestart);
+		reapplyOnRestart.select(store.getInt(Activator.REAPPLY_ON_RESTART));
 		// End Option to apply preferences to the whole ide
 
 		// Message for default.
@@ -158,6 +171,8 @@ public class ColorThemePreferencePage extends PreferencePage implements
 		gridData = new GridData(GridData.FILL_BOTH);
 		gridData.heightHint = 306;
 		gridData.horizontalSpan = 2;
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.grabExcessVerticalSpace = true;
 
 		styledText = new StyledText(themeDetails, SWT.BORDER);
 		styledText.setLayoutData(gridData);
@@ -326,7 +341,7 @@ public class ColorThemePreferencePage extends PreferencePage implements
 			themeDefaultMessageLabel.setText("");
 			this.themeDefaultMessageLabel.setVisible(false);
 		}
-		applyTo.pack(true);
+		//applyTo.pack(true);
 		themeDefaultMessageLabel.pack(true);
 		authorLabel.pack(true);
 		websiteLink.pack(true);
@@ -370,6 +385,10 @@ public class ColorThemePreferencePage extends PreferencePage implements
 
 		try {
 			String selectedThemeName = themeSelectionList.getSelection()[0];
+			//Do this one regardless of the others as it only affects a restart.
+			getPreferenceStore().setValue(Activator.REAPPLY_ON_RESTART, reapplyOnRestart.getSelectionIndex());
+
+			
 			int applyToWholeIDESelected = applyTo.getSelectionIndex();
 			boolean onlyLiClipseEditors = applyToWholeIDESelected == Activator.APPLY_THEME_TO_LICLIPSE;
 
@@ -505,7 +524,6 @@ public class ColorThemePreferencePage extends PreferencePage implements
 				FileDialog dialog = new FileDialog(getShell());
 				String file = dialog.open();
 				if(file != null){
-					ColorTheme theme;
 					String content;
 					try {
 						content = readFile(new File(file));

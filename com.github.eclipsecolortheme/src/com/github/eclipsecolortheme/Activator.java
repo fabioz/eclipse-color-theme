@@ -14,6 +14,10 @@ public class Activator extends AbstractUIPlugin {
 	public static final int APPLY_THEME_TO_ALL_EDITORS = 1;
 	public static final int APPLY_THEME_TO_KNOWN_PARTS = 2;
 	public static final int APPLY_THEME_TO_WHOLE_IDE = 3;
+	
+	public static final String REAPPLY_ON_RESTART = "REAPPLY_ON_RESTART";
+	public static final int REAPPLY_ON_RESTART_YES = 0; //Default is 0 (we don't even need to put it in the settings).
+	public static final int REAPPLY_ON_RESTART_NO = 1;
 
 	public static final String PLUGIN_ID = "com.github.eclipsecolortheme";
 	public static final String EXTENSION_POINT_ID_MAPPER = PLUGIN_ID
