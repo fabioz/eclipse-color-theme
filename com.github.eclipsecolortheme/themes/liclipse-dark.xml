@@ -40,6 +40,7 @@
     <constant color="#EFB571" bold="false" underline="false" strikethrough="false" />
     <background color="#272822" />
     <currentLine color="#3E3D32" />
+    <currentLineInWidgets color="#5b5a4a" />
     <foreground color="#F8F8F2" />
     <lineNumber color="#F8F8F2" />
     <selectionBackground color="#757575" />

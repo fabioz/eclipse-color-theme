@@ -11,7 +11,8 @@ public class ColorThemeKeys {
 	public static final String BACKGROUND = "background";
 	public static final String SELECTION_FOREGROUND = "selectionForeground";
 	public static final String SELECTION_BACKGROUND = "selectionBackground";
-	public static final String CURRENT_LINE = "currentLine";
+	public static final String CURRENT_LINE = "currentLine"; //This one is for the editor background
+	public static final String CURRENT_LINE_IN_WIDGETS = "currentLineInWidgets"; //This one is for table and tree
 	public static final String LINE_NUMBER = "lineNumber";
 	public static final String SEARCH_RESULT_INDICATION = "searchResultIndication";
 	public static final String FILTERED_SEARCH_RESULT_INDICATION = "filteredSearchResultIndication";
@@ -93,6 +94,7 @@ public class ColorThemeKeys {
 		KEYS_BACKGROUND_RELATED.add(BACKGROUND);
 		KEYS_BACKGROUND_RELATED.add(SELECTION_BACKGROUND);
 		KEYS_BACKGROUND_RELATED.add(CURRENT_LINE);
+		KEYS_BACKGROUND_RELATED.add(CURRENT_LINE_IN_WIDGETS);
 		KEYS_BACKGROUND_RELATED.add(SEARCH_RESULT_INDICATION);
 		KEYS_BACKGROUND_RELATED.add(FILTERED_SEARCH_RESULT_INDICATION);
 		KEYS_BACKGROUND_RELATED.add(OCCURRENCE_INDICATION);
@@ -119,6 +121,7 @@ public class ColorThemeKeys {
 		KEYS_WITHOUT_STYLE.add(SELECTION_FOREGROUND);
 		KEYS_WITHOUT_STYLE.add(SELECTION_BACKGROUND);
 		KEYS_WITHOUT_STYLE.add(CURRENT_LINE);
+		KEYS_WITHOUT_STYLE.add(CURRENT_LINE_IN_WIDGETS);
 		KEYS_WITHOUT_STYLE.add(LINE_NUMBER);
 		KEYS_WITHOUT_STYLE.add(SEARCH_RESULT_INDICATION);
 		KEYS_WITHOUT_STYLE.add(FILTERED_SEARCH_RESULT_INDICATION);

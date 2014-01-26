@@ -219,6 +219,8 @@ public class ColorThemeManager implements IPropertyChangeListener {
 				ColorThemeKeys.CURRENT_LINE);
 		applyDefault(theme, ColorThemeKeys.DEBUG_SECONDARY_INSTRUCTION_POINTER,
 				ColorThemeKeys.CURRENT_LINE);
+		applyDefault(theme, ColorThemeKeys.CURRENT_LINE_IN_WIDGETS,
+				ColorThemeKeys.CURRENT_LINE);
 		applyDefault(theme, ColorThemeKeys.STDERR, ColorThemeKeys.KEYWORD);
 		applyDefault(theme, ColorThemeKeys.STDIN, ColorThemeKeys.STRING);
 		applyDefault(theme, ColorThemeKeys.STDOUT, ColorThemeKeys.FOREGROUND);
