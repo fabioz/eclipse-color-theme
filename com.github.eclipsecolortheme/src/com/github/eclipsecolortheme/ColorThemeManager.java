@@ -35,7 +35,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /** Loads and applies color themes. */
-public class ColorThemeManager implements IPropertyChangeListener {
+public final class ColorThemeManager implements IPropertyChangeListener {
 
 	private Map<String, ColorTheme> themes;
 
@@ -68,6 +68,8 @@ public class ColorThemeManager implements IPropertyChangeListener {
 			} else {
 				currentThemeName = null;
 			}
+			foregroundCache = null;
+			backgroundCache = null;
 		}
 	}
 
@@ -382,6 +384,7 @@ public class ColorThemeManager implements IPropertyChangeListener {
 	}
 
 	public ColorTheme saveEditedTheme(String content) {
+		
 		ColorTheme theme;
 		try {
 			theme = ColorThemeManager.parseTheme(
@@ -401,6 +404,10 @@ public class ColorThemeManager implements IPropertyChangeListener {
 					IPreferenceStore store = getPreferenceStore();
 					store.putValue(importedThemeId, content);
 					theme.setImportedThemeId(importedThemeId);
+					
+					// When we edit a theme, we invalidate the foreground/background caches as it may have changed.
+					foregroundCache = null;
+					backgroundCache = null;
 					return theme;
 				}
 			}
@@ -443,6 +450,29 @@ public class ColorThemeManager implements IPropertyChangeListener {
 			return getColor(themeSetting.getColor());
 		}
 		return null;
+	}
+	
+	org.eclipse.swt.graphics.Color foregroundCache;
+	org.eclipse.swt.graphics.Color backgroundCache;
+	
+	/**
+	 * Returns the SWT color to be used for the foreground.
+	 */
+	public org.eclipse.swt.graphics.Color getSWTColorForeground() {
+		if(foregroundCache == null || foregroundCache.isDisposed()){
+			foregroundCache = getSWTColor(ColorThemeKeys.FOREGROUND);
+		}
+		return foregroundCache;
+	}
+	
+	/**
+	 * Returns the SWT color to be used for the background.
+	 */
+	public org.eclipse.swt.graphics.Color getSWTColorBackground() {
+		if(backgroundCache == null || backgroundCache.isDisposed()){
+			backgroundCache = getSWTColor(ColorThemeKeys.BACKGROUND);
+		}
+		return backgroundCache;
 	}
 
 	/**
