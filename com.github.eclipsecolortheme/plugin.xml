@@ -312,6 +312,9 @@
             file="themes/black-pastel.xml">
       </theme>
       <theme
+            file="themes/e4-dark.xml">
+      </theme>
+      <theme
             file="themes/frontenddev.xml">
       </theme>
       <theme

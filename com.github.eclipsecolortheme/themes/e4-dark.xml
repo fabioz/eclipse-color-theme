@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<colorTheme id="24833" name="E4 Dark" modified="2014-06-16 20:19:42" author="Fabio Zadrozny" website="https://sw-brainwy.rhcloud.com">
+    <searchResultIndication color="#5e5e5e" />
+    <filteredSearchResultIndication color="#6e6e6e" />
+    <occurrenceIndication color="#484848" />
+    <writeOccurrenceIndication color="#335a72" />
+    <findScope color="#1e789b" />
+    <deletionIndication color="#863c43" />
+    <sourceHoverBackground color="#444444" />
+    <singleLineComment color="#626262" italic="false" />
+    <multiLineComment color="#626262" italic="false" />
+    <commentTaskTag color="#9a8c7c" />
+    <javadoc color="#626262" italic="false" />
+    <javadocLink color="#a99c8c" />
+    <javadocTag color="#1e789b" bold="true" italic="true"/>
+    <javadocKeyword color="#dd2867" />
+    <class color="#1290c3" />
+    <interface color="#80f2f6" />
+    <method color="#a7ec21" />
+    <methodDeclaration color="#1eb540" />
+    <bracket color="#f9faf4" />
+    <number color="#6897bb" />
+    <string color="#17c6a3" />
+    <operator color="#e6e6fa" />
+    <keyword color="#DD2867" />
+    <annotation color="#ff9393" />
+    <staticMethod color="#96ec3f" />
+    <localVariable color="#ffbf26" />
+    <localVariableDeclaration color="#ed7f48" />
+    <field color="#66e1f8" />
+    <staticField color="#8ddaf8" />
+    <staticFinalField color="#8ddaf8" />
+    <deprecatedMember color="#ab1f36" underline="false" strikethrough="false" />
+    <enum color="#cc81ba" />
+    <inheritedMethod color="#cdf668" />
+    <abstractMethod color="#80f6a7" />
+    <parameterVariable color="#79abff" />
+    <typeArgument color="#d7837f" />
+    <typeParameter color="#bfa4a4" />
+    <constant color="#eb4b64" bold="false" underline="false" strikethrough="false" />
+    <background color="#202020" />
+    <currentLine color="#363636" />
+    <currentLineInWidgets color="#363636" />
+    <foreground color="#d9e8f7" />
+    <lineNumber color="#626262" />
+    <selectionBackground color="#3e515d" />
+    <selectionForeground color="#44ceef" />
+    <hyperlink color="#66aff9" />
+    <debugCurrentInstructionPointer color="#363636" />
+    <debugSecondaryInstructionPointer color="#363636" />
+    <matchingBracket color="#66707d" />
+    <stderr color="#f74475" />
+    <stdin color="#1fb3eb" />
+    <stdout color="#eeeeee" />
+    <vcsUncommitedBackground color="#2C5656" />
+</colorTheme>
