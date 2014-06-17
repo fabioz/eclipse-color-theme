@@ -1,5 +1,20 @@
-0.13.0
+0.14.0
 ======
+* Added the Solarized Dark theme.
+* Added the Solarized Light theme.
+* Added support for the [AngularJS Eclipse Plugin](https://github.com/angelozerr/angularjs-eclipse).
+* Added support for the [JsonTools](https://bitbucket.org/denmiroch/jsontools/wiki/Home).
+* Added support for the [Eclipse Json Editor Plugin](http://sourceforge.net/projects/eclipsejsonedit/).
+* Added support for the [Properties Editor](http://propedit.sourceforge.jp/index_en.html).
+
+0.13.1 (2014-05-04)
+===================
+* Fixed installation errors in Eclipse <4.
+* Used a different colour for brackets in ErlIDE.
+* Fixed selection colours in the frontenddev theme.
+
+0.13.0 (2013-11-21)
+===================
 * Fixed occurrence and inactive code highlighting in C/C++.
 * Added support for the Puppet DSL editor (Gepetto).
 * Added support for the Twig editor.
@@ -9,13 +24,14 @@
 * Fixed background in XML, HTML and CSS editor.
 * Added support for the Markdown editor.
 * Theme the debug and CVS console.
-* Added support for the Spket JavaScript and XML editros.
+* Added support for the Spket JavaScript and XML editors.
 * Added support for the XSL editor.
 * Added support for the DTD editor.
 * Added support for the Haskell editor (EclipseFP).
 * Fixed exception caused by empty selections.
 * Fixed some issues with Scala IDE.
 * Support parsing of XML files in encodings other than UTF-8.
+* Made sure that the preferences work even if the preview fails to load.
 
 0.12.0 (2012-07-24)
 ===================

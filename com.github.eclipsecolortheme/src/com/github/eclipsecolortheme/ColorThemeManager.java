@@ -53,19 +53,19 @@ public class ColorThemeManager implements IPropertyChangeListener {
 
 	private static ColorThemeManager singleton;
 
-	public static ColorThemeManager getSingleton(){
-		if(singleton == null){
-			singleton =  new ColorThemeManager();
+	public static ColorThemeManager getSingleton() {
+		if (singleton == null) {
+			singleton = new ColorThemeManager();
 		}
 		return singleton;
 	}
 
 	public void propertyChange(PropertyChangeEvent event) {
-		if(Activator.CURRENT_COLOR_THEME.equals(event.getProperty())){
+		if (Activator.CURRENT_COLOR_THEME.equals(event.getProperty())) {
 			Object newValue = event.getNewValue();
-			if(newValue!=null){
+			if (newValue != null) {
 				currentThemeName = newValue.toString();
-			}else{
+			} else {
 				currentThemeName = null;
 			}
 		}
@@ -75,7 +75,8 @@ public class ColorThemeManager implements IPropertyChangeListener {
 	private ColorThemeManager() {
 		themes = new HashMap<String, ColorTheme>();
 		preferenceStore = Activator.getDefault().getPreferenceStore();
-		currentThemeName = preferenceStore.getString(Activator.CURRENT_COLOR_THEME);
+		currentThemeName = preferenceStore
+				.getString(Activator.CURRENT_COLOR_THEME);
 		preferenceStore.addPropertyChangeListener(this);
 
 		if (stockThemes == null) {
@@ -110,15 +111,18 @@ public class ColorThemeManager implements IPropertyChangeListener {
 	private void readImportedThemes(Map<String, ColorTheme> themes) {
 		IPreferenceStore store = getPreferenceStore();
 
-		//try to read 100 themes always (ok, we may fail if he has more than 100 themes, 
-		//but that seems a reasonable tradeoff now that we can remove themes, so, we can have 'holes' in the numbering).
-		for (int i = 1;i<100; i++) { 
+		// try to read 100 themes always (ok, we may fail if he has more than
+		// 100 themes,
+		// but that seems a reasonable tradeoff now that we can remove themes,
+		// so, we can have 'holes' in the numbering).
+		for (int i = 1; i < 100; i++) {
 			String importedThemeId = "importedColorTheme" + i;
 			String xml = store.getString(importedThemeId);
 			if (xml == null || xml.length() == 0)
 				continue;
 			try {
-				ParsedTheme theme = parseTheme(new ByteArrayInputStream(xml.getBytes("UTF-8")), false);
+				ParsedTheme theme = parseTheme(
+						new ByteArrayInputStream(xml.getBytes("UTF-8")), false);
 				theme.getTheme().setImportedThemeId(importedThemeId);
 				amendThemeEntries(theme.getTheme().getEntries());
 				themes.put(theme.getTheme().getName(), theme.getTheme());
@@ -144,12 +148,16 @@ public class ColorThemeManager implements IPropertyChangeListener {
 
 	/**
 	 * Parses theme file.
-	 * @param input The input for theme file.
-	 * @param loadSource Specify if should load original XML source.
+	 * 
+	 * @param input
+	 *            The input for theme file.
+	 * @param loadSource
+	 *            Specify if should load original XML source.
 	 * @return Parsed theme
 	 */
 	public static ParsedTheme parseTheme(InputStream input, boolean loadSource)
-			throws ParserConfigurationException, SAXException, IOException, TransformerException {
+			throws ParserConfigurationException, SAXException, IOException,
+			TransformerException {
 		ColorTheme theme = new ColorTheme();
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder builder = factory.newDocumentBuilder();
@@ -195,7 +203,8 @@ public class ColorThemeManager implements IPropertyChangeListener {
 		theme.setEntries(entries);
 
 		ParsedTheme parsedTheme = new ParsedTheme(theme);
-		if (loadSource) parsedTheme.setSource(documentToString(document));
+		if (loadSource)
+			parsedTheme.setSource(documentToString(document));
 		return parsedTheme;
 	}
 
@@ -224,32 +233,48 @@ public class ColorThemeManager implements IPropertyChangeListener {
 		applyDefault(theme, ColorThemeKeys.STDERR, ColorThemeKeys.KEYWORD);
 		applyDefault(theme, ColorThemeKeys.STDIN, ColorThemeKeys.STRING);
 		applyDefault(theme, ColorThemeKeys.STDOUT, ColorThemeKeys.FOREGROUND);
-		
-		//Compare editor
-		applyDefault(theme, ColorThemeKeys.COMPARE_EDITOR_CONFLICTING_COLOR, ColorThemeKeys.STDERR);
-		applyDefault(theme, ColorThemeKeys.COMPARE_EDITOR_RESOLVED_COLOR, ColorThemeKeys.STRING);
-		applyDefault(theme, ColorThemeKeys.COMPARE_EDITOR_OUTGOING_COLOR, ColorThemeKeys.FOREGROUND);
-		applyDefault(theme, ColorThemeKeys.COMPARE_EDITOR_INCOMING_COLOR, ColorThemeKeys.NUMBER);
-		
-		//Egit (VCS)
-		applyDefault(theme, ColorThemeKeys.VCS_DIFF_ADD_FOREGROUND, ColorThemeKeys.COMPARE_EDITOR_INCOMING_COLOR);
-		applyDefault(theme, ColorThemeKeys.VCS_DIFF_ADD_BACKGROUND, ColorThemeKeys.BACKGROUND);
-		
-		applyDefault(theme, ColorThemeKeys.VCS_DIFF_HEADLINE_FOREGROUND, ColorThemeKeys.FOREGROUND);
-		applyDefault(theme, ColorThemeKeys.VCS_DIFF_HEADLINE_BACKGROUND, ColorThemeKeys.BACKGROUND);
-		
-		applyDefault(theme, ColorThemeKeys.VCS_DIFF_REMOVE_FOREGROUND, ColorThemeKeys.STDERR);
-		applyDefault(theme, ColorThemeKeys.VCS_DIFF_REMOVE_BACKGROUND, ColorThemeKeys.BACKGROUND);
-		
-		applyDefault(theme, ColorThemeKeys.VCS_RESOURCE_IGNORED_FOREGROUND, ColorThemeKeys.FOREGROUND);
-		applyDefault(theme, ColorThemeKeys.VCS_RESOURCE_IGNORED_BACKGROUND, ColorThemeKeys.BACKGROUND);
-		
-		applyDefault(theme, ColorThemeKeys.VCS_UNCOMMITED_CHANGE_FOREGROUND, ColorThemeKeys.FOREGROUND);
-		applyDefault(theme, ColorThemeKeys.VCS_UNCOMMITED_CHANGE_BACKGROUND, ColorThemeKeys.BACKGROUND);
-		
-		applyDefault(theme, ColorThemeKeys.VCS_DIFF_HUNK_FOREGROUND, ColorThemeKeys.COMMENT_TASK_TAG);
-		applyDefault(theme, ColorThemeKeys.VCS_DIFF_HUNK_BACKGROUND, ColorThemeKeys.BACKGROUND);
-		
+
+		// Compare editor
+		applyDefault(theme, ColorThemeKeys.COMPARE_EDITOR_CONFLICTING_COLOR,
+				ColorThemeKeys.STDERR);
+		applyDefault(theme, ColorThemeKeys.COMPARE_EDITOR_RESOLVED_COLOR,
+				ColorThemeKeys.STRING);
+		applyDefault(theme, ColorThemeKeys.COMPARE_EDITOR_OUTGOING_COLOR,
+				ColorThemeKeys.FOREGROUND);
+		applyDefault(theme, ColorThemeKeys.COMPARE_EDITOR_INCOMING_COLOR,
+				ColorThemeKeys.NUMBER);
+
+		// Egit (VCS)
+		applyDefault(theme, ColorThemeKeys.VCS_DIFF_ADD_FOREGROUND,
+				ColorThemeKeys.COMPARE_EDITOR_INCOMING_COLOR);
+		applyDefault(theme, ColorThemeKeys.VCS_DIFF_ADD_BACKGROUND,
+				ColorThemeKeys.BACKGROUND);
+
+		applyDefault(theme, ColorThemeKeys.VCS_DIFF_HEADLINE_FOREGROUND,
+				ColorThemeKeys.FOREGROUND);
+		applyDefault(theme, ColorThemeKeys.VCS_DIFF_HEADLINE_BACKGROUND,
+				ColorThemeKeys.BACKGROUND);
+
+		applyDefault(theme, ColorThemeKeys.VCS_DIFF_REMOVE_FOREGROUND,
+				ColorThemeKeys.STDERR);
+		applyDefault(theme, ColorThemeKeys.VCS_DIFF_REMOVE_BACKGROUND,
+				ColorThemeKeys.BACKGROUND);
+
+		applyDefault(theme, ColorThemeKeys.VCS_RESOURCE_IGNORED_FOREGROUND,
+				ColorThemeKeys.FOREGROUND);
+		applyDefault(theme, ColorThemeKeys.VCS_RESOURCE_IGNORED_BACKGROUND,
+				ColorThemeKeys.BACKGROUND);
+
+		applyDefault(theme, ColorThemeKeys.VCS_UNCOMMITED_CHANGE_FOREGROUND,
+				ColorThemeKeys.FOREGROUND);
+		applyDefault(theme, ColorThemeKeys.VCS_UNCOMMITED_CHANGE_BACKGROUND,
+				ColorThemeKeys.BACKGROUND);
+
+		applyDefault(theme, ColorThemeKeys.VCS_DIFF_HUNK_FOREGROUND,
+				ColorThemeKeys.COMMENT_TASK_TAG);
+		applyDefault(theme, ColorThemeKeys.VCS_DIFF_HUNK_BACKGROUND,
+				ColorThemeKeys.BACKGROUND);
+
 		applyDefault(theme, ColorThemeKeys.HYPERLINK, ColorThemeKeys.KEYWORD);
 		applyDefault(theme, ColorThemeKeys.ACTIVE_HYPERLINK,
 				ColorThemeKeys.KEYWORD);
@@ -307,8 +332,9 @@ public class ColorThemeManager implements IPropertyChangeListener {
 	public ColorTheme saveTheme(String content) {
 		ColorTheme theme;
 		try {
-			theme = ColorThemeManager.parseTheme(new ByteArrayInputStream(
-					content.getBytes("utf-8")), false).getTheme();
+			theme = ColorThemeManager.parseTheme(
+					new ByteArrayInputStream(content.getBytes("utf-8")), false)
+					.getTheme();
 			saveTheme(content, theme);
 			return theme;
 		} catch (Exception e) {
@@ -333,13 +359,13 @@ public class ColorThemeManager implements IPropertyChangeListener {
 			}
 		}
 	}
-	
+
 	public void removeTheme(ColorTheme theme) {
 		try {
 			String name = theme.getName();
-			
+
 			ColorTheme existingWithName = themes.get(name);
-			
+
 			if (existingWithName != null) {
 				String importedThemeId = existingWithName.getImportedThemeId();
 				if (importedThemeId != null) {
@@ -349,7 +375,7 @@ public class ColorThemeManager implements IPropertyChangeListener {
 					theme.setImportedThemeId(importedThemeId);
 				}
 			}
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -358,8 +384,9 @@ public class ColorThemeManager implements IPropertyChangeListener {
 	public ColorTheme saveEditedTheme(String content) {
 		ColorTheme theme;
 		try {
-			theme = ColorThemeManager.parseTheme(new ByteArrayInputStream(
-					content.getBytes("utf-8")), false).getTheme();
+			theme = ColorThemeManager.parseTheme(
+					new ByteArrayInputStream(content.getBytes("utf-8")), false)
+					.getTheme();
 			String name = theme.getName();
 
 			ColorTheme existingWithSameName = themes.get(name);
@@ -392,24 +419,26 @@ public class ColorThemeManager implements IPropertyChangeListener {
 		return getTheme(currentThemeName);
 	}
 
-    protected Map<com.github.eclipsecolortheme.Color, Color> cache =
-    		new HashMap<com.github.eclipsecolortheme.Color, Color>(10);
+	protected Map<com.github.eclipsecolortheme.Color, Color> cache = new HashMap<com.github.eclipsecolortheme.Color, Color>(
+			10);
 
-    public Color getColor(com.github.eclipsecolortheme.Color colorInTheme) {
-        Color color = cache.get(colorInTheme);
-        if (color == null || color.isDisposed()) {
-            color = new Color(Display.getCurrent(), colorInTheme.getR(), colorInTheme.getG(), colorInTheme.getB());
-            cache.put(colorInTheme, color);
-        }
-        return color;
-    }
+	public Color getColor(com.github.eclipsecolortheme.Color colorInTheme) {
+		Color color = cache.get(colorInTheme);
+		if (color == null || color.isDisposed()) {
+			color = new Color(Display.getCurrent(), colorInTheme.getR(),
+					colorInTheme.getG(), colorInTheme.getB());
+			cache.put(colorInTheme, color);
+		}
+		return color;
+	}
 
 	/**
-	 * Returns the SWT color to be used. Can be null if not available or no active theme is set.
+	 * Returns the SWT color to be used. Can be null if not available or no
+	 * active theme is set.
 	 */
 	public org.eclipse.swt.graphics.Color getSWTColor(String key) {
 		ColorTheme currentTheme = getCurrentTheme();
-		if(currentTheme != null){
+		if (currentTheme != null) {
 			ColorThemeSetting themeSetting = currentTheme.getEntries().get(key);
 			return getColor(themeSetting.getColor());
 		}
@@ -417,13 +446,16 @@ public class ColorThemeManager implements IPropertyChangeListener {
 	}
 
 	/**
-	 * @param input The input for theme file.
+	 * @param input
+	 *            The input for theme file.
 	 * @throws TransformerException
 	 * @throws IOException
 	 * @throws SAXException
 	 * @throws ParserConfigurationException
 	 */
-	public void saveTheme(InputStream input) throws ParserConfigurationException, SAXException, IOException, TransformerException {
+	public void saveTheme(InputStream input)
+			throws ParserConfigurationException, SAXException, IOException,
+			TransformerException {
 		ParsedTheme theme = ColorThemeManager.parseTheme(input, true);
 		themes.put(theme.getTheme().getName(), theme.getTheme());
 		IPreferenceStore store = getPreferenceStore();
@@ -434,12 +466,14 @@ public class ColorThemeManager implements IPropertyChangeListener {
 			}
 	}
 
-	protected static String documentToString(Document document) throws TransformerException {
-	    StringWriter writer = new StringWriter();
-	    Transformer transformer = TransformerFactory.newInstance().newTransformer();
-	    transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
-	    transformer.transform(new DOMSource(document), new StreamResult(writer));
-	    return writer.toString();
+	protected static String documentToString(Document document)
+			throws TransformerException {
+		StringWriter writer = new StringWriter();
+		Transformer transformer = TransformerFactory.newInstance()
+				.newTransformer();
+		transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+		transformer
+				.transform(new DOMSource(document), new StreamResult(writer));
+		return writer.toString();
 	}
-
 }

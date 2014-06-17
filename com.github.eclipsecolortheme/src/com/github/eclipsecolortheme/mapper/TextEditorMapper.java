@@ -28,8 +28,7 @@ public class TextEditorMapper extends GenericMapper {
 				ABSTRACT_TEXT_EDITOR_COLOR_SELECTION_FOREGROUND_SYSTEM_DEFAULT,
 				false);
 		putBoolean(preferences,
-				ABSTRACT_TEXT_EDITOR_COLOR_HYPERLINK_SYSTEM_DEFAULT,
-				false);
+				ABSTRACT_TEXT_EDITOR_COLOR_HYPERLINK_SYSTEM_DEFAULT, false);
 		super.map(theme);
 	}
 
@@ -51,8 +50,7 @@ public class TextEditorMapper extends GenericMapper {
 				.remove(ABSTRACT_TEXT_EDITOR_COLOR_SELECTION_BACKGROUND_SYSTEM_DEFAULT);
 		preferences
 				.remove(ABSTRACT_TEXT_EDITOR_COLOR_SELECTION_FOREGROUND_SYSTEM_DEFAULT);
-		preferences
-				.remove(ABSTRACT_TEXT_EDITOR_COLOR_HYPERLINK_SYSTEM_DEFAULT);
+		preferences.remove(ABSTRACT_TEXT_EDITOR_COLOR_HYPERLINK_SYSTEM_DEFAULT);
 		super.clear();
 	}
 

@@ -283,9 +283,21 @@
    </mapper>
    <mapper
          class="com.github.eclipsecolortheme.mapper.GenericMapper"
-         name="Json"
+         name="Json (Json Eclipse Plugin)"
          pluginId="org.sourceforge.jsonedit.core"
          xml="mappings/org.sourceforge.jsonedit.core.xml">
+   </mapper>
+   <mapper
+         class="com.github.eclipsecolortheme.mapper.GenericMapper"
+         name="Json (Eclipse Json Editor Plugin)"
+         pluginId="jsonedit-core"
+         xml="mappings/jsonedit-core.xml">
+   </mapper>
+   <mapper
+         class="com.github.eclipsecolortheme.mapper.JsonToolsEditorMapper"
+         name="Json (JsonTools)"
+         pluginId="org.sweetlemonade.eclipse.json"
+         xml="mappings/org.sweetlemonade.eclipse.json.xml">
    </mapper>
    <mapper
          class="com.github.eclipsecolortheme.mapper.GenericMapper"
@@ -304,6 +316,24 @@
          name="Haskell"
          pluginId="net.sf.eclipsefp.haskell.ui"
          xml="mappings/net.sf.eclipsefp.haskell.ui.xml">
+   </mapper>
+   <mapper
+         class="com.github.eclipsecolortheme.mapper.GenericMapper"
+         name="TypeScript"
+         pluginId="com.palantir.typescript"
+         xml="mappings/com.palantir.typescript.xml">
+   </mapper>
+   <mapper
+         class="com.github.eclipsecolortheme.mapper.GenericMapper"
+         name="Properties (Properties Editor)"
+         pluginId="jp.gr.java_conf.ussiy.app.propedit"
+         xml="mappings/jp.gr.java_conf.ussiy.app.propedit.xml">
+   </mapper>
+   <mapper
+         class="com.github.eclipsecolortheme.mapper.WebEditorMapper"
+         name="AngularJS"
+         pluginId="org.eclipse.angularjs.ui"
+         xml="mappings/org.eclipse.angularjs.ui.xml">
    </mapper>
    </extension>
    <extension
@@ -385,6 +415,12 @@
       </theme>
       <theme
             file="themes/retta.xml">
+      </theme>
+      <theme
+            file="themes/solarized-dark.xml">
+      </theme>
+      <theme
+            file="themes/solarized-light.xml">
       </theme>
    </extension>
 

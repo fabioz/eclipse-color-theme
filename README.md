@@ -7,7 +7,8 @@ Eclipse Color Theme makes it possible to import and switch color
 themes conveniently and without side effects.
 
 You can install the plugin from the
-[update site](http://eclipse-color-theme.github.com/update).  After
+[update site](http://eclipse-color-theme.github.com/update) (there's
+also an archive of the site for offline installation). After
 installing, go to *Window->Preferences->General->Appearance->Color
 Theme* to change the color theme.
 
@@ -19,6 +20,8 @@ Theme* to change the color theme.
 * When updating from an earlier version than 0.6, please uninstall the
   plugin and the update site, add the site listed above and install it
   again from there. Otherwise you won't see any updates.
+
+[![Build Status](https://secure.travis-ci.org/eclipse-color-theme/eclipse-color-theme.png)](http://travis-ci.org/eclipse-color-theme/eclipse-color-theme)
 
 Rationale
 ---------
@@ -38,70 +41,76 @@ Editors and themes
 
 Eclipse Color Theme currently supports the following editors:
 
-* Text
-* Java
-* Java properties
-* XML
-* HTML
-* CSS
-* JavaScript
-* C++
-* PHP
-* Ant
-* SQL
-* Python
-* JSP
-* Perl
-* Groovy
-* FDT
 * ActionScript/MXML (Adobe Flash Builder)
+* Ant
+* BibTex/LaTeX (TeXlipse)
+* C++
+* Clojure (Counterclockwise)
+* ColdFusion (CFEclipse)
+* CSS
+* DTD
+* Erlang (ErlIDE)
+* FDT
+* FreeMarker (JBoss Tools)
+* Go (GoClipse)
+* Groovy
+* Haskell (EclipseFP)
+* haXe (eclihx)
+* HTML (Eclipse WTP, [AngularJS Eclipse Plugin](https://github.com/angelozerr/angularjs-eclipse))
+* Java
+* Java properties (Eclipse JDT, [Properties Editor](http://propedit.sourceforge.jp/index_en.html))
+* JavaScript
+* Json ([Json Eclipse Plugin](https://github.com/pulse00/Json-Eclipse-Plugin), [Eclipse Json Editor Plugin](http://sourceforge.net/projects/eclipsejsonedit/), [JsonTools](https://bitbucket.org/denmiroch/jsontools/wiki/Home))
+* JSP
+* Markdown
+* PDE
+* Perl
+* PHP
+* Puppet (Gepetto)
+* Python
+* R (StatET)
 * Ruby
 * Scala
-* FreeMarker (JBoss Tools)
-* PDE
-* ColdFusion (CFEclipse)
-* TCL
-* BibTex/LaTeX (TeXlipse)
-* R (StatET)
-* Erlang (ErlIDE)
-* haXe (eclihx)
-* Clojure (Counterclockwise)
-* Go (GoClipse)
-* Twig 
-* Json (Json Eclipse Plugin)
-* Yaml (Yedit)
-* Xtend
-* Markdown
 * Spket IDE (JavaScript and XML)
+* SQL
+* TCL
+* Text
+* Twig 
+* TypeScript
+* XML
 * XSL
-* DTD
-* Haskell (EclipseFP)
+* Xtend
+* Yaml (Yedit)
+
 
 Available themes:
 
+* [Black Pastel](http://www.eclipsecolorthemes.org/?view=theme&id=128)
+* [frontenddev](http://www.eclipsecolorthemes.org/?view=theme&id=90)
+* [Gedit Original Oblivion](http://www.eclipsecolorthemes.org/?view=theme&id=115)
+* [Havenjark](http://www.eclipsecolorthemes.org/?view=theme&id=25)
+* [Inkpot](http://www.eclipsecolorthemes.org/?view=theme&id=4)
+* [minimal](http://www.eclipsecolorthemes.org/?view=theme&id=43)
+* [Monokai](http://www.eclipsecolorthemes.org/?view=theme&id=52)
+* [Mr](http://www.eclipsecolorthemes.org/?view=theme&id=32)
+* [NightLion Aptana Theme](http://www.eclipsecolorthemes.org/?view=theme&id=47)
+* [Notepadd++ Like](http://www.eclipsecolorthemes.org/?view=theme&id=91)
 * [Oblivion](http://www.eclipsecolorthemes.org/?view=theme&id=1)
 * [Obsidian](http://www.eclipsecolorthemes.org/?view=theme&id=21)
-* [Zenburn](http://www.eclipsecolorthemes.org/?view=theme&id=2)
-* [RecognEyes](http://www.eclipsecolorthemes.org/?view=theme&id=30)
-* [Inkpot](http://www.eclipsecolorthemes.org/?view=theme&id=4)
-* [Vibrant Ink](http://www.eclipsecolorthemes.org/?view=theme&id=3)
-* [Tango](http://www.eclipsecolorthemes.org/?view=theme&id=27)
-* [Havenjark](http://www.eclipsecolorthemes.org/?view=theme&id=25)
-* [frontenddev](http://www.eclipsecolorthemes.org/?view=theme&id=90)
-* [NightLion Aptana Theme](http://www.eclipsecolorthemes.org/?view=theme&id=47)
-* [Schuss](http://www.eclipsecolorthemes.org/?view=theme&id=29)
-* [Notepadd++ Like](http://www.eclipsecolorthemes.org/?view=theme&id=91)
-* [Sublime Text 2](http://www.eclipsecolorthemes.org/?view=theme&id=66)
-* [Wombat](http://www.eclipsecolorthemes.org/?view=theme&id=118)
 * [Pastel](http://www.eclipsecolorthemes.org/?view=theme&id=68)
-* [minimal](http://www.eclipsecolorthemes.org/?view=theme&id=43)
-* [Gedit Original Oblivion](http://www.eclipsecolorthemes.org/?view=theme&id=115)
-* [Black Pastel](http://www.eclipsecolorthemes.org/?view=theme&id=128)
-* [Mr](http://www.eclipsecolorthemes.org/?view=theme&id=32)
-* [Monokai](http://www.eclipsecolorthemes.org/?view=theme&id=52)
-* [Roboticket](http://www.eclipsecolorthemes.org/?view=theme&id=93)
-* [Sunburst](http://www.eclipsecolorthemes.org/?view=theme&id=383)
+* [RecognEyes](http://www.eclipsecolorthemes.org/?view=theme&id=30)
 * [Retta](http://www.eclipsecolorthemes.org/?view=theme&id=1004)
+* [Roboticket](http://www.eclipsecolorthemes.org/?view=theme&id=93)
+* [Schuss](http://www.eclipsecolorthemes.org/?view=theme&id=29)
+* [Solarized Dark](http://www.eclipsecolorthemes.org/?view=theme&id=1115)
+* [Solarized Light](http://www.eclipsecolorthemes.org/?view=theme&id=1013)
+* [Sublime Text 2](http://www.eclipsecolorthemes.org/?view=theme&id=66)
+* [Sunburst](http://www.eclipsecolorthemes.org/?view=theme&id=383)
+* [Tango](http://www.eclipsecolorthemes.org/?view=theme&id=27)
+* [Vibrant Ink](http://www.eclipsecolorthemes.org/?view=theme&id=3)
+* [Wombat](http://www.eclipsecolorthemes.org/?view=theme&id=118)
+* [Zenburn](http://www.eclipsecolorthemes.org/?view=theme&id=2)
+
 
 You can download additional themes or create your own on
 [eclipsecolorthemes.org](http://eclipsecolorthemes.org).
@@ -132,6 +141,25 @@ and create a new XML file named after the plugin ID in the *mapper*
 directory which maps the colour theme's keys to those of the editor.
 
 4. Open *plugin.xml* and add the new mapping file to the extension point *com.github.eclipsecolortheme.theme*.
+
+Building
+--------
+
+### Generating an update site
+
+If you just want to generate an update site from the sources, you can
+do so using [Maven](http://maven.apache.org/):
+
+    mvn clean verify
+
+This will create an update site in
+_com.github.eclipsecolortheme.updatesite/target/repository_.
+
+### Development
+
+All you need is [Eclipse PDE](http://www.eclipse.org/pde/). Once you
+have that, you can import the projects in this repository into an
+Eclipse workspace.
 
 License
 -------

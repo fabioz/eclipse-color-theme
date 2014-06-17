@@ -22,90 +22,98 @@ import com.github.eclipsecolortheme.ColorThemeSetting;
 import com.github.eclipsecolortheme.ColorThemeSemanticHighlightingMapping;
 
 public class GenericMapper extends ThemePreferenceMapper {
-    
-    protected Map<String, ColorThemeMapping> mappings = new HashMap<String, ColorThemeMapping>();
-    protected ColorThemeSetting defaultBackground;
-    
-    /**
-     * Parse mapping from input file.
-     * @param input InputStream for an XML file
-     * @throws SAXException
-     * @throws IOException
-     * @throws ParserConfigurationException
-     */
-    public void parseMapping(InputStream input)
-            throws SAXException, IOException, ParserConfigurationException {
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder builder = factory.newDocumentBuilder();
-        Document document = builder.parse(input);
-        Element root = document.getDocumentElement();
-        parseMappings(root);
-        parseSemanticHighlightingMappings(root);
-    }
-    
-    private void parseMappings(Element root) {
-        Node mappingsNode = root.getElementsByTagName("mappings").item(0);
-        NodeList mappingNodes = mappingsNode.getChildNodes();
-        for (int i = 0; i < mappingNodes.getLength(); i++) {
-            Node mappingNode = mappingNodes.item(i);
-            if (mappingNode.hasAttributes()) {
-                String pluginKey = extractAttribute(mappingNode, "pluginKey");
-                String themeKey = extractAttribute(mappingNode, "themeKey");
-                mappings.put(pluginKey, createMapping(pluginKey, themeKey));
-            }
-        }
-    }
-    
-    private void parseSemanticHighlightingMappings(Element root) {
-        Node mappingsNode = root.getElementsByTagName("semanticHighlightingMappings").item(0);
-        if (mappingsNode != null) {
-            NodeList mappingNodes = mappingsNode.getChildNodes();
-            for (int i = 0; i < mappingNodes.getLength(); i++) {
-                Node mappingNode = mappingNodes.item(i);
-                if (mappingNode.hasAttributes()) {
-                    String pluginKey = extractAttribute(mappingNode, "pluginKey");
-                    String themeKey = extractAttribute(mappingNode, "themeKey");
-                    mappings.put(pluginKey, createSemanticHighlightingMapping(pluginKey, themeKey));
-                }
-            }
-        }
-    }
-    
-    protected ColorThemeMapping createMapping(String pluginKey, String themeKey) {
-        return new ColorThemeMapping(pluginKey, themeKey);
-    }
 
-    protected ColorThemeSemanticHighlightingMapping createSemanticHighlightingMapping(String pluginKey, String themeKey) {
-        return new ColorThemeSemanticHighlightingMapping(pluginKey, themeKey);
-    }
-    
-    private static String extractAttribute(Node node, String name) {
-        return node.getAttributes().getNamedItem(name).getNodeValue();
-    }
+	protected Map<String, ColorThemeMapping> mappings = new HashMap<String, ColorThemeMapping>();
+	protected ColorThemeSetting defaultBackground;
 
-    @Override
-    public void map(Map<String, ColorThemeSetting> theme) {
-        // put preferences according to mappings
-        IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-        if (store.getBoolean("forceDefaultBG")) {
-            defaultBackground = theme.get("background");
-        } else {
-            defaultBackground = new ColorThemeSetting();
-        }
-        for (String pluginKey : mappings.keySet()) {
-            ColorThemeMapping mapping = mappings.get(pluginKey);
-            ColorThemeSetting setting = theme.get(mapping.getThemeKey());
-            if (setting != null) {
-                mapping.putPreferences(preferences, setting);
-            }
-        }
-    }
+	/**
+	 * Parse mapping from input file.
+	 * 
+	 * @param input
+	 *            InputStream for an XML file
+	 * @throws SAXException
+	 * @throws IOException
+	 * @throws ParserConfigurationException
+	 */
+	public void parseMapping(InputStream input) throws SAXException,
+			IOException, ParserConfigurationException {
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder = factory.newDocumentBuilder();
+		Document document = builder.parse(input);
+		Element root = document.getDocumentElement();
+		parseMappings(root);
+		parseSemanticHighlightingMappings(root);
+	}
 
-    @Override
-    public void clear() {
-        for (String pluginKey : mappings.keySet()) {
-            ColorThemeMapping mapping = mappings.get(pluginKey);
-            mapping.removePreferences(preferences);
-        }
-    }
+	private void parseMappings(Element root) {
+		Node mappingsNode = root.getElementsByTagName("mappings").item(0);
+		NodeList mappingNodes = mappingsNode.getChildNodes();
+		for (int i = 0; i < mappingNodes.getLength(); i++) {
+			Node mappingNode = mappingNodes.item(i);
+			if (mappingNode.hasAttributes()) {
+				String pluginKey = extractAttribute(mappingNode, "pluginKey");
+				String themeKey = extractAttribute(mappingNode, "themeKey");
+				mappings.put(pluginKey, createMapping(pluginKey, themeKey));
+			}
+		}
+	}
+
+	private void parseSemanticHighlightingMappings(Element root) {
+		Node mappingsNode = root.getElementsByTagName(
+				"semanticHighlightingMappings").item(0);
+		if (mappingsNode != null) {
+			NodeList mappingNodes = mappingsNode.getChildNodes();
+			for (int i = 0; i < mappingNodes.getLength(); i++) {
+				Node mappingNode = mappingNodes.item(i);
+				if (mappingNode.hasAttributes()) {
+					String pluginKey = extractAttribute(mappingNode,
+							"pluginKey");
+					String themeKey = extractAttribute(mappingNode, "themeKey");
+					mappings.put(
+							pluginKey,
+							createSemanticHighlightingMapping(pluginKey,
+									themeKey));
+				}
+			}
+		}
+	}
+
+	protected ColorThemeMapping createMapping(String pluginKey, String themeKey) {
+		return new ColorThemeMapping(pluginKey, themeKey);
+	}
+
+	protected ColorThemeSemanticHighlightingMapping createSemanticHighlightingMapping(
+			String pluginKey, String themeKey) {
+		return new ColorThemeSemanticHighlightingMapping(pluginKey, themeKey);
+	}
+
+	private static String extractAttribute(Node node, String name) {
+		return node.getAttributes().getNamedItem(name).getNodeValue();
+	}
+
+	@Override
+	public void map(Map<String, ColorThemeSetting> theme) {
+		// put preferences according to mappings
+		IPreferenceStore store = Activator.getDefault().getPreferenceStore();
+		if (store.getBoolean("forceDefaultBG")) {
+			defaultBackground = theme.get("background");
+		} else {
+			defaultBackground = new ColorThemeSetting();
+		}
+		for (String pluginKey : mappings.keySet()) {
+			ColorThemeMapping mapping = mappings.get(pluginKey);
+			ColorThemeSetting setting = theme.get(mapping.getThemeKey());
+			if (setting != null) {
+				mapping.putPreferences(preferences, setting);
+			}
+		}
+	}
+
+	@Override
+	public void clear() {
+		for (String pluginKey : mappings.keySet()) {
+			ColorThemeMapping mapping = mappings.get(pluginKey);
+			mapping.removePreferences(preferences);
+		}
+	}
 }

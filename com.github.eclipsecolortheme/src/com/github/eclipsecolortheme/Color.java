@@ -29,7 +29,7 @@ public final class Color {
 					b = 0;
 				}
 			}
-		}else{
+		} else {
 			r = 0;
 			g = 0;
 			b = 0;
@@ -86,14 +86,15 @@ public final class Color {
 	}
 
 	public boolean equals(Object object) {
-		if (object == this){
+		if (object == this) {
 			return true;
 		}
-		if (!(object instanceof Color)){
+		if (!(object instanceof Color)) {
 			return false;
 		}
-		Color other = (Color)object;
-		return (other.r == this.r) && (other.g == this.g) && (other.b == this.b);
+		Color other = (Color) object;
+		return (other.r == this.r) && (other.g == this.g)
+				&& (other.b == this.b);
 	}
 
 	public int hashCode() {

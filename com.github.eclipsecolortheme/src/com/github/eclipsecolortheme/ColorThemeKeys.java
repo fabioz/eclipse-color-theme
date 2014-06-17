@@ -11,8 +11,16 @@ public class ColorThemeKeys {
 	public static final String BACKGROUND = "background";
 	public static final String SELECTION_FOREGROUND = "selectionForeground";
 	public static final String SELECTION_BACKGROUND = "selectionBackground";
-	public static final String CURRENT_LINE = "currentLine"; //This one is for the editor background
-	public static final String CURRENT_LINE_IN_WIDGETS = "currentLineInWidgets"; //This one is for table and tree
+	public static final String CURRENT_LINE = "currentLine"; // This one is for
+																// the editor
+																// background
+	public static final String CURRENT_LINE_IN_WIDGETS = "currentLineInWidgets"; // This
+																					// one
+																					// is
+																					// for
+																					// table
+																					// and
+																					// tree
 	public static final String LINE_NUMBER = "lineNumber";
 	public static final String SEARCH_RESULT_INDICATION = "searchResultIndication";
 	public static final String FILTERED_SEARCH_RESULT_INDICATION = "filteredSearchResultIndication";
@@ -105,7 +113,7 @@ public class ColorThemeKeys {
 		KEYS_BACKGROUND_RELATED.add(DEBUG_SECONDARY_INSTRUCTION_POINTER);
 		KEYS_BACKGROUND_RELATED.add(MATCHING_BRACKET);
 		KEYS_BACKGROUND_RELATED.add(SEARCH_VIEW_MATCH_HIGHLIGHT);
-		
+
 		KEYS_BACKGROUND_RELATED.add(VCS_UNCOMMITED_CHANGE_BACKGROUND);
 		KEYS_BACKGROUND_RELATED.add(VCS_DIFF_HUNK_BACKGROUND);
 		KEYS_BACKGROUND_RELATED.add(VCS_DIFF_ADD_BACKGROUND);
