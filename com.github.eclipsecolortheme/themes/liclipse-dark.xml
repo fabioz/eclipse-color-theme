@@ -2,8 +2,10 @@
 <colorTheme id="14833" name="LiClipse Dark" modified="2013-03-09 20:19:42" author="Fabio Zadrozny" website="https://sw-brainwy.rhcloud.com">
     <searchResultIndication color="#003871" />
     <filteredSearchResultIndication color="#003871" />
-    <occurrenceIndication color="#397171" />
-    <writeOccurrenceIndication color="#397171" />
+    <!-- old occurrenceIndication: #397171 -->
+
+    <occurrenceIndication color="#8000FF" />
+    <writeOccurrenceIndication color="#8000FF" />
     <findScope color="#736C66" />
     <deletionIndication color="#D25252" />
     <sourceHoverBackground color="#736C66" />
