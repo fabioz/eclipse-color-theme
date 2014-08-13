@@ -45,7 +45,7 @@
     <searchResultIndication color="#5E6569"  bold="false" underline="false" strikethrough="false" italic="false"/>
     <searchViewMatchHighlight color="#616161"  bold="false" underline="false" strikethrough="false" italic="false"/>
     <selectionBackground color="#364656"  bold="false" underline="false" strikethrough="false" italic="false"/>
-    <selectionForeground color="#3C4043"  bold="false" underline="false" strikethrough="false" italic="false"/>
+    <selectionForeground color="#F8F8F8"  bold="false" underline="false" strikethrough="false" italic="false"/>
     <singleLineComment color="#817982"  bold="false" underline="false" strikethrough="false" italic="false"/>
     <sourceHoverBackground color="#A19879"  bold="false" underline="false" strikethrough="false" italic="false"/>
     <staticField color="#CF6A4C"  bold="false" underline="false" strikethrough="false" italic="false"/>
