@@ -4,6 +4,7 @@ import java.util.Map;
 
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 
+import com.github.eclipsecolortheme.ColorThemeMapping;
 import com.github.eclipsecolortheme.ColorThemeSetting;
 
 public class TextEditorMapper extends GenericMapper {
@@ -15,7 +16,7 @@ public class TextEditorMapper extends GenericMapper {
 	private static final String ABSTRACT_TEXT_EDITOR_COLOR_HYPERLINK_SYSTEM_DEFAULT = "hyperlinkColor.SystemDefault";
 
 	@Override
-	public void map(Map<String, ColorThemeSetting> theme) {
+	public void map(Map<String, ColorThemeSetting> theme, Map<String, ColorThemeMapping> overrideMappings) {
 		// System.out.println("Applying: " + preferences);
 		putBoolean(preferences,
 				ABSTRACT_TEXT_EDITOR_COLOR_BACKGROUND_SYSTEM_DEFAULT, false);
@@ -29,7 +30,7 @@ public class TextEditorMapper extends GenericMapper {
 				false);
 		putBoolean(preferences,
 				ABSTRACT_TEXT_EDITOR_COLOR_HYPERLINK_SYSTEM_DEFAULT, false);
-		super.map(theme);
+		super.map(theme, overrideMappings);
 	}
 
 	private void putBoolean(IEclipsePreferences preferences, String key,

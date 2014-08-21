@@ -70,6 +70,18 @@
             xml="mappings/org.cloudsmith.geppetto.pp.dsl.PP.xml">
       </mapper>
       <mapper
+            class="com.github.eclipsecolortheme.mapper.GenericMapper"
+            name="Puppet Geppetto 4+ module editor"
+            pluginId="com.puppetlabs.geppetto.module.dsl.Module"
+            xml="mappings/com.puppetlabs.geppetto.module.dsl.Module.xml">
+      </mapper>
+      <mapper
+            class="com.github.eclipsecolortheme.mapper.GenericMapper"
+            name="Puppet Geppetto 4+ manifest editor"
+            pluginId="com.puppetlabs.geppetto.pp.dsl.PP"
+            xml="mappings/com.puppetlabs.geppetto.pp.dsl.PP.xml">
+      </mapper>
+      <mapper
             class="com.github.eclipsecolortheme.mapper.TextEditorMapper"
             name="Text"
             pluginId="org.eclipse.ui.editors"
@@ -211,9 +223,27 @@
    </mapper>
    <mapper
          class="com.github.eclipsecolortheme.mapper.GenericMapper"
+         name="Scala IDE Play framework"
+         pluginId="org.scala-ide.play2"
+         xml="mappings/org.scala-ide.play2.xml">
+   </mapper>
+   <mapper
+         class="com.github.eclipsecolortheme.mapper.GenericMapper"
          name="FreeMarker"
          pluginId="org.jboss.ide.eclipse.freemarker"
          xml="mappings/org.jboss.ide.eclipse.freemarker.xml">
+   </mapper>
+   <mapper
+        class="com.github.eclipsecolortheme.mapper.GenericMapper"
+        name="Gradle"
+        pluginId="org.nodeclipse.enide.editors.gradle"
+        xml="mappings/org.nodeclipse.enide.editors.gradle.xml">
+   </mapper>
+   <mapper
+        class="com.github.eclipsecolortheme.mapper.GenericMapper"
+        name="Jade"
+        pluginId="org.nodeclipse.enide.editors.jade"
+        xml="mappings/org.nodeclipse.enide.editors.jade.xml">
    </mapper>
    <mapper
          class="com.github.eclipsecolortheme.mapper.DltkEditorMapper"
@@ -232,6 +262,12 @@
          name="CFML"
          pluginId="org.cfeclipse.cfml"
          xml="mappings/org.cfeclipse.cfml.xml">
+   </mapper>
+   <mapper
+         class="com.github.eclipsecolortheme.mapper.GenericMapper"
+         name="CFML"
+         pluginId="org.chromium.debug.ui"
+         xml="mappings/org.chromium.debug.ui.xml">
    </mapper>
    <mapper
          class="com.github.eclipsecolortheme.mapper.DltkEditorMapper"
@@ -335,6 +371,12 @@
          pluginId="org.eclipse.angularjs.ui"
          xml="mappings/org.eclipse.angularjs.ui.xml">
    </mapper>
+   <mapper
+        class="com.github.eclipsecolortheme.mapper.GenericMapper"
+        name="LESS"
+        pluginId="net.vtst.ow.eclipse.less.Less"
+        xml="mappings/net.vtst.ow.eclipse.less.Less.xml">
+   </mapper>
    </extension>
    <extension
          point="com.github.eclipsecolortheme.theme">
@@ -385,6 +427,9 @@
       </theme>
       <theme
             file="themes/sublime-text-2.xml">
+      </theme>
+      <theme
+            file="themes/sublime-text-monokai-extended.xml">
       </theme>
       <theme
             file="themes/tango.xml">

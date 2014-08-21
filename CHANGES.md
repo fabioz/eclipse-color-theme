@@ -1,11 +1,23 @@
-0.14.0
+0.15.0
 ======
+* Added support for Gepetto's new module editor.
+* Added support for the [LESS Plugin](http://www.normalesup.org/~simonet/soft/ow/eclipse-less.fr.html).
+* Allow themes to override mappings.
+* Highlight characters in Scala IDE.
+* Added support for Scala IDE Play editor.
+
+0.14.0 (2014-07-15)
+===================
 * Added the Solarized Dark theme.
 * Added the Solarized Light theme.
 * Added support for the [AngularJS Eclipse Plugin](https://github.com/angelozerr/angularjs-eclipse).
 * Added support for the [JsonTools](https://bitbucket.org/denmiroch/jsontools/wiki/Home).
 * Added support for the [Eclipse Json Editor Plugin](http://sourceforge.net/projects/eclipsejsonedit/).
 * Added support for the [Properties Editor](http://propedit.sourceforge.jp/index_en.html).
+* Added support for Geppetto 4+.
+* Added support for Nodeclipse/Enide Gradle Editor.
+* Added support for Nodeclipse Chromium Debugger JS Editor.
+* Added support for Nodeclipse Minimalist Jade Editor.
 
 0.13.1 (2014-05-04)
 ===================

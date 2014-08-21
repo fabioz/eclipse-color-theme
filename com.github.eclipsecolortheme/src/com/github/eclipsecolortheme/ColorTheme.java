@@ -7,50 +7,55 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 public class ColorTheme {
-
-	private String id;
-	private String name;
-	private String author;
-	private String website;
-	private Map<String, ColorThemeSetting> entries;
+	
+    private String id;
+    private String name;
+    private String author;
+    private String website;
+    private Map<String, ColorThemeSetting> entries;
+    private Map<String, Map<String, ColorThemeMapping>> mappings;
 	/**
 	 * This is the id of the theme in the preferences store. If a theme was not
 	 * loaded from the preferences store, the importedThemeId is null.
 	 */
 	private String importedThemeId;
+	
+    public String getId() {
+        return id;
+    }
 
-	public String getId() {
-		return id;
-	}
+    public void setId(String id) {
+        this.id = id;
+    }
 
-	public void setId(String id) {
-		this.id = id;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public String getAuthor() {
+        return author;
+    }
 
-	public String getAuthor() {
-		return author;
-	}
+    public void setAuthor(String author) {
+        this.author = author;
+    }
 
-	public void setAuthor(String author) {
-		this.author = author;
-	}
+    public String getWebsite() {
+        return website;
+    }
 
-	public String getWebsite() {
-		return website;
-	}
+    public void setWebsite(String website) {
+        this.website = website;
+    }
 
-	public void setWebsite(String website) {
-		this.website = website;
-	}
-
+    public Map<String, ColorThemeSetting> getEntries() {
+        return entries;
+    }
+    
 	/**
 	 * This is the id of the theme in the preferences store. If a theme was not
 	 * loaded from the preferences store, the importedThemeId is null.
@@ -63,13 +68,18 @@ public class ColorTheme {
 		return importedThemeId;
 	}
 
-	public Map<String, ColorThemeSetting> getEntries() {
-		return entries;
-	}
+    public void setEntries(Map<String, ColorThemeSetting> entries) {
+        this.entries = entries;
+    }
 
-	public void setEntries(Map<String, ColorThemeSetting> entries) {
-		this.entries = entries;
-	}
+    public Map<String, Map<String, ColorThemeMapping>> getMappings() {
+        return mappings;
+    }
+
+    public void setMappings(Map<String, Map<String, ColorThemeMapping>> mappings) {
+        this.mappings = mappings;
+    }
+
 
 	/**
 	 * @param key

@@ -34,11 +34,14 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import com.github.eclipsecolortheme.mapper.GenericMapper;
+import com.github.eclipsecolortheme.mapper.ThemePreferenceMapper;
+
 /** Loads and applies color themes. */
 public final class ColorThemeManager implements IPropertyChangeListener {
 
 	private Map<String, ColorTheme> themes;
-
+	//Note: the editors field was moved to ColorThemeApplier.editors
 	private IPreferenceStore preferenceStore;
 
 	/**
@@ -90,7 +93,7 @@ public final class ColorThemeManager implements IPropertyChangeListener {
 		readImportedThemes(themes);
 	}
 
-	private static void readStockThemes(Map<String, ColorTheme> themes) {
+	private void readStockThemes(Map<String, ColorTheme> themes) {
 		IConfigurationElement[] config = Platform
 				.getExtensionRegistry()
 				.getConfigurationElementsFor(Activator.EXTENSION_POINT_ID_THEME);
@@ -157,7 +160,7 @@ public final class ColorThemeManager implements IPropertyChangeListener {
 	 *            Specify if should load original XML source.
 	 * @return Parsed theme
 	 */
-	public static ParsedTheme parseTheme(InputStream input, boolean loadSource)
+	public ParsedTheme parseTheme(InputStream input, boolean loadSource)
 			throws ParserConfigurationException, SAXException, IOException,
 			TransformerException {
 		ColorTheme theme = new ColorTheme();
@@ -203,6 +206,26 @@ public final class ColorThemeManager implements IPropertyChangeListener {
 		// Fabioz Change: amend entries before setting them
 		amendThemeEntries(entries);
 		theme.setEntries(entries);
+		
+		// Set the mappingOverrides
+        NodeList nodeListMappingOverrides = root.getElementsByTagName("mappingOverrides");
+        if (nodeListMappingOverrides.getLength() > 0) {
+            Element mappingOverridesRoot = (Element) nodeListMappingOverrides.item(0);
+
+            Map<String, Map<String, ColorThemeMapping>> mappings = new HashMap<String, Map<String, ColorThemeMapping>>();
+            NodeList nodeListEclipseColorThemeMapping = mappingOverridesRoot.getChildNodes();
+            for (int i = 0; i < nodeListEclipseColorThemeMapping.getLength(); ++i) {
+                Node eclipseColorThemeMapping = nodeListEclipseColorThemeMapping.item(i);
+                if (eclipseColorThemeMapping.hasAttributes()) {
+                    String pluginId = eclipseColorThemeMapping.getAttributes().getNamedItem("plugin").getNodeValue();
+                    Map<String, ColorThemeMapping> mapMappings = new HashMap<String, ColorThemeMapping>();
+
+                    new GenericMapper().parseMappings((Element) eclipseColorThemeMapping, mapMappings);
+                    mappings.put(pluginId, mapMappings);
+                }
+            }
+            theme.setMappings(mappings);
+        }
 
 		ParsedTheme parsedTheme = new ParsedTheme(theme);
 		if (loadSource)
@@ -334,7 +357,7 @@ public final class ColorThemeManager implements IPropertyChangeListener {
 	public ColorTheme saveTheme(String content) {
 		ColorTheme theme;
 		try {
-			theme = ColorThemeManager.parseTheme(
+			theme = parseTheme(
 					new ByteArrayInputStream(content.getBytes("utf-8")), false)
 					.getTheme();
 			saveTheme(content, theme);
@@ -384,10 +407,10 @@ public final class ColorThemeManager implements IPropertyChangeListener {
 	}
 
 	public ColorTheme saveEditedTheme(String content) {
-		
+
 		ColorTheme theme;
 		try {
-			theme = ColorThemeManager.parseTheme(
+			theme = parseTheme(
 					new ByteArrayInputStream(content.getBytes("utf-8")), false)
 					.getTheme();
 			String name = theme.getName();
@@ -404,8 +427,9 @@ public final class ColorThemeManager implements IPropertyChangeListener {
 					IPreferenceStore store = getPreferenceStore();
 					store.putValue(importedThemeId, content);
 					theme.setImportedThemeId(importedThemeId);
-					
-					// When we edit a theme, we invalidate the foreground/background caches as it may have changed.
+
+					// When we edit a theme, we invalidate the
+					// foreground/background caches as it may have changed.
 					foregroundCache = null;
 					backgroundCache = null;
 					return theme;
@@ -451,31 +475,34 @@ public final class ColorThemeManager implements IPropertyChangeListener {
 		}
 		return null;
 	}
-	
+
 	org.eclipse.swt.graphics.Color foregroundCache;
 	org.eclipse.swt.graphics.Color backgroundCache;
-	
+
 	/**
 	 * Returns the SWT color to be used for the foreground.
 	 */
 	public org.eclipse.swt.graphics.Color getSWTColorForeground() {
-		if(foregroundCache == null || foregroundCache.isDisposed()){
+		if (foregroundCache == null || foregroundCache.isDisposed()) {
 			foregroundCache = getSWTColor(ColorThemeKeys.FOREGROUND);
 		}
 		return foregroundCache;
 	}
-	
+
 	/**
 	 * Returns the SWT color to be used for the background.
 	 */
 	public org.eclipse.swt.graphics.Color getSWTColorBackground() {
-		if(backgroundCache == null || backgroundCache.isDisposed()){
+		if (backgroundCache == null || backgroundCache.isDisposed()) {
 			backgroundCache = getSWTColor(ColorThemeKeys.BACKGROUND);
 		}
 		return backgroundCache;
 	}
 
 	/**
+	 * Adds the color theme to the list and saves it to the preferences.
+	 * Existing themes will be overwritten with the new content.
+	 * 
 	 * @param input
 	 *            The input for theme file.
 	 * @throws TransformerException
@@ -486,7 +513,7 @@ public final class ColorThemeManager implements IPropertyChangeListener {
 	public void saveTheme(InputStream input)
 			throws ParserConfigurationException, SAXException, IOException,
 			TransformerException {
-		ParsedTheme theme = ColorThemeManager.parseTheme(input, true);
+		ParsedTheme theme = parseTheme(input, true);
 		themes.put(theme.getTheme().getName(), theme.getTheme());
 		IPreferenceStore store = getPreferenceStore();
 		for (int i = 1;; i++)
