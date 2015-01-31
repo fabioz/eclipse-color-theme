@@ -101,4 +101,38 @@ public final class Color {
 		return (b << 16) | (g << 8) | r;
 	}
 
+	public RGB lighterRGB(double percentage) {
+		double diff = 255 * percentage;
+		int newR = (int) (r + diff);
+		if(newR < 0){
+			newR = 0;
+		}
+		int newG = (int) (g + diff);
+		if(newG < 0){
+			newG = 0;
+		}
+		int newB = (int) (b + diff);
+		if(newB < 0){
+			newB = 0;
+		}
+		return new RGB(newR, newG, newB);
+	}
+
+	public RGB darkerRGB(double percentage) {
+		double diff = 255 * percentage;
+		int newR = (int)(r - diff);
+		if(newR > 255){
+			newR = 255;
+		}
+		int newG = (int)(g - diff);
+		if(newG > 255){
+			newG = 255;
+		}
+		int newB = (int)(b - diff);
+		if(newB > 255){
+			newB = 255;
+		}
+		return new RGB(newR, newG, newB);
+	}
+
 }

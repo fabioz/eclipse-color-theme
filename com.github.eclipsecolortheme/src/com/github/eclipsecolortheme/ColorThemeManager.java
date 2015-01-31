@@ -153,7 +153,7 @@ public final class ColorThemeManager implements IPropertyChangeListener {
 
 	/**
 	 * Parses theme file.
-	 * 
+	 *
 	 * @param input
 	 *            The input for theme file.
 	 * @param loadSource
@@ -206,7 +206,7 @@ public final class ColorThemeManager implements IPropertyChangeListener {
 		// Fabioz Change: amend entries before setting them
 		amendThemeEntries(entries);
 		theme.setEntries(entries);
-		
+
 		// Set the mappingOverrides
         NodeList nodeListMappingOverrides = root.getElementsByTagName("mappingOverrides");
         if (nodeListMappingOverrides.getLength() > 0) {
@@ -307,12 +307,22 @@ public final class ColorThemeManager implements IPropertyChangeListener {
 				ColorThemeKeys.OCCURRENCE_INDICATION);
 		applyDefault(theme, ColorThemeKeys.SEARCH_VIEW_MATCH_HIGHLIGHT,
 				ColorThemeKeys.OCCURRENCE_INDICATION);
+
+		com.github.eclipsecolortheme.Color backgroundColor = theme.get(ColorThemeKeys.BACKGROUND).getColor();
+		if(backgroundColor.isDarkColor()){
+		    applyDefault(theme, ColorThemeKeys.SCROLL_BACKGROUND, backgroundColor.lighterRGB(.15));
+		    applyDefault(theme, ColorThemeKeys.SCROLL_FOREGROUND, backgroundColor.lighterRGB(.30));
+		}else{
+			applyDefault(theme, ColorThemeKeys.SCROLL_BACKGROUND, backgroundColor.darkerRGB(.15));
+			applyDefault(theme, ColorThemeKeys.SCROLL_FOREGROUND, backgroundColor.darkerRGB(.30));
+		}
 	}
 
 	private static void applyDefault(Map<String, ColorThemeSetting> theme,
 			String key, RGB defaultColor) {
 		if (!theme.containsKey(key)) {
-			ColorThemeSetting setting = new ColorThemeSetting("255,0,0");
+			String asStr = new StringBuffer().append(defaultColor.red).append(",").append(defaultColor.green).append(",").append(defaultColor.blue).toString();
+			ColorThemeSetting setting = new ColorThemeSetting(asStr);
 			theme.put(key, setting);
 		}
 	}
@@ -323,7 +333,6 @@ public final class ColorThemeManager implements IPropertyChangeListener {
 			theme.put(key, theme.get(defaultKey));
 		}
 	}
-
 	/**
 	 * Returns all available color themes.
 	 *
@@ -502,7 +511,7 @@ public final class ColorThemeManager implements IPropertyChangeListener {
 	/**
 	 * Adds the color theme to the list and saves it to the preferences.
 	 * Existing themes will be overwritten with the new content.
-	 * 
+	 *
 	 * @param input
 	 *            The input for theme file.
 	 * @throws TransformerException
