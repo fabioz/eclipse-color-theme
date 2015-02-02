@@ -27,6 +27,8 @@ public class Activator extends AbstractUIPlugin {
 			+ ".mapper";
 	public static final String EXTENSION_POINT_ID_THEME = PLUGIN_ID + ".theme";
 
+	public static final String THEME_STYLED_TEXT_SCROLLBARS = "THEME_STYLED_TEXT_SCROLLBARS";
+
 	private static Activator plugin;
 
 	/** Creates a new activator. */

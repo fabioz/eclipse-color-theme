@@ -78,6 +78,7 @@ public class ColorThemePreferencePage extends PreferencePage implements
 	private java.util.List<Control> invisibleWhenDefaultSelected = new ArrayList<Control>();
 	private int initiallyApplyTo;
 	private Shell shell;
+	private Button themeStyledTextScrollbars;
 
 	/** Creates a new color theme preference page. */
 	public ColorThemePreferencePage() {
@@ -161,6 +162,14 @@ public class ColorThemePreferencePage extends PreferencePage implements
 				reapplyOnRestart);
 		reapplyOnRestart.select(store.getInt(Activator.REAPPLY_ON_RESTART));
 		// End Option to apply preferences to the whole ide
+
+		themeStyledTextScrollbars = new Button(themeDetails, SWT.CHECK);
+		themeStyledTextScrollbars
+				.setText("Apply scrollbar theming customization to StyledText editors?");
+		GridDataFactory.swtDefaults().span(2, 1).grab(true, false)
+				.applyTo(themeStyledTextScrollbars);
+		themeStyledTextScrollbars.setSelection(store
+				.getBoolean(Activator.THEME_STYLED_TEXT_SCROLLBARS));
 
 		// Message for default.
 		themeDefaultMessageLabel = new Label(themeDetails, SWT.NONE);
@@ -306,6 +315,7 @@ public class ColorThemePreferencePage extends PreferencePage implements
 							+ "\n" + "A restart may be required afterwards.");
 
 			this.themeDefaultMessageLabel.setVisible(true);
+			this.themeStyledTextScrollbars.setVisible(false);
 		} else {
 			authorLabel.setText("Created by " + theme.getAuthor());
 			String website = theme.getWebsite();
@@ -347,6 +357,7 @@ public class ColorThemePreferencePage extends PreferencePage implements
 			}
 			themeDefaultMessageLabel.setText("");
 			this.themeDefaultMessageLabel.setVisible(false);
+			this.themeStyledTextScrollbars.setVisible(true);
 		}
 		// applyTo.pack(true);
 		themeDefaultMessageLabel.pack(true);
@@ -396,8 +407,19 @@ public class ColorThemePreferencePage extends PreferencePage implements
 			String selectedThemeName = themeSelectionList.getSelection()[0];
 			// Do this one regardless of the others as it only affects a
 			// restart.
-			getPreferenceStore().setValue(Activator.REAPPLY_ON_RESTART,
+			IPreferenceStore preferenceStore = getPreferenceStore();
+
+			preferenceStore.setValue(Activator.REAPPLY_ON_RESTART,
 					reapplyOnRestart.getSelectionIndex());
+
+			boolean changedThemeStyledTextToolbars = preferenceStore
+					.getBoolean(Activator.THEME_STYLED_TEXT_SCROLLBARS) != themeStyledTextScrollbars
+					.getSelection();
+			if (changedThemeStyledTextToolbars) {
+				preferenceStore.setValue(
+						Activator.THEME_STYLED_TEXT_SCROLLBARS,
+						themeStyledTextScrollbars.getSelection());
+			}
 
 			int applyToWholeIDESelected = applyTo.getSelectionIndex();
 			boolean onlyLiClipseEditors = applyToWholeIDESelected == Activator.APPLY_THEME_TO_LICLIPSE;
@@ -436,16 +458,17 @@ public class ColorThemePreferencePage extends PreferencePage implements
 
 			if (lastSelectedThemeName != null
 					&& lastSelectedThemeName.equals(selectedThemeName)) {
-				if (lastApplyToWholeIDESelected == applyTo.getSelectionIndex()) {
+				if (lastApplyToWholeIDESelected == applyTo.getSelectionIndex()
+						&& !changedThemeStyledTextToolbars) {
 					// everything matches: as we already applied, do nothing and
 					// return.
 					return true;
 				}
 			}
 
-			getPreferenceStore().setValue(Activator.CURRENT_COLOR_THEME,
+			preferenceStore.setValue(Activator.CURRENT_COLOR_THEME,
 					selectedThemeName);
-			getPreferenceStore().setValue(Activator.APPLY_THEME_TO,
+			preferenceStore.setValue(Activator.APPLY_THEME_TO,
 					applyToWholeIDESelected);
 			boolean restart = false;
 			if (applyToWholeIDESelected != initiallyApplyTo

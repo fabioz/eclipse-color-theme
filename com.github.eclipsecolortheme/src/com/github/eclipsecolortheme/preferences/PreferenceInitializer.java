@@ -14,5 +14,10 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 		store.setDefault(Activator.APPLY_THEME_TO,
 				Activator.APPLY_THEME_TO_LICLIPSE);
 		store.setDefault("forceDefaultBG", false);
+
+		//Ideally we'd use ScrollBar.getScrollbarsMode(), but that'd require creating a widget
+		//that has a scrollbar, so, let's make this only true on windows where the issue is
+		//more annoying.
+		store.setDefault(Activator.THEME_STYLED_TEXT_SCROLLBARS, PlatformUtils.isWindowsPlatform());
 	}
 }
