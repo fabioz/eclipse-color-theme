@@ -312,9 +312,11 @@ public final class ColorThemeManager implements IPropertyChangeListener {
 		if(backgroundColor.isDarkColor()){
 		    applyDefault(theme, ColorThemeKeys.SCROLL_BACKGROUND, backgroundColor.lighterRGB(.15));
 		    applyDefault(theme, ColorThemeKeys.SCROLL_FOREGROUND, backgroundColor.lighterRGB(.30));
+		    applyDefault(theme, ColorThemeKeys.SELECTED_TAB_BACKGROUND, backgroundColor.lighterRGB(.20));
 		}else{
 			applyDefault(theme, ColorThemeKeys.SCROLL_BACKGROUND, backgroundColor.darkerRGB(.15));
 			applyDefault(theme, ColorThemeKeys.SCROLL_FOREGROUND, backgroundColor.darkerRGB(.30));
+			applyDefault(theme, ColorThemeKeys.SELECTED_TAB_BACKGROUND, backgroundColor.darkerRGB(.20));
 		}
 	}
 
