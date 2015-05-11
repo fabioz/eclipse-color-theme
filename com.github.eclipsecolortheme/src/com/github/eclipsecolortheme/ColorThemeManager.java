@@ -309,14 +309,17 @@ public final class ColorThemeManager implements IPropertyChangeListener {
 				ColorThemeKeys.OCCURRENCE_INDICATION);
 
 		com.github.eclipsecolortheme.Color backgroundColor = theme.get(ColorThemeKeys.BACKGROUND).getColor();
+		com.github.eclipsecolortheme.Color foregroundColor = theme.get(ColorThemeKeys.FOREGROUND).getColor();
 		if(backgroundColor.isDarkColor()){
 		    applyDefault(theme, ColorThemeKeys.SCROLL_BACKGROUND, backgroundColor.lighterRGB(.15));
 		    applyDefault(theme, ColorThemeKeys.SCROLL_FOREGROUND, backgroundColor.lighterRGB(.30));
 		    applyDefault(theme, ColorThemeKeys.SELECTED_TAB_BACKGROUND, backgroundColor.lighterRGB(.20));
+		    applyDefault(theme, ColorThemeKeys.TREE_ARROWS_FOREGROUND, foregroundColor.darkerRGB(.20));
 		}else{
 			applyDefault(theme, ColorThemeKeys.SCROLL_BACKGROUND, backgroundColor.darkerRGB(.15));
 			applyDefault(theme, ColorThemeKeys.SCROLL_FOREGROUND, backgroundColor.darkerRGB(.30));
 			applyDefault(theme, ColorThemeKeys.SELECTED_TAB_BACKGROUND, backgroundColor.darkerRGB(.20));
+			applyDefault(theme, ColorThemeKeys.TREE_ARROWS_FOREGROUND, foregroundColor.lighterRGB(.20));
 		}
 	}
 

@@ -1,5 +1,6 @@
 package com.github.eclipsecolortheme;
 
+import org.eclipse.core.internal.runtime.Log;
 import org.eclipse.swt.graphics.RGB;
 
 public final class Color {
@@ -104,16 +105,10 @@ public final class Color {
 	public RGB lighterRGB(double percentage) {
 		double diff = 255 * percentage;
 		int newR = (int) (r + diff);
-		if(newR < 0){
-			newR = 0;
-		}
 		int newG = (int) (g + diff);
-		if(newG < 0){
-			newG = 0;
-		}
 		int newB = (int) (b + diff);
-		if(newB < 0){
-			newB = 0;
+		if(newR > 255 || newG > 255 || newB > 255){
+			return lighterRGB(percentage - 0.05);
 		}
 		return new RGB(newR, newG, newB);
 	}
@@ -121,16 +116,10 @@ public final class Color {
 	public RGB darkerRGB(double percentage) {
 		double diff = 255 * percentage;
 		int newR = (int)(r - diff);
-		if(newR > 255){
-			newR = 255;
-		}
 		int newG = (int)(g - diff);
-		if(newG > 255){
-			newG = 255;
-		}
 		int newB = (int)(b - diff);
-		if(newB > 255){
-			newB = 255;
+		if(newB < 0 || newG < 0 || newB < 0){
+			return darkerRGB(percentage - 0.05);
 		}
 		return new RGB(newR, newG, newB);
 	}

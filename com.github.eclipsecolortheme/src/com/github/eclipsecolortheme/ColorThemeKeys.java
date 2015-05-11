@@ -101,6 +101,7 @@ public class ColorThemeKeys {
 	public static final String SCROLL_BACKGROUND = "scrollBackground";
 
 	public static final String SELECTED_TAB_BACKGROUND = "selectedTabBackground";
+	public static final String TREE_ARROWS_FOREGROUND = "treeArrowsForeground";
 
 
 
@@ -208,6 +209,7 @@ public class ColorThemeKeys {
 		ALL_KEYS.add(VCS_RESOURCE_IGNORED_BACKGROUND);
 		ALL_KEYS.add(SCROLL_FOREGROUND);
 		ALL_KEYS.add(SCROLL_BACKGROUND);
+		ALL_KEYS.add(TREE_ARROWS_FOREGROUND);
 
 	}
 
@@ -232,6 +234,7 @@ public class ColorThemeKeys {
 		KEYS_WITHOUT_STYLE.add(SCROLL_FOREGROUND);
 		KEYS_WITHOUT_STYLE.add(SCROLL_BACKGROUND);
 		KEYS_WITHOUT_STYLE.add(SELECTED_TAB_BACKGROUND);
+		KEYS_WITHOUT_STYLE.add(TREE_ARROWS_FOREGROUND);
 
 		KEYS_WITHOUT_STYLE.add(STDERR);
 		KEYS_WITHOUT_STYLE.add(STDIN);
