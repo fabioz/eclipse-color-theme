@@ -1,6 +1,7 @@
 package com.github.eclipsecolortheme;
 
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+import org.eclipse.swt.graphics.FontData;
 
 public class ColorThemeSemanticHighlightingMapping extends ColorThemeMapping {
 	protected String separator = ".";
@@ -20,6 +21,10 @@ public class ColorThemeSemanticHighlightingMapping extends ColorThemeMapping {
 		preferences.putBoolean(pluginKey + separator + "enabled", true);
 		preferences.put(pluginKey + separator + "color", setting.getColor()
 				.asRGB());
+		Color backgroundColor = setting.getBackgroundColor();
+		if(backgroundColor != null){
+			preferences.put(pluginKey + separator + "backgroundColor", backgroundColor.asRGB());
+		}
 		if (setting.isBoldEnabled() != null)
 			preferences.putBoolean(pluginKey + separator + "bold",
 					setting.isBoldEnabled());
@@ -32,6 +37,18 @@ public class ColorThemeSemanticHighlightingMapping extends ColorThemeMapping {
 		if (setting.isStrikethroughEnabled() != null)
 			preferences.putBoolean(pluginKey + separator + "strikethrough",
 					setting.isStrikethroughEnabled());
+		if (setting.isBackgroundEnabled() != null)
+			preferences.putBoolean(pluginKey + separator + "backgroundEnabled",
+					setting.isBackgroundEnabled());
+		if (setting.useCustomFont() != null){
+			preferences.putBoolean(pluginKey + separator + "useCustomFont",
+					setting.useCustomFont());
+		}
+		
+		FontData font = setting.getFont();
+		if(font != null){
+			preferences.put(pluginKey + separator + "font", font.toString());
+		}
 	}
 
 	public void removePreferences(IEclipsePreferences preferences) {
@@ -41,5 +58,9 @@ public class ColorThemeSemanticHighlightingMapping extends ColorThemeMapping {
 		preferences.remove(pluginKey + separator + "italic");
 		preferences.remove(pluginKey + separator + "underline");
 		preferences.remove(pluginKey + separator + "strikethrough");
+		preferences.remove(pluginKey + separator + "backgroundColor");
+		preferences.remove(pluginKey + separator + "backgroundEnabled");
+		preferences.remove(pluginKey + separator + "font");
+		preferences.remove(pluginKey + separator + "useCustomFont");
 	}
 }

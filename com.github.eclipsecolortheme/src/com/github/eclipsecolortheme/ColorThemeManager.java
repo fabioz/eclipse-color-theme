@@ -30,6 +30,7 @@ import org.eclipse.swt.widgets.Display;
 import org.osgi.framework.Bundle;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
@@ -178,16 +179,37 @@ public final class ColorThemeManager implements IPropertyChangeListener {
 		for (int i = 0; i < entryNodes.getLength(); i++) {
 			Node entryNode = entryNodes.item(i);
 			if (entryNode.hasAttributes()) {
-				String color = entryNode.getAttributes().getNamedItem("color")
+				NamedNodeMap attributes = entryNode.getAttributes();
+				String color = attributes.getNamedItem("color")
 						.getNodeValue();
-				Node nodeBold = entryNode.getAttributes().getNamedItem("bold");
-				Node nodeItalic = entryNode.getAttributes().getNamedItem(
+				Node nodeBackgroundColor = attributes.getNamedItem("backgroundColor");
+				Node nodeBold = attributes.getNamedItem("bold");
+				Node nodeItalic = attributes.getNamedItem(
 						"italic");
-				Node nodeUnderline = entryNode.getAttributes().getNamedItem(
+				Node nodeUnderline = attributes.getNamedItem(
 						"underline");
-				Node nodeStrikethrough = entryNode.getAttributes()
+				Node nodeUseCustomFont = attributes.getNamedItem(
+						"useCustomFont");
+				Node nodeStrikethrough = attributes
 						.getNamedItem("strikethrough");
+				
+				Node nodeBackgroundEnabled = attributes
+						.getNamedItem("backgroundEnabled");
+				
+				Node nodeFont = attributes
+						.getNamedItem("font");
+				
 				ColorThemeSetting setting = new ColorThemeSetting(color);
+				if(nodeBackgroundColor != null){
+					setting.setBackgroundColor(nodeBackgroundColor.getNodeValue());
+				}
+				if(nodeFont != null){
+					setting.setFont(nodeFont.getNodeValue());
+				}
+				if(nodeUseCustomFont != null){
+					setting.setUseCustomFont(Boolean.parseBoolean(nodeUseCustomFont
+							.getNodeValue()));
+				}
 				if (nodeBold != null)
 					setting.setBoldEnabled(Boolean.parseBoolean(nodeBold
 							.getNodeValue()));
@@ -200,6 +222,9 @@ public final class ColorThemeManager implements IPropertyChangeListener {
 				if (nodeUnderline != null)
 					setting.setUnderlineEnabled(Boolean
 							.parseBoolean(nodeUnderline.getNodeValue()));
+				if (nodeBackgroundEnabled != null)
+					setting.setBackgroundEnabled(Boolean
+							.parseBoolean(nodeBackgroundEnabled.getNodeValue()));
 				entries.put(entryNode.getNodeName(), setting);
 			}
 		}

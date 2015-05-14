@@ -1,6 +1,5 @@
 package com.github.eclipsecolortheme;
 
-import org.eclipse.core.internal.runtime.Log;
 import org.eclipse.swt.graphics.RGB;
 
 public final class Color {

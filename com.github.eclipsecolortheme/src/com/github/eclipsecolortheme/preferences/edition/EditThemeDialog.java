@@ -50,7 +50,7 @@ public class EditThemeDialog extends TitleAreaDialog {
 	private Text author;
 	private Text website;
 	private Text name;
-	private ColorEditor fAppearanceColorEditor;
+	private ColorEditor fForegroundColorEditor;
 	private Button fAppearanceColorDefault;
 	private Button fFontBoldCheckBox;
 	private Button fFontItalicCheckBox;
@@ -263,16 +263,16 @@ public class EditThemeDialog extends TitleAreaDialog {
 		gd.horizontalAlignment = GridData.BEGINNING;
 		l.setLayoutData(gd);
 
-		fAppearanceColorEditor = new ColorEditor(stylesComposite);
-		Button foregroundColorButton = fAppearanceColorEditor.getButton();
+		fForegroundColorEditor = new ColorEditor(stylesComposite);
+		Button foregroundColorButton = fForegroundColorEditor.getButton();
 		gd = new GridData(GridData.FILL_HORIZONTAL);
 		gd.horizontalAlignment = GridData.BEGINNING;
 		foregroundColorButton.setLayoutData(gd);
 
-		SelectionListener colorDefaultSelectionListener = new SelectionListener() {
+		SelectionListener colorDefaultSelectionListener = new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				boolean systemDefault = fAppearanceColorDefault.getSelection();
-				fAppearanceColorEditor.getButton().setEnabled(!systemDefault);
+				fForegroundColorEditor.getButton().setEnabled(!systemDefault);
 
 				// int i = fAppearanceColorList.getSelectionIndex();
 				// String key = fAppearanceColorListModel[i][2];
@@ -281,8 +281,6 @@ public class EditThemeDialog extends TitleAreaDialog {
 				// }
 			}
 
-			public void widgetDefaultSelected(SelectionEvent e) {
-			}
 		};
 
 		fAppearanceColorDefault = new Button(stylesComposite, SWT.CHECK);
@@ -295,19 +293,13 @@ public class EditThemeDialog extends TitleAreaDialog {
 		fAppearanceColorDefault
 				.addSelectionListener(colorDefaultSelectionListener);
 
-		fAppearanceColorTree.addSelectionListener(new SelectionListener() {
-			public void widgetDefaultSelected(SelectionEvent e) {
-				// do nothing
-			}
+		fAppearanceColorTree.addSelectionListener(new SelectionAdapter() {
 
 			public void widgetSelected(SelectionEvent e) {
 				handleAppearanceColorListSelection();
 			}
 		});
-		foregroundColorButton.addSelectionListener(new SelectionListener() {
-			public void widgetDefaultSelected(SelectionEvent e) {
-				// do nothing
-			}
+		foregroundColorButton.addSelectionListener(new SelectionAdapter() {
 
 			public void widgetSelected(SelectionEvent e) {
 				TreeItem selectedTreeItem = getSelectedTreeItem();
@@ -328,11 +320,7 @@ public class EditThemeDialog extends TitleAreaDialog {
 				"Strikethrough");
 	}
 
-	protected SelectionListener fStyleCheckBoxListener = new SelectionListener() {
-		public void widgetDefaultSelected(SelectionEvent e) {
-			// do nothing
-		}
-
+	protected SelectionListener fStyleCheckBoxListener = new SelectionAdapter() {
 		public void widgetSelected(SelectionEvent e) {
 			TreeItem selectedTreeItem = getSelectedTreeItem();
 			if (selectedTreeItem == null) {
@@ -368,7 +356,7 @@ public class EditThemeDialog extends TitleAreaDialog {
 			color = new Color("#ffffff");
 		}
 		RGB rgb = color.getRGB();
-		fAppearanceColorEditor.setColorValue(rgb);
+		fForegroundColorEditor.setColorValue(rgb);
 		if (setting != null && setting.isBoldEnabled()) {
 			fFontBoldCheckBox.setSelection(true);
 		} else {
@@ -533,7 +521,7 @@ public class EditThemeDialog extends TitleAreaDialog {
 		Map<String, ColorThemeSetting> entries = theme.getEntries();
 
 		ColorThemeSetting setting = entries.get(key);
-		RGB colorValue = fAppearanceColorEditor.getColorValue();
+		RGB colorValue = fForegroundColorEditor.getColorValue();
 		entries.put(key, setting.createCopy(colorValue));
 
 		updateTreeItem(selectedTreeItem, key, entries, colorValue);

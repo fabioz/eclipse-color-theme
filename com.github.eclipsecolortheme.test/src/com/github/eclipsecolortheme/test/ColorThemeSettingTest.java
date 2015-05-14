@@ -21,10 +21,10 @@ public class ColorThemeSettingTest {
 
     @Test
     public void initialValues() {
-        assertThat(setting.isBoldEnabled(), nullValue());
-        assertThat(setting.isItalicEnabled(), nullValue());
-        assertThat(setting.isStrikethroughEnabled(), nullValue());
-        assertThat(setting.isUnderlineEnabled(), nullValue());
+        assertThat(setting.isBoldEnabled(), is(false));
+        assertThat(setting.isItalicEnabled(), is(false));
+        assertThat(setting.isStrikethroughEnabled(), is(false));
+        assertThat(setting.isUnderlineEnabled(), is(false));
     }
 
     @Test
@@ -32,6 +32,12 @@ public class ColorThemeSettingTest {
         Color color = setting.getColor();
         assertThat(color, notNullValue());
         assertThat(color.asHex(), is("#00FFAA"));
+        
+        color = setting.getBackgroundColor();
+        assertThat(color, nullValue());
+        setting.setBackgroundColor("#00ff00");
+        color = setting.getBackgroundColor();
+        assertThat(color.asHex(), is("#00FF00"));
     }
 
     @Test

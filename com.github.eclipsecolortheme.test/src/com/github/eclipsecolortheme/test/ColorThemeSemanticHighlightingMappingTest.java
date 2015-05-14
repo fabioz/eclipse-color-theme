@@ -3,6 +3,7 @@ package com.github.eclipsecolortheme.test;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
+import org.eclipse.swt.graphics.FontData;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -31,15 +32,24 @@ public class ColorThemeSemanticHighlightingMappingTest {
 
     @Test
     public void putPreferencesWithTextStyle() {
+    	setting.setBackgroundColor("#ff0000");
+    	String fontStr = new FontData("Courier New", 10, 0).toString();
+		setting.setFont(fontStr);
         setting.setBoldEnabled(true);
         setting.setItalicEnabled(true);
         setting.setUnderlineEnabled(true);
         setting.setStrikethroughEnabled(true);
+        setting.setBackgroundEnabled(true);
+        setting.setUseCustomFont(true);
         mapping.putPreferences(mockPreferences, setting);
         assertThat(mockPreferences.getBoolean("something.bold", false), is(true));
         assertThat(mockPreferences.getBoolean("something.italic", false), is(true));
         assertThat(mockPreferences.getBoolean("something.underline", false), is(true));
         assertThat(mockPreferences.getBoolean("something.strikethrough", false), is(true));
+        assertThat(mockPreferences.getBoolean("something.backgroundEnabled", false), is(true));
+        assertThat(mockPreferences.getBoolean("something.useCustomFont", false), is(true));
+        assertThat(mockPreferences.get("something.backgroundColor", null), is("255,0,0"));
+        assertThat(mockPreferences.get("something.font", null), is(fontStr));
     }
 
     @Test
@@ -48,13 +58,19 @@ public class ColorThemeSemanticHighlightingMappingTest {
         setting.setItalicEnabled(true);
         setting.setUnderlineEnabled(true);
         setting.setStrikethroughEnabled(true);
+        setting.setBackgroundEnabled(true);
+        setting.setUseCustomFont(true);
+        setting.setBackgroundColor("#00ff00");
         mapping.putPreferences(mockPreferences, setting);
         mapping.removePreferences(mockPreferences);
         assertThat(mockPreferences.getBoolean("something.enabled", false), is(false));
         assertThat(mockPreferences.get("something.color", ""), is(""));
+        assertThat(mockPreferences.get("something.backgroundColor", ""), is(""));
         assertThat(mockPreferences.getBoolean("something.bold", false), is(false));
         assertThat(mockPreferences.getBoolean("something.italic", false), is(false));
         assertThat(mockPreferences.getBoolean("something.underline", false), is(false));
         assertThat(mockPreferences.getBoolean("something.strikethrough", false), is(false));
+        assertThat(mockPreferences.getBoolean("something.backgroundEnabled", false), is(false));
+        assertThat(mockPreferences.getBoolean("something.useCustomFont", false), is(false));
     }
 }

@@ -6,6 +6,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.eclipse.swt.graphics.FontData;
+
 public class ColorTheme {
 	
     private String id;
@@ -138,6 +140,23 @@ public class ColorTheme {
 					.append(setting.isStrikethroughEnabled()).append('"');
 			buf.append(" italic=").append('"')
 					.append(setting.isItalicEnabled()).append('"');
+			
+			buf.append(" backgroundEnabled=").append('"')
+				.append(setting.isBackgroundEnabled()).append('"');
+			
+			buf.append(" useCustomFont=").append('"')
+				.append(setting.useCustomFont()).append('"');
+			
+			Color backgroundColor = setting.getBackgroundColor();
+			if(backgroundColor != null){
+				buf.append(" backgroundColor=\"").append(backgroundColor.asHex()).append("\" ");
+			}
+			
+			FontData font = setting.getFont();
+			if(font != null){
+				buf.append(" font=\"").append(StringEscapeUtils.escapeXml(font.toString())).append("\" ");
+			}
+			
 			buf.append("/>\n");
 		}
 		buf.append("</colorTheme>\n");

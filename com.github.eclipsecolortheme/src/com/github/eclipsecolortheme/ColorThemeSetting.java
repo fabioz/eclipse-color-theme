@@ -1,13 +1,18 @@
 package com.github.eclipsecolortheme;
 
+import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.RGB;
 
 public class ColorThemeSetting {
 	private Color color;
+	private Color backgroundColor; // null means transparent background
 	private Boolean boldEnabled;
 	private Boolean italicEnabled;
 	private Boolean underlineEnabled;
 	private Boolean strikethroughEnabled;
+	private Boolean backgroundEnabled;
+	private FontData font;
+	private Boolean useCustomFont;
 
 	public ColorThemeSetting(String color) {
 		this.color = new Color(color);
@@ -27,10 +32,19 @@ public class ColorThemeSetting {
 	public void setStrikethroughEnabled(Boolean strikethroughEnabled) {
 		this.strikethroughEnabled = strikethroughEnabled;
 	}
+	
+	public void setBackgroundEnabled(Boolean backgroundEnabled) {
+		this.backgroundEnabled = backgroundEnabled;
+	}
 
 	public void setUnderlineEnabled(Boolean underlineEnabled) {
 		this.underlineEnabled = underlineEnabled;
 	}
+	public void setUseCustomFont(Boolean useCustomFont) {
+		this.useCustomFont = useCustomFont;
+	}
+	
+
 
 	public Color getColor() {
 		return color;
@@ -49,9 +63,44 @@ public class ColorThemeSetting {
 		}
 		return color.asHex();
 	}
+	
+	public void setBackgroundColor(String backgroundColorStr) {
+		this.backgroundColor = new Color(backgroundColorStr);
+	}
+
+	public void setFont(String string) {
+		this.font = new FontData(string);
+	}
+	
+
+	public FontData getFont() {
+		return this.font;
+	}
+	
+	public Color getBackgroundColor() {
+		return backgroundColor;
+	}
+	
+	public String getBackgroundHexColorOrNull() {
+		if (backgroundColor == null) {
+			return "null";
+		}
+		return backgroundColor.asHex();
+	}
+	
+	public String getBackgroundHexColorOrEmpty() {
+		if (backgroundColor == null) {
+			return "";
+		}
+		return backgroundColor.asHex();
+	}
 
 	public Boolean isBoldEnabled() {
 		return boldEnabled != null ? boldEnabled : false;
+	}
+
+	public Boolean useCustomFont() {
+		return useCustomFont != null ? useCustomFont : false;
 	}
 
 	public Boolean isItalicEnabled() {
@@ -65,6 +114,10 @@ public class ColorThemeSetting {
 	public Boolean isStrikethroughEnabled() {
 		return strikethroughEnabled != null ? strikethroughEnabled : false;
 	}
+	
+	public Boolean isBackgroundEnabled() {
+		return backgroundEnabled != null ? backgroundEnabled : false;
+	}
 
 	public ColorThemeSetting createCopy() {
 		ColorThemeSetting setting = new ColorThemeSetting();
@@ -73,6 +126,10 @@ public class ColorThemeSetting {
 		setting.italicEnabled = italicEnabled;
 		setting.strikethroughEnabled = strikethroughEnabled;
 		setting.underlineEnabled = underlineEnabled;
+		setting.backgroundColor = backgroundColor;
+		setting.backgroundEnabled = backgroundEnabled;
+		setting.useCustomFont = useCustomFont;
+		setting.font = font;
 		return setting;
 	}
 
@@ -86,4 +143,7 @@ public class ColorThemeSetting {
 	public String toString() {
 		return "ColorThemeSetting: " + getColor().getRGB();
 	}
+
+
+
 }
