@@ -5,8 +5,8 @@
         <mapping pluginKey="CODE_COLOR" themeKey="foreground"/>
         <mapping pluginKey="KEYWORD_COLOR" themeKey="keyword"/>
         <mapping pluginKey="SELF_COLOR" themeKey="keyword"/>
-        <mapping pluginKey="FUNC_NAME_COLOR" themeKey="method"/>
-        <mapping pluginKey="BACKQUOTES_COLOR" themeKey="foreground"/>
+        <mapping pluginKey="FUNC_NAME_COLOR" themeKey="methodDeclaration"/>
+        <mapping pluginKey="BACKQUOTES_COLOR" themeKey="deprecatedMember"/>
         <mapping pluginKey="NUMBER_COLOR" themeKey="number"/>
         <mapping pluginKey="STRING_COLOR" themeKey="constant"/>
         <mapping pluginKey="UNICODE_COLOR" themeKey="string"/>
