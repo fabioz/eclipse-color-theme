@@ -20,6 +20,7 @@ import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.layout.GridData;
@@ -29,6 +30,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.FontDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
@@ -268,29 +270,12 @@ public class EditThemeDialog extends TitleAreaDialog {
 		gd.horizontalAlignment = GridData.BEGINNING;
 		l.setLayoutData(gd);
 
-		fForegroundColorEditor = new ColorEditor(stylesComposite);
-		Button foregroundColorButton = fForegroundColorEditor.getButton();
-		gd = new GridData(GridData.FILL_HORIZONTAL);
-		gd.horizontalAlignment = GridData.BEGINNING;
-		foregroundColorButton.setLayoutData(gd);
-
+		fForegroundColorEditor = createColorEditor(stylesComposite, true);
+		
 		fAppearanceColorTree.addSelectionListener(new SelectionAdapter() {
-
+			
 			public void widgetSelected(SelectionEvent e) {
 				handleAppearanceColorListSelection();
-			}
-		});
-		foregroundColorButton.addSelectionListener(new SelectionAdapter() {
-
-			public void widgetSelected(SelectionEvent e) {
-				TreeItem selectedTreeItem = getSelectedTreeItem();
-				if (selectedTreeItem == null) {
-					return;
-				}
-				String key = selectedTreeItem.getText();
-				updateEntry(selectedTreeItem, key);
-
-				onAppearanceRelatedPreferenceChanged();
 			}
 		});
 
@@ -299,8 +284,53 @@ public class EditThemeDialog extends TitleAreaDialog {
 		fFontUnderlineCheckBox = addStyleCheckBox(stylesComposite, "Underline");
 		fFontStrikeThroughCheckBox = addStyleCheckBox(stylesComposite,
 				"Strikethrough");
-		fUseCustomBackground = addStyleCheckBox(stylesComposite, "Custom Background?");
-		fUseCustomFont = addStyleCheckBox(stylesComposite, "Custom Font?");
+		fUseCustomBackground = addStyleCheckBox(stylesComposite, "Custom Background?", 1);
+		fBackgroundColorEditor = createColorEditor(stylesComposite, false);
+		fUseCustomFont = addStyleCheckBox(stylesComposite, "Custom Font?", 1);
+		
+		fCustomFont = new Button(stylesComposite, SWT.PUSH);
+		configFontButton();
+	}
+
+	private ColorEditor createColorEditor(Composite stylesComposite, final boolean foregroundColor) {
+		GridData gd;
+		ColorEditor colorEditor = new ColorEditor(stylesComposite);
+		Button foregroundColorButton = colorEditor.getButton();
+		gd = new GridData(GridData.FILL_HORIZONTAL);
+		gd.horizontalAlignment = GridData.BEGINNING;
+		foregroundColorButton.setLayoutData(gd);
+
+		foregroundColorButton.addSelectionListener(new SelectionAdapter() {
+
+			public void widgetSelected(SelectionEvent e) {
+				TreeItem selectedTreeItem = getSelectedTreeItem();
+				if (selectedTreeItem == null) {
+					return;
+				}
+				String key = selectedTreeItem.getText();
+				updateEntry(selectedTreeItem, key, foregroundColor);
+
+				onAppearanceRelatedPreferenceChanged();
+			}
+		});
+		return colorEditor;
+	}
+	
+	private void updateEntry(TreeItem selectedTreeItem, String key, boolean foregroundColor) {
+		Map<String, ColorThemeSetting> entries = theme.getEntries();
+
+		ColorThemeSetting setting = entries.get(key);
+		if(foregroundColor){
+			RGB colorValue = fForegroundColorEditor.getColorValue();
+			entries.put(key, setting.createCopy(colorValue));
+			updateTreeItem(selectedTreeItem, key, entries, colorValue);
+		}else{
+			RGB colorValue = fBackgroundColorEditor.getColorValue();
+			ColorThemeSetting cp = setting.createCopy();
+			cp.setBackgroundColor(colorValue);
+			entries.put(key, cp);
+		}
+
 	}
 
 
@@ -322,10 +352,53 @@ public class EditThemeDialog extends TitleAreaDialog {
 					.getSelection());
 			setting.setUseCustomFont(fUseCustomFont.getSelection());
 			setting.setUseCustomBackground(fUseCustomBackground.getSelection());
+			if(!setting.useCustomBackground()){
+				fBackgroundColorEditor.getButton().setEnabled(false);
+			}else{
+				fBackgroundColorEditor.getButton().setEnabled(true);
+			}
+			if(!setting.useCustomFont()){
+				fCustomFont.setEnabled(false);
+			}else{
+				fCustomFont.setEnabled(true);
+			}
 
 			onAppearanceRelatedPreferenceChanged();
 		}
 	};
+	
+	private void configFontButton() {
+		fCustomFont.setText("Select Font");
+		fCustomFont.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+                FontDialog fontDialog = new FontDialog(fCustomFont.getShell());
+                
+        		TreeItem selectedTreeItem = getSelectedTreeItem();
+        		if (selectedTreeItem == null) {
+        			return;
+        		}
+    			String key = selectedTreeItem.getText();
+    			
+    			Map<String, ColorThemeSetting> entries = theme.getEntries();
+    			ColorThemeSetting setting = entries.get(key);
+    			if(setting == null){
+    				return;
+    			}
+				FontData chosenFont = setting.getFont();
+				if(chosenFont != null){
+					fontDialog.setFontList(new FontData[]{chosenFont});
+				}
+    			FontData font = fontDialog.open();
+    			if (font != null) {
+    				ColorThemeSetting copy = setting.createCopy();
+    				copy.setFont(font);
+    				entries.put(key, copy);
+    				handleAppearanceColorListSelection();
+    			}
+    		}
+		});		
+	}
 
 	protected void handleAppearanceColorListSelection() {
 		TreeItem selectedTreeItem = getSelectedTreeItem();
@@ -343,6 +416,14 @@ public class EditThemeDialog extends TitleAreaDialog {
 		}
 		RGB rgb = color.getRGB();
 		fForegroundColorEditor.setColorValue(rgb);
+		
+		Color backgroundColor = setting.getBackgroundColor();
+		if(backgroundColor != null){
+			fBackgroundColorEditor.setColorValue(backgroundColor.getRGB());
+		}else{
+			fBackgroundColorEditor.setColorValue(new RGB(255,255,255));
+		}
+		
 		if (setting != null && setting.isBoldEnabled()) {
 			fFontBoldCheckBox.setSelection(true);
 		} else {
@@ -365,14 +446,25 @@ public class EditThemeDialog extends TitleAreaDialog {
 		}
 		if (setting != null && setting.useCustomFont()) {
 			fUseCustomFont.setSelection(true);
+			fCustomFont.setEnabled(true);
 		} else {
 			fUseCustomFont.setSelection(false);
+			fCustomFont.setEnabled(false);
+		}
+		FontData font = setting.getFont();
+		if(font == null){
+			fCustomFont.setText("Select Font");
+		}else{
+			fCustomFont.setText(ColorThemeSetting.fontToString(font));
 		}
 		if (setting != null && setting.useCustomBackground()) {
 			fUseCustomBackground.setSelection(true);
+			fBackgroundColorEditor.getButton().setEnabled(true);
 		} else {
 			fUseCustomBackground.setSelection(false);
+			fBackgroundColorEditor.getButton().setEnabled(false);
 		}
+		
 
 		boolean enable = !ColorThemeKeys.KEYS_WITHOUT_STYLE.contains(key);
 		fFontBoldCheckBox.setEnabled(enable);
@@ -381,6 +473,10 @@ public class EditThemeDialog extends TitleAreaDialog {
 		fFontStrikeThroughCheckBox.setEnabled(enable);
 		fUseCustomFont.setEnabled(enable);
 		fUseCustomBackground.setEnabled(enable);
+		if(enable == false){
+			fBackgroundColorEditor.getButton().setEnabled(false);
+			fCustomFont.setEnabled(false);
+		}
 	}
 
 	private void onAppearanceRelatedPreferenceChanged() {
@@ -409,10 +505,13 @@ public class EditThemeDialog extends TitleAreaDialog {
 	}
 
 	protected Button addStyleCheckBox(Composite parent, String text) {
+		return this.addStyleCheckBox(parent, text, 2);
+	}
+	protected Button addStyleCheckBox(Composite parent, String text, int horizontalSpan) {
 		Button result = new Button(parent, SWT.CHECK);
 		result.setText(text);
 		GridData gd = new GridData();
-		gd.horizontalSpan = 2;
+		gd.horizontalSpan = horizontalSpan;
 		result.setLayoutData(gd);
 		result.addSelectionListener(fStyleCheckBoxListener);
 		return result;
@@ -515,15 +614,7 @@ public class EditThemeDialog extends TitleAreaDialog {
 		return null;
 	}
 
-	private void updateEntry(TreeItem selectedTreeItem, String key) {
-		Map<String, ColorThemeSetting> entries = theme.getEntries();
 
-		ColorThemeSetting setting = entries.get(key);
-		RGB colorValue = fForegroundColorEditor.getColorValue();
-		entries.put(key, setting.createCopy(colorValue));
-
-		updateTreeItem(selectedTreeItem, key, entries, colorValue);
-	}
 
 	private void updateTreeItem(TreeItem selectedTreeItem, String key,
 			Map<String, ColorThemeSetting> entries, RGB colorValue) {

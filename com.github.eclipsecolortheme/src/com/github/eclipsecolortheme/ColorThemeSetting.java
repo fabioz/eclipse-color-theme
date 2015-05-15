@@ -68,10 +68,17 @@ public class ColorThemeSetting {
 		this.backgroundColor = new Color(backgroundColorStr);
 	}
 
+   public void setBackgroundColor(RGB colorValue) {
+	   this.backgroundColor = new Color(colorValue);
+    }
+
 	public void setFont(String string) {
 		this.font = stringToFont(string);
 	}
 	
+    public void setFont(FontData font2) {
+        this.font = font2;
+    }
 
 	public FontData getFont() {
 		return this.font;
