@@ -80,18 +80,21 @@ public final class ColorThemeManager implements IPropertyChangeListener {
 	/** Creates a new color theme manager. */
 	private ColorThemeManager() {
 		themes = new HashMap<String, ColorTheme>();
-		preferenceStore = Activator.getDefault().getPreferenceStore();
-		currentThemeName = preferenceStore
-				.getString(Activator.CURRENT_COLOR_THEME);
-		preferenceStore.addPropertyChangeListener(this);
-
-		if (stockThemes == null) {
-			stockThemes = new HashMap<String, ColorTheme>();
-			readStockThemes(stockThemes);
-
+		Activator plugin = Activator.getDefault();
+		if(plugin != null){
+			preferenceStore = plugin.getPreferenceStore();
+			currentThemeName = preferenceStore
+					.getString(Activator.CURRENT_COLOR_THEME);
+			preferenceStore.addPropertyChangeListener(this);
+			
+			if (stockThemes == null) {
+				stockThemes = new HashMap<String, ColorTheme>();
+				readStockThemes(stockThemes);
+				
+			}
+			themes.putAll(stockThemes);
+			readImportedThemes(themes);
 		}
-		themes.putAll(stockThemes);
-		readImportedThemes(themes);
 	}
 
 	private void readStockThemes(Map<String, ColorTheme> themes) {
