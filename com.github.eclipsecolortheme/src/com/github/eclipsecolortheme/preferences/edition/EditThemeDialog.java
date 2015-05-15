@@ -51,12 +51,17 @@ public class EditThemeDialog extends TitleAreaDialog {
 	private Text website;
 	private Text name;
 	private ColorEditor fForegroundColorEditor;
-	private Button fAppearanceColorDefault;
 	private Button fFontBoldCheckBox;
 	private Button fFontItalicCheckBox;
 	private Button fFontStrikeThroughCheckBox;
 	private Button fFontUnderlineCheckBox;
 	private Tree fAppearanceColorTree;
+	
+	private Button fUseCustomFont;
+	private Button fUseCustomBackground;
+	private ColorEditor fBackgroundColorEditor;
+	private Button fCustomFont;
+	
 	private StyledText styledText;
 	private Map<RGB, org.eclipse.swt.graphics.Color> colors = new HashMap<RGB, org.eclipse.swt.graphics.Color>();
 	private Set<String> existingThemeNames;
@@ -269,30 +274,6 @@ public class EditThemeDialog extends TitleAreaDialog {
 		gd.horizontalAlignment = GridData.BEGINNING;
 		foregroundColorButton.setLayoutData(gd);
 
-		SelectionListener colorDefaultSelectionListener = new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-				boolean systemDefault = fAppearanceColorDefault.getSelection();
-				fForegroundColorEditor.getButton().setEnabled(!systemDefault);
-
-				// int i = fAppearanceColorList.getSelectionIndex();
-				// String key = fAppearanceColorListModel[i][2];
-				// if (key != null) {
-				// fOverlayStore.setValue(key, systemDefault);
-				// }
-			}
-
-		};
-
-		fAppearanceColorDefault = new Button(stylesComposite, SWT.CHECK);
-		fAppearanceColorDefault.setText("System default");
-		gd = new GridData(GridData.FILL_HORIZONTAL);
-		gd.horizontalAlignment = GridData.BEGINNING;
-		gd.horizontalSpan = 2;
-		fAppearanceColorDefault.setLayoutData(gd);
-		fAppearanceColorDefault.setVisible(false);
-		fAppearanceColorDefault
-				.addSelectionListener(colorDefaultSelectionListener);
-
 		fAppearanceColorTree.addSelectionListener(new SelectionAdapter() {
 
 			public void widgetSelected(SelectionEvent e) {
@@ -318,7 +299,10 @@ public class EditThemeDialog extends TitleAreaDialog {
 		fFontUnderlineCheckBox = addStyleCheckBox(stylesComposite, "Underline");
 		fFontStrikeThroughCheckBox = addStyleCheckBox(stylesComposite,
 				"Strikethrough");
+		fUseCustomBackground = addStyleCheckBox(stylesComposite, "Custom Background?");
+		fUseCustomFont = addStyleCheckBox(stylesComposite, "Custom Font?");
 	}
+
 
 	protected SelectionListener fStyleCheckBoxListener = new SelectionAdapter() {
 		public void widgetSelected(SelectionEvent e) {
@@ -336,6 +320,8 @@ public class EditThemeDialog extends TitleAreaDialog {
 			setting.setUnderlineEnabled(fFontUnderlineCheckBox.getSelection());
 			setting.setStrikethroughEnabled(fFontStrikeThroughCheckBox
 					.getSelection());
+			setting.setUseCustomFont(fUseCustomFont.getSelection());
+			setting.setUseCustomBackground(fUseCustomBackground.getSelection());
 
 			onAppearanceRelatedPreferenceChanged();
 		}
@@ -377,12 +363,24 @@ public class EditThemeDialog extends TitleAreaDialog {
 		} else {
 			fFontStrikeThroughCheckBox.setSelection(false);
 		}
+		if (setting != null && setting.useCustomFont()) {
+			fUseCustomFont.setSelection(true);
+		} else {
+			fUseCustomFont.setSelection(false);
+		}
+		if (setting != null && setting.useCustomBackground()) {
+			fUseCustomBackground.setSelection(true);
+		} else {
+			fUseCustomBackground.setSelection(false);
+		}
 
 		boolean enable = !ColorThemeKeys.KEYS_WITHOUT_STYLE.contains(key);
 		fFontBoldCheckBox.setEnabled(enable);
 		fFontItalicCheckBox.setEnabled(enable);
 		fFontUnderlineCheckBox.setEnabled(enable);
 		fFontStrikeThroughCheckBox.setEnabled(enable);
+		fUseCustomFont.setEnabled(enable);
+		fUseCustomBackground.setEnabled(enable);
 	}
 
 	private void onAppearanceRelatedPreferenceChanged() {

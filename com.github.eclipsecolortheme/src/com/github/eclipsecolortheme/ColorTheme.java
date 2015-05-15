@@ -141,8 +141,8 @@ public class ColorTheme {
 			buf.append(" italic=").append('"')
 					.append(setting.isItalicEnabled()).append('"');
 			
-			buf.append(" backgroundEnabled=").append('"')
-				.append(setting.isBackgroundEnabled()).append('"');
+			buf.append(" useCustomBackground=").append('"')
+				.append(setting.useCustomBackground()).append('"');
 			
 			buf.append(" useCustomFont=").append('"')
 				.append(setting.useCustomFont()).append('"');
@@ -154,7 +154,7 @@ public class ColorTheme {
 			
 			FontData font = setting.getFont();
 			if(font != null){
-				buf.append(" font=\"").append(StringEscapeUtils.escapeXml(font.toString())).append("\" ");
+				buf.append(" font=\"").append(StringEscapeUtils.escapeXml(ColorThemeSetting.fontToString(font))).append("\" ");
 			}
 			
 			buf.append("/>\n");

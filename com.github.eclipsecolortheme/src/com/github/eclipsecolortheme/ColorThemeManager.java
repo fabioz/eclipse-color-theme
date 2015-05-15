@@ -194,7 +194,7 @@ public final class ColorThemeManager implements IPropertyChangeListener {
 						.getNamedItem("strikethrough");
 				
 				Node nodeBackgroundEnabled = attributes
-						.getNamedItem("backgroundEnabled");
+						.getNamedItem("useCustomBackground");
 				
 				Node nodeFont = attributes
 						.getNamedItem("font");
@@ -223,7 +223,7 @@ public final class ColorThemeManager implements IPropertyChangeListener {
 					setting.setUnderlineEnabled(Boolean
 							.parseBoolean(nodeUnderline.getNodeValue()));
 				if (nodeBackgroundEnabled != null)
-					setting.setBackgroundEnabled(Boolean
+					setting.setUseCustomBackground(Boolean
 							.parseBoolean(nodeBackgroundEnabled.getNodeValue()));
 				entries.put(entryNode.getNodeName(), setting);
 			}

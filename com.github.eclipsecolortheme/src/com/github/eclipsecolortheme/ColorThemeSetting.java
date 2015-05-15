@@ -10,7 +10,7 @@ public class ColorThemeSetting {
 	private Boolean italicEnabled;
 	private Boolean underlineEnabled;
 	private Boolean strikethroughEnabled;
-	private Boolean backgroundEnabled;
+	private Boolean useCustomBackground;
 	private FontData font;
 	private Boolean useCustomFont;
 
@@ -33,8 +33,8 @@ public class ColorThemeSetting {
 		this.strikethroughEnabled = strikethroughEnabled;
 	}
 	
-	public void setBackgroundEnabled(Boolean backgroundEnabled) {
-		this.backgroundEnabled = backgroundEnabled;
+	public void setUseCustomBackground(Boolean useCustomBackground) {
+		this.useCustomBackground = useCustomBackground;
 	}
 
 	public void setUnderlineEnabled(Boolean underlineEnabled) {
@@ -69,7 +69,7 @@ public class ColorThemeSetting {
 	}
 
 	public void setFont(String string) {
-		this.font = new FontData(string);
+		this.font = stringToFont(string);
 	}
 	
 
@@ -115,8 +115,8 @@ public class ColorThemeSetting {
 		return strikethroughEnabled != null ? strikethroughEnabled : false;
 	}
 	
-	public Boolean isBackgroundEnabled() {
-		return backgroundEnabled != null ? backgroundEnabled : false;
+	public Boolean useCustomBackground() {
+		return useCustomBackground != null ? useCustomBackground : false;
 	}
 
 	public ColorThemeSetting createCopy() {
@@ -127,7 +127,7 @@ public class ColorThemeSetting {
 		setting.strikethroughEnabled = strikethroughEnabled;
 		setting.underlineEnabled = underlineEnabled;
 		setting.backgroundColor = backgroundColor;
-		setting.backgroundEnabled = backgroundEnabled;
+		setting.useCustomBackground = useCustomBackground;
 		setting.useCustomFont = useCustomFont;
 		setting.font = font;
 		return setting;
@@ -144,6 +144,19 @@ public class ColorThemeSetting {
 		return "ColorThemeSetting: " + getColor().getRGB();
 	}
 
-
+	public static String fontToString(FontData fontData) {
+		return fontData.getName()+"|"+((int)fontData.height);
+	}
+	
+	public static FontData stringToFont(String font) {
+		if(font == null){
+			return null;
+		}
+		int lastIndexOf = font.lastIndexOf('|');
+		if(lastIndexOf == -1){
+			return null;
+		}
+		return new FontData(font.substring(0, lastIndexOf), Integer.parseInt(font.substring(lastIndexOf+1)), 0);
+	}
 
 }

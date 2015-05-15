@@ -37,9 +37,9 @@ public class ColorThemeSemanticHighlightingMapping extends ColorThemeMapping {
 		if (setting.isStrikethroughEnabled() != null)
 			preferences.putBoolean(pluginKey + separator + "strikethrough",
 					setting.isStrikethroughEnabled());
-		if (setting.isBackgroundEnabled() != null)
-			preferences.putBoolean(pluginKey + separator + "backgroundEnabled",
-					setting.isBackgroundEnabled());
+		if (setting.useCustomBackground() != null)
+			preferences.putBoolean(pluginKey + separator + "useCustomBackground",
+					setting.useCustomBackground());
 		if (setting.useCustomFont() != null){
 			preferences.putBoolean(pluginKey + separator + "useCustomFont",
 					setting.useCustomFont());
@@ -47,7 +47,7 @@ public class ColorThemeSemanticHighlightingMapping extends ColorThemeMapping {
 		
 		FontData font = setting.getFont();
 		if(font != null){
-			preferences.put(pluginKey + separator + "font", font.toString());
+			preferences.put(pluginKey + separator + "font", ColorThemeSetting.fontToString(font));
 		}
 	}
 
@@ -59,7 +59,7 @@ public class ColorThemeSemanticHighlightingMapping extends ColorThemeMapping {
 		preferences.remove(pluginKey + separator + "underline");
 		preferences.remove(pluginKey + separator + "strikethrough");
 		preferences.remove(pluginKey + separator + "backgroundColor");
-		preferences.remove(pluginKey + separator + "backgroundEnabled");
+		preferences.remove(pluginKey + separator + "useCustomBackground");
 		preferences.remove(pluginKey + separator + "font");
 		preferences.remove(pluginKey + separator + "useCustomFont");
 	}
