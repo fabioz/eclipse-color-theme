@@ -18,8 +18,8 @@ import org.xml.sax.SAXException;
 
 import com.github.eclipsecolortheme.Activator;
 import com.github.eclipsecolortheme.ColorThemeMapping;
-import com.github.eclipsecolortheme.ColorThemeSetting;
 import com.github.eclipsecolortheme.ColorThemeSemanticHighlightingMapping;
+import com.github.eclipsecolortheme.ColorThemeSetting;
 
 public class GenericMapper extends ThemePreferenceMapper {
     protected Map<String, ColorThemeMapping> mappings = new HashMap<String, ColorThemeMapping>();

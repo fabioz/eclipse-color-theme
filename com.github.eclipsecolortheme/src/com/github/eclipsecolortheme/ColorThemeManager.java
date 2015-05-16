@@ -1,8 +1,8 @@
 package com.github.eclipsecolortheme;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.InputStream;
+import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -11,7 +11,6 @@ import java.util.Set;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
@@ -33,10 +32,11 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.EntityResolver;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import com.github.eclipsecolortheme.mapper.GenericMapper;
-import com.github.eclipsecolortheme.mapper.ThemePreferenceMapper;
 
 /** Loads and applies color themes. */
 public final class ColorThemeManager implements IPropertyChangeListener {
@@ -106,11 +106,12 @@ public final class ColorThemeManager implements IPropertyChangeListener {
 				String xml = e.getAttribute("file");
 				String contributorPluginId = e.getContributor().getName();
 				Bundle bundle = Platform.getBundle(contributorPluginId);
-				InputStream input = (InputStream) bundle.getResource(xml)
-						.getContent();
-				ParsedTheme theme = parseTheme(input, false);
-				amendThemeEntries(theme.getTheme().getEntries());
-				themes.put(theme.getTheme().getName(), theme.getTheme());
+				try(InputStream input = (InputStream) bundle.getResource(xml)
+						.getContent()){
+					ParsedTheme theme = parseTheme(input, false);
+					amendThemeEntries(theme.getTheme().getEntries());
+					themes.put(theme.getTheme().getName(), theme.getTheme());
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -163,15 +164,70 @@ public final class ColorThemeManager implements IPropertyChangeListener {
 	 * @param loadSource
 	 *            Specify if should load original XML source.
 	 * @return Parsed theme
+	 * @throws Exception 
 	 */
-	public ParsedTheme parseTheme(InputStream input, boolean loadSource)
-			throws ParserConfigurationException, SAXException, IOException,
-			TransformerException {
+	public static ParsedTheme parseTheme(InputStream input, boolean loadSource)
+			throws Exception {
 		ColorTheme theme = new ColorTheme();
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        factory.setNamespaceAware(false);
+        factory.setValidating(false);
+        factory.setFeature("http://xml.org/sax/features/namespaces", false);
+        factory.setFeature("http://xml.org/sax/features/validation", false);
+        factory.setFeature("http://apache.org/xml/features/nonvalidating/load-dtd-grammar", false);
+        factory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
 		DocumentBuilder builder = factory.newDocumentBuilder();
+		
+		builder.setEntityResolver(new EntityResolver() {
+            public InputSource resolveEntity(String pid, String sid) throws SAXException {
+                //Disabling things above should work, but just in case, let's also set it not to
+                //resolve any entities.
+                return new InputSource(new StringReader(""));
+            }
+        });
+
+		
 		Document document = builder.parse(input);
 		Element root = document.getDocumentElement();
+		String nodeName = root.getNodeName();
+		Map<String, ColorThemeSetting> entries;
+		if(nodeName.equals("colorTheme")){
+			entries = loadEclipseColorTheme(root, theme);
+		}else{
+			entries = TmThemeLoader.loadTmTheme(document, theme);
+		}
+		
+		// Fabioz Change: amend entries before setting them
+		amendThemeEntries(entries);
+		theme.setEntries(entries);
+
+		// Set the mappingOverrides
+        NodeList nodeListMappingOverrides = root.getElementsByTagName("mappingOverrides");
+        if (nodeListMappingOverrides.getLength() > 0) {
+            Element mappingOverridesRoot = (Element) nodeListMappingOverrides.item(0);
+
+            Map<String, Map<String, ColorThemeMapping>> mappings = new HashMap<String, Map<String, ColorThemeMapping>>();
+            NodeList nodeListEclipseColorThemeMapping = mappingOverridesRoot.getChildNodes();
+            for (int i = 0; i < nodeListEclipseColorThemeMapping.getLength(); ++i) {
+                Node eclipseColorThemeMapping = nodeListEclipseColorThemeMapping.item(i);
+                if (eclipseColorThemeMapping.hasAttributes()) {
+                    String pluginId = eclipseColorThemeMapping.getAttributes().getNamedItem("plugin").getNodeValue();
+                    Map<String, ColorThemeMapping> mapMappings = new HashMap<String, ColorThemeMapping>();
+
+                    new GenericMapper().parseMappings((Element) eclipseColorThemeMapping, mapMappings);
+                    mappings.put(pluginId, mapMappings);
+                }
+            }
+            theme.setMappings(mappings);
+        }
+
+		ParsedTheme parsedTheme = new ParsedTheme(theme);
+		if (loadSource)
+			parsedTheme.setSource(documentToString(document));
+		return parsedTheme;
+	}
+
+	private static Map<String, ColorThemeSetting> loadEclipseColorTheme(Element root, ColorTheme theme) {
 		theme.setId(root.getAttribute("id"));
 		theme.setName(root.getAttribute("name"));
 		theme.setAuthor(root.getAttribute("author"));
@@ -229,36 +285,10 @@ public final class ColorThemeManager implements IPropertyChangeListener {
 					setting.setUseCustomBackground(Boolean
 							.parseBoolean(nodeBackgroundEnabled.getNodeValue()));
 				entries.put(entryNode.getNodeName(), setting);
+				TmThemeLoader.onFoundElement(entryNode.getNodeName(), setting, entries, false);
 			}
 		}
-		// Fabioz Change: amend entries before setting them
-		amendThemeEntries(entries);
-		theme.setEntries(entries);
-
-		// Set the mappingOverrides
-        NodeList nodeListMappingOverrides = root.getElementsByTagName("mappingOverrides");
-        if (nodeListMappingOverrides.getLength() > 0) {
-            Element mappingOverridesRoot = (Element) nodeListMappingOverrides.item(0);
-
-            Map<String, Map<String, ColorThemeMapping>> mappings = new HashMap<String, Map<String, ColorThemeMapping>>();
-            NodeList nodeListEclipseColorThemeMapping = mappingOverridesRoot.getChildNodes();
-            for (int i = 0; i < nodeListEclipseColorThemeMapping.getLength(); ++i) {
-                Node eclipseColorThemeMapping = nodeListEclipseColorThemeMapping.item(i);
-                if (eclipseColorThemeMapping.hasAttributes()) {
-                    String pluginId = eclipseColorThemeMapping.getAttributes().getNamedItem("plugin").getNodeValue();
-                    Map<String, ColorThemeMapping> mapMappings = new HashMap<String, ColorThemeMapping>();
-
-                    new GenericMapper().parseMappings((Element) eclipseColorThemeMapping, mapMappings);
-                    mappings.put(pluginId, mapMappings);
-                }
-            }
-            theme.setMappings(mappings);
-        }
-
-		ParsedTheme parsedTheme = new ParsedTheme(theme);
-		if (loadSource)
-			parsedTheme.setSource(documentToString(document));
-		return parsedTheme;
+		return entries;
 	}
 
 	private static void amendThemeEntries(Map<String, ColorThemeSetting> theme) {
@@ -349,6 +379,11 @@ public final class ColorThemeManager implements IPropertyChangeListener {
 			applyDefault(theme, ColorThemeKeys.SELECTED_TAB_BACKGROUND, backgroundColor.darkerRGB(.20));
 			applyDefault(theme, ColorThemeKeys.TREE_ARROWS_FOREGROUND, foregroundColor.lighterRGB(.20));
 		}
+		
+		//Any key which doesn't have a default goes to the foreground color
+		for (String string : ColorThemeKeys.ALL_KEYS) {
+			applyDefault(theme, string, ColorThemeKeys.FOREGROUND);
+		}
 	}
 
 	private static void applyDefault(Map<String, ColorThemeSetting> theme,
@@ -362,7 +397,7 @@ public final class ColorThemeManager implements IPropertyChangeListener {
 
 	private static void applyDefault(Map<String, ColorThemeSetting> theme,
 			String key, String defaultKey) {
-		if (!theme.containsKey(key)) {
+		if (theme.get(key) == null) {
 			theme.put(key, theme.get(defaultKey));
 		}
 	}
@@ -547,14 +582,10 @@ public final class ColorThemeManager implements IPropertyChangeListener {
 	 *
 	 * @param input
 	 *            The input for theme file.
-	 * @throws TransformerException
-	 * @throws IOException
-	 * @throws SAXException
-	 * @throws ParserConfigurationException
+	 * @throws Exception 
 	 */
 	public void saveTheme(InputStream input)
-			throws ParserConfigurationException, SAXException, IOException,
-			TransformerException {
+			throws Exception {
 		ParsedTheme theme = parseTheme(input, true);
 		themes.put(theme.getTheme().getName(), theme.getTheme());
 		IPreferenceStore store = getPreferenceStore();

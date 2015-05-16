@@ -7,13 +7,23 @@ public final class Color {
 	private final int r;
 	private final int g;
 	private final int b;
+	private final int a;
 
+	public int getAlpha(){
+		return a;
+	}
+	
 	public Color(String value) {
 		if (value != null) {
 			if (value.startsWith("#")) {
 				r = Integer.parseInt(value.substring(1, 3), 16);
 				g = Integer.parseInt(value.substring(3, 5), 16);
 				b = Integer.parseInt(value.substring(5, 7), 16);
+				if(value.length() > 7){
+					a = Integer.parseInt(value.substring(5, 7), 16);
+				}else{
+					a = 255;
+				}
 			} else {
 				// Not in hexa: i.e.: r,g,b comma-separated.
 				String[] s = value.split("\\,");
@@ -21,18 +31,21 @@ public final class Color {
 					r = Integer.parseInt(s[0]);
 					g = Integer.parseInt(s[1]);
 					b = Integer.parseInt(s[2]);
+					a = 255;
 
 				} else {
 					System.err.println("Unable to recognize: " + value);
 					r = 0;
 					g = 0;
 					b = 0;
+					a = 255;
 				}
 			}
 		} else {
 			r = 0;
 			g = 0;
 			b = 0;
+			a = 255;
 		}
 	}
 
@@ -40,6 +53,7 @@ public final class Color {
 		this.r = colorValue.red;
 		this.g = colorValue.green;
 		this.b = colorValue.blue;
+		this.a = 255;
 	}
 
 	public int getR() {
@@ -75,7 +89,7 @@ public final class Color {
 	public RGB getRGB() {
 		return new RGB(r, g, b);
 	}
-
+	
 	public boolean isDarkColor() {
 		return isDarkColor(r, g, b);
 	}
@@ -122,5 +136,6 @@ public final class Color {
 		}
 		return new RGB(newR, newG, newB);
 	}
+
 
 }

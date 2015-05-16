@@ -1,6 +1,7 @@
 package com.github.eclipsecolortheme.mapper;
 
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+
 import com.github.eclipsecolortheme.ColorThemeMapping;
 import com.github.eclipsecolortheme.ColorThemeSetting;
 

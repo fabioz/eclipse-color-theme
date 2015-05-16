@@ -49,6 +49,11 @@ public class ColorThemeSetting {
 	public Color getColor() {
 		return color;
 	}
+	
+
+	public void setColor(String colorStr) {
+		this.color = new Color(colorStr);
+	}
 
 	public String getHexColorOrNull() {
 		if (color == null) {
@@ -65,11 +70,19 @@ public class ColorThemeSetting {
 	}
 	
 	public void setBackgroundColor(String backgroundColorStr) {
-		this.backgroundColor = new Color(backgroundColorStr);
+		if(backgroundColorStr == null){
+			this.backgroundColor = null;
+		}else{
+			this.backgroundColor = new Color(backgroundColorStr);
+		}
 	}
 
    public void setBackgroundColor(RGB colorValue) {
-	   this.backgroundColor = new Color(colorValue);
+	   if(colorValue == null){
+		   this.backgroundColor = null;
+	   }else{
+		   this.backgroundColor = new Color(colorValue);
+	   }
     }
 
 	public void setFont(String string) {
