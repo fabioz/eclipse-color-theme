@@ -7,6 +7,7 @@ import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -380,9 +381,20 @@ public final class ColorThemeManager implements IPropertyChangeListener {
 			applyDefault(theme, ColorThemeKeys.TREE_ARROWS_FOREGROUND, foregroundColor.lighterRGB(.20));
 		}
 		
+		TmThemeLoader.ammendTmEntries(theme);
+		
 		//Any key which doesn't have a default goes to the foreground color
 		for (String string : ColorThemeKeys.ALL_KEYS) {
 			applyDefault(theme, string, ColorThemeKeys.FOREGROUND);
+		}
+		
+		com.github.eclipsecolortheme.Color fgColor = theme.get(ColorThemeKeys.FOREGROUND).getColor();
+		Set<Entry<String, ColorThemeSetting>> entrySet = theme.entrySet();
+		for (Entry<String, ColorThemeSetting> entry : entrySet) {
+			ColorThemeSetting value = entry.getValue();
+			if(value.getColor() == null){
+			    value.setColor(fgColor);
+			}
 		}
 	}
 

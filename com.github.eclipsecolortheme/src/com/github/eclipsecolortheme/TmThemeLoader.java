@@ -194,11 +194,17 @@ public class TmThemeLoader {
 		new String[]{"invalid.deprecated", ColorThemeKeys.DEPRECATED_MEMBER},
 		new String[]{"invalid", ColorThemeKeys.DELETION_INDICATION},
 		
+		new String[]{"punctuation", ColorThemeKeys.OPERATOR},
+		
 		// Lower priority replacements at the bottom (could repeat entries on some side)
 		new String[]{"storage", ColorThemeKeys.KEYWORD},
 		new String[]{"name", ColorThemeKeys.METHOD_DECLARATION},
 		new String[]{"entity", ColorThemeKeys.CONSTANT},
 		new String[]{"markup", ColorThemeKeys.KEYWORD},
+		new String[]{"markup.quote", ColorThemeKeys.STRING},
+		new String[]{"markup.other", ColorThemeKeys.INTERFACE},
+		new String[]{"markup.list", ColorThemeKeys.STRING},
+		new String[]{"markup.heading", ColorThemeKeys.KEYWORD},
 		new String[]{"punctuation.definition", ColorThemeKeys.KEYWORD},
 	};
 	
@@ -223,6 +229,31 @@ public class TmThemeLoader {
 					//TM from one in the color theme.
 				}
 			}
+		}
+	}
+
+	public static void ammendTmEntries(Map<String, ColorThemeSetting> theme) {
+		applyDefault(theme, "markup.underline", ColorThemeKeys.JAVADOC_LINK);
+		applyDefault(theme, "markup.link", ColorThemeKeys.JAVADOC_LINK);
+		applyDefault(theme, "markup.italic", ColorThemeKeys.STRING);
+		applyDefault(theme, "markup.bold", ColorThemeKeys.STRING);
+		applyDefault(theme, "markup.heading", ColorThemeKeys.KEYWORD);
+		applyDefault(theme, "markup.list", ColorThemeKeys.NUMBER);
+		applyDefault(theme, "markup.quote", ColorThemeKeys.STRING);
+		applyDefault(theme, "markup.raw", ColorThemeKeys.STRING);
+		applyDefault(theme, "markup.other", ColorThemeKeys.STRING);
+	}
+
+	private static void applyDefault(Map<String, ColorThemeSetting> theme, String key, String base) {
+		ColorThemeSetting existing = theme.get(key);
+		if(existing == null){
+			ColorThemeSetting colorThemeSetting = theme.get(base);
+			if(colorThemeSetting == null){
+				colorThemeSetting = theme.get(ColorThemeKeys.FOREGROUND);
+			}
+			ColorThemeSetting cp = colorThemeSetting.createCopy();
+			cp.setUnderlineEnabled(true);
+			theme.put(key, cp);
 		}
 	}
 }

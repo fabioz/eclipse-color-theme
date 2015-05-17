@@ -119,6 +119,10 @@ public class GenericMapper extends ThemePreferenceMapper {
                     overrideMappings.get(pluginKey) : mappings.get(pluginKey);
             ColorThemeSetting setting = theme.get(mapping.getThemeKey());
             if (setting != null) {
+        		if(setting.getColor() == null){
+        			System.err.println("Error: cannot map color: "+mapping.getThemeKey()+" because foreground color is null.");
+        			continue;
+        		}
                 mapping.putPreferences(preferences, setting);
             }
         }
