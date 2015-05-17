@@ -5,7 +5,9 @@
  */
 package com.github.eclipsecolortheme;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
@@ -31,6 +33,8 @@ public class TmThemeLoader {
 		NSString name = (NSString) rootDict.get("name");
 		theme.setName(name.getContent());
 		
+		List<ColorThemeSetting> colorsWithoutForeground = new ArrayList<>();
+		
 		NSArray settingsRoot = (NSArray) rootDict.get("settings");
 		NSObject[] array = settingsRoot.getArray();
 		for (NSObject dict : array) {
@@ -54,6 +58,8 @@ public class TmThemeLoader {
 					NSObject foreground = colorSettingsMap.get("foreground");
 					if(foreground instanceof NSString){
 						colorThemeSetting.setColor(((NSString)foreground).getContent());
+					}else{
+						colorsWithoutForeground.add(colorThemeSetting);
 					}
 					
 					NSObject fontName = colorSettingsMap.get("fontName");
@@ -108,15 +114,23 @@ public class TmThemeLoader {
 						NSString nsString = (NSString)colorSettingsMap.get("selection");
 						String selection = nsString.getContent();
 						ColorThemeSetting selectionColorSetting = new ColorThemeSetting(selection);
+						if(selectionColorSetting.getColor().getAlpha() != 255){
+							selectionColorSetting.setColor(selectionColorSetting.getColor().blend(backgroundColor));
+						}
 						entries.put(ColorThemeKeys.SELECTION_BACKGROUND, selectionColorSetting);
 						
 						// foreground for the selection is the same as the regular foreground.
 						entries.put(ColorThemeKeys.SELECTION_FOREGROUND, new ColorThemeSetting(colorThemeSetting.getColor().asHex()));
 						
-						// TODO: Check if the user has some alpha and apply it manually with the background we have.
+						// Note: we're checking if the user has some alpha and if it has we apply it manually with the background we have.
 						
 						String lineHighlight = ((NSString)colorSettingsMap.get("lineHighlight")).getContent();
-						entries.put(ColorThemeKeys.CURRENT_LINE, new ColorThemeSetting(lineHighlight));
+						ColorThemeSetting currentLineSetting = new ColorThemeSetting(lineHighlight);
+						if(currentLineSetting.getColor().getAlpha() != 255){
+							//Manual alpha blend with background
+							currentLineSetting.setColor(currentLineSetting.getColor().blend(backgroundColor));
+						}
+						entries.put(ColorThemeKeys.CURRENT_LINE, currentLineSetting);
 						
 						colorSettingsMap.get("invisibles"); // We don't have such a mapping now
 						colorSettingsMap.get("caret"); // We don't have such a mapping now
@@ -132,6 +146,10 @@ public class TmThemeLoader {
 					}
 				}
 			}
+		}
+		ColorThemeSetting foregroundSetting = entries.get(ColorThemeKeys.FOREGROUND);
+		for(ColorThemeSetting setting:colorsWithoutForeground){
+			setting.setColor(foregroundSetting.getColor());
 		}
 		return entries;
 	}

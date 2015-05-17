@@ -182,8 +182,13 @@ public class EditThemeDialog extends TitleAreaDialog {
 		for (String entry : keys) {
 			TreeItem item = new TreeItem(fAppearanceColorTree, SWT.NONE);
 			item.setText(entry);
-			updateTreeItem(item, entry, entries, entries.get(entry).getColor()
-					.getRGB());
+			ColorThemeSetting colorThemeSetting = entries.get(entry);
+			Color color = colorThemeSetting.getColor();
+			if(color == null){
+				System.err.println("Color for entry: "+entry+" is null.");
+			}else{
+				updateTreeItem(item, entry, entries, color.getRGB());
+			}
 		}
 
 		fAppearanceColorTree.getDisplay().asyncExec(new Runnable() {

@@ -4,10 +4,10 @@ import org.eclipse.swt.graphics.RGB;
 
 public final class Color {
 
-	private final int r;
-	private final int g;
-	private final int b;
-	private final int a;
+	private int r;
+	private int g;
+	private int b;
+	private int a;
 
 	public int getAlpha(){
 		return a;
@@ -20,9 +20,28 @@ public final class Color {
 				g = Integer.parseInt(value.substring(3, 5), 16);
 				b = Integer.parseInt(value.substring(5, 7), 16);
 				if(value.length() > 7){
-					a = Integer.parseInt(value.substring(5, 7), 16);
+					a = Integer.parseInt(value.substring(7, 9), 16);
 				}else{
 					a = 255;
+				}
+				
+				if(r < 0){
+					r = 0;
+				}
+				if(g < 0){
+					g = 0;
+				}
+				if(b < 0){
+					b = 0;
+				}
+				if(r > 255){
+					r = 255;
+				}
+				if(g > 255){
+					g = 255;
+				}
+				if(b > 255){
+					b = 255;
 				}
 			} else {
 				// Not in hexa: i.e.: r,g,b comma-separated.
@@ -54,6 +73,38 @@ public final class Color {
 		this.g = colorValue.green;
 		this.b = colorValue.blue;
 		this.a = 255;
+		
+		if(r < 0){
+			r = 0;
+		}
+		if(g < 0){
+			g = 0;
+		}
+		if(b < 0){
+			b = 0;
+		}
+		if(a < 0){
+			a = 0;
+		}
+		if(r > 255){
+			r = 255;
+		}
+		if(g > 255){
+			g = 255;
+		}
+		if(b > 255){
+			b = 255;
+		}
+		if(a > 255){
+			a = 255;
+		}
+	}
+	
+	public Color(int r, int g, int b, int a) {
+		this.r = r;
+		this.g = g;
+		this.b = b;
+		this.a = a;
 	}
 
 	public int getR() {
@@ -135,6 +186,25 @@ public final class Color {
 			return darkerRGB(percentage - 0.05);
 		}
 		return new RGB(newR, newG, newB);
+	}
+
+	public Color blend(Color backgroundColor) {
+		double localR = r / 255.0; 
+		double localG = g / 255.0; 
+		double localB = b / 255.0; 
+		double a = this.a / 255.0;
+		
+		double oR = backgroundColor.r / 255.0; 
+		double oG = backgroundColor.g / 255.0; 
+		double oB = backgroundColor.b / 255.0; 
+			
+		return new Color(
+				(int)((localR * a) + (oR * (1.0 - a)) * 255.0),
+				(int)((localG * a) + (oG * (1.0 - a)) * 255.0),
+				(int)((localB * a) + (oB * (1.0 - a)) * 255.0),
+				255
+				);
+		
 	}
 
 

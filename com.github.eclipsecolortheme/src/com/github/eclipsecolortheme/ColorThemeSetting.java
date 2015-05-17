@@ -54,6 +54,10 @@ public class ColorThemeSetting {
 	public void setColor(String colorStr) {
 		this.color = new Color(colorStr);
 	}
+	
+	public void setColor(Color color) {
+		this.color = color;
+	}
 
 	public String getHexColorOrNull() {
 		if (color == null) {
@@ -178,5 +182,6 @@ public class ColorThemeSetting {
 		}
 		return new FontData(font.substring(0, lastIndexOf), Integer.parseInt(font.substring(lastIndexOf+1)), 0);
 	}
+
 
 }
