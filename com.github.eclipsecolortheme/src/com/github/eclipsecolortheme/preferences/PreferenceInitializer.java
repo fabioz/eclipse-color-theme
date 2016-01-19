@@ -19,5 +19,6 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 		//that has a scrollbar, so, let's make this only true on windows where the issue is
 		//more annoying.
 		store.setDefault(Activator.THEME_STYLED_TEXT_SCROLLBARS, PlatformUtils.isWindowsPlatform());
+		store.setDefault(Activator.THEME_TREE_TABLE_SCROLLBARS, PlatformUtils.isWindowsPlatform());
 	}
 }

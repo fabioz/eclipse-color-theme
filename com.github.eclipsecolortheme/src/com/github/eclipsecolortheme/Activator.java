@@ -28,6 +28,7 @@ public class Activator extends AbstractUIPlugin {
 	public static final String EXTENSION_POINT_ID_THEME = PLUGIN_ID + ".theme";
 
 	public static final String THEME_STYLED_TEXT_SCROLLBARS = "THEME_STYLED_TEXT_SCROLLBARS";
+	public static final String THEME_TREE_TABLE_SCROLLBARS = "THEME_TREE_TABLE_SCROLLBARS";
 
 	private static Activator plugin;
 
