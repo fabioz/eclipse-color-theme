@@ -59,6 +59,7 @@ Eclipse Color Theme currently supports the following editors:
 * Haskell (EclipseFP)
 * haXe (eclihx)
 * HTML (Eclipse WTP, [AngularJS Eclipse Plugin](https://github.com/angelozerr/angularjs-eclipse))
+* IvyDE editor ([Apache IvyDE](http://ant.apache.org/ivy/ivyde/))
 * Jade (Node.js template engine; [Nodeclipse/Enide Minimalist Jade Editor](http://www.nodeclipse.org/projects/gradle))
 * Java
 * Java properties (Eclipse JDT, [Properties Editor](http://propedit.sourceforge.jp/index_en.html))
@@ -69,6 +70,7 @@ Eclipse Color Theme currently supports the following editors:
 * Markdown
 * PDE
 * Perl
+* [Protocol Buffers](https://code.google.com/p/protobuf-dt)
 * PHP
 * Puppet (Gepetto)
 * Python
@@ -80,7 +82,7 @@ Eclipse Color Theme currently supports the following editors:
 * TCL
 * Text
 * Twig
-* TypeScript
+* TypeScript ([Eclipse TypeScript Plug-in](https://github.com/palantir/eclipse-typescript), [TypeScript IDE for Eclipse](http://typecsdev.com/))
 * XML
 * XSL
 * Xtend
