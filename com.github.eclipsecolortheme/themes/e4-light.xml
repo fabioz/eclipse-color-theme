@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<colorTheme id="555555" name="E4 Light" modified="2015-05-15 12:00:00" author="Fabio Zadrozny" website="https://sw-brainwy.rhcloud.com">
+    <annotation color="#646464" />
+    <background color="#FFFFFF" />
+    <bracket color="#000000" />
+    <class color="#000000" bold="true"/>
+    <commentTaskTag color="#666666" bold="true" />
+    <constant color="#000000" italic="true" />
+    <currentLine color="#E8F2FE" />
+    <deletionIndication color="#9B5656" />
+    <deprecatedMember color="#000000" strikethrough="true" />
+    <enum color="#000F60" />
+    <field color="#0000C0" />
+    <filteredSearchResultIndication color="#CECCF7" />
+    <findScope color="#B0B0B0" />
+    <foreground color="#000000" />
+    <inheritedMethod color="#000000" />
+    <interface color="#000000" italic="false" underline="false" strikethrough="false" />
+    <javadoc color="#3F5FBF" />
+    <javadocKeyword color="#7F9FBF" bold="false" />
+    <javadocLink color="#3F3FBF" italic="false" />
+    <javadocTag color="#7F7F9F" bold="true" italic="false" />
+    <keyword color="#7F0055" bold="true" />
+    <lineNumber color="#B0B4B9" />
+    <matchingBracket color="#408080" />
+    <localVariable color="#000000" />
+    <localVariableDeclaration color="#000000" />
+    <method color="#000000" bold="true"/>
+    <methodDeclaration color="#000000" />
+    <multiLineComment color="#3F7F5F" />
+    <number color="#000000" />
+    <occurrenceIndication color="#D4D4D4" />
+    <operator color="#000000" />
+    <parameterVariable color="#000000" />
+    <searchResultIndication color="#CECCF7" />
+    <selectionBackground color="#328EFE" />
+    <selectionForeground color="#FFFFFF" />
+    <singleLineComment color="#3F7F5F" />
+    <sourceHoverBackground color="#B0B0B0" />
+    <staticField color="#0000C0" italic="true" />
+    <staticFinalField color="#843CAA" italic="true" />
+    <staticMethod color="#000000" italic="true" />
+    <string color="#2A00FF" />
+    <typeArgument color="#000F60" />
+    <typeParameter color="#135756" bold="true" />
+    <writeOccurrenceIndication color="#F0D8A8" />
+</colorTheme>

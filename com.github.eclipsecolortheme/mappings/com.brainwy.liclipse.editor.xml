@@ -45,7 +45,7 @@
 		<mapping pluginKey="typeParameter"  themeKey="typeParameter"/>
 		<mapping pluginKey="deprecatedMember"  themeKey="deprecatedMember"/>
 		<mapping pluginKey="debugCurrentInstructionPointer"  themeKey="debugCurrentInstructionPointer"/>
-		<mapping pluginKey="debugSecondaryInstructionPointer"  themeKey="constant"/>
-		<mapping pluginKey="constant"  themeKey="debugSecondaryInstructionPointer"/>
+		<mapping pluginKey="debugSecondaryInstructionPointer"  themeKey="debugSecondaryInstructionPointer"/>
+		<mapping pluginKey="constant"  themeKey="constant"/>
     </mappings>
 </eclipseColorThemeMapping>

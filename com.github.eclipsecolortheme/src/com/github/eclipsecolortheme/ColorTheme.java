@@ -6,51 +6,58 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-public class ColorTheme {
+import org.eclipse.swt.graphics.FontData;
 
-	private String id;
-	private String name;
-	private String author;
-	private String website;
-	private Map<String, ColorThemeSetting> entries;
+public class ColorTheme {
+	
+    private String id;
+    private String name;
+    private String author;
+    private String website;
+    private Map<String, ColorThemeSetting> entries;
+    private Map<String, Map<String, ColorThemeMapping>> mappings;
 	/**
 	 * This is the id of the theme in the preferences store. If a theme was not
 	 * loaded from the preferences store, the importedThemeId is null.
 	 */
 	private String importedThemeId;
+	
+    public String getId() {
+        return id;
+    }
 
-	public String getId() {
-		return id;
-	}
+    public void setId(String id) {
+        this.id = id;
+    }
 
-	public void setId(String id) {
-		this.id = id;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public String getAuthor() {
+        return author;
+    }
 
-	public String getAuthor() {
-		return author;
-	}
+    public void setAuthor(String author) {
+        this.author = author;
+    }
 
-	public void setAuthor(String author) {
-		this.author = author;
-	}
+    public String getWebsite() {
+        return website;
+    }
 
-	public String getWebsite() {
-		return website;
-	}
+    public void setWebsite(String website) {
+        this.website = website;
+    }
 
-	public void setWebsite(String website) {
-		this.website = website;
-	}
-
+    public Map<String, ColorThemeSetting> getEntries() {
+        return entries;
+    }
+    
 	/**
 	 * This is the id of the theme in the preferences store. If a theme was not
 	 * loaded from the preferences store, the importedThemeId is null.
@@ -63,13 +70,18 @@ public class ColorTheme {
 		return importedThemeId;
 	}
 
-	public Map<String, ColorThemeSetting> getEntries() {
-		return entries;
-	}
+    public void setEntries(Map<String, ColorThemeSetting> entries) {
+        this.entries = entries;
+    }
 
-	public void setEntries(Map<String, ColorThemeSetting> entries) {
-		this.entries = entries;
-	}
+    public Map<String, Map<String, ColorThemeMapping>> getMappings() {
+        return mappings;
+    }
+
+    public void setMappings(Map<String, Map<String, ColorThemeMapping>> mappings) {
+        this.mappings = mappings;
+    }
+
 
 	/**
 	 * @param key
@@ -112,7 +124,7 @@ public class ColorTheme {
 		buf.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
 		buf.append("<colorTheme id=\"1\" name=\"" + name + "\" modified=\""
 				+ modified + "\" author=\"" + author + "\" website=\""
-				+ website + "/?p=" + id + "\">\n");
+				+ website + "\">\n");
 		Map<String, ColorThemeSetting> entries2 = this.getEntries();
 		Set<Entry<String, ColorThemeSetting>> entrySet = entries2.entrySet();
 		for (Entry<String, ColorThemeSetting> entry : entrySet) {
@@ -128,6 +140,23 @@ public class ColorTheme {
 					.append(setting.isStrikethroughEnabled()).append('"');
 			buf.append(" italic=").append('"')
 					.append(setting.isItalicEnabled()).append('"');
+			
+			buf.append(" useCustomBackground=").append('"')
+				.append(setting.useCustomBackground()).append('"');
+			
+			buf.append(" useCustomFont=").append('"')
+				.append(setting.useCustomFont()).append('"');
+			
+			Color backgroundColor = setting.getBackgroundColor();
+			if(backgroundColor != null){
+				buf.append(" backgroundColor=\"").append(backgroundColor.asHex()).append("\" ");
+			}
+			
+			FontData font = setting.getFont();
+			if(font != null){
+				buf.append(" font=\"").append(StringEscapeUtils.escapeXml(ColorThemeSetting.fontToString(font))).append("\" ");
+			}
+			
 			buf.append("/>\n");
 		}
 		buf.append("</colorTheme>\n");

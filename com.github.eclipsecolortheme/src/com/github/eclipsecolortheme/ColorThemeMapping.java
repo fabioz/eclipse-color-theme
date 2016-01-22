@@ -15,6 +15,10 @@ public class ColorThemeMapping {
 	public void putPreferences(IEclipsePreferences preferences,
 			ColorThemeSetting setting) {
 		Color color = setting.getColor();
+		if(color == null){
+			System.err.println("Error: cannot map color: "+pluginKey+" because foreground color is null.");
+			return;
+		}
 		String string = color.toString();
 		String curr = preferences.get(pluginKey, "");
 		if (!string.equals(curr)) {

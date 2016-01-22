@@ -23,8 +23,7 @@ public class PerlEditorMapper extends GenericMapper {
 				ColorThemeSetting setting) {
 			preferences.put(pluginKey, setting.getColor().asRGB());
 			if (setting.isBoldEnabled() != null)
-				preferences.putBoolean(pluginKey + "Bold",
-						setting.isBoldEnabled());
+				preferences.putBoolean(pluginKey + "Bold", setting.isBoldEnabled());
 		}
 
 	}
@@ -35,12 +34,12 @@ public class PerlEditorMapper extends GenericMapper {
 	}
 
 	@Override
-	public void map(Map<String, ColorThemeSetting> theme) {
+	public void map(Map<String, ColorThemeSetting> theme, Map<String, ColorThemeMapping> overrideMappings) {
 		preferences.putBoolean(
 				ABSTRACT_TEXT_EDITOR_COLOR_BACKGROUND_SYSTEM_DEFAULT, false);
 		preferences.putBoolean(
 				ABSTRACT_TEXT_EDITOR_COLOR_FOREGROUND_SYSTEM_DEFAULT, false);
-		super.map(theme);
+		super.map(theme, overrideMappings);
 	}
 
 	@Override
@@ -51,4 +50,6 @@ public class PerlEditorMapper extends GenericMapper {
 				.remove(ABSTRACT_TEXT_EDITOR_COLOR_FOREGROUND_SYSTEM_DEFAULT);
 		super.clear();
 	}
+
+
 }

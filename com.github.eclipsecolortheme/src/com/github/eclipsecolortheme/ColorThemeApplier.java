@@ -46,7 +46,7 @@ public class ColorThemeApplier {
 							if (resource != null) {
 								InputStream input = (InputStream) resource
 										.getContent();
-								((GenericMapper) mapper).parseMapping(input);
+								((GenericMapper) mapper).parseMappings(input);
 							}
 						}
 					}
@@ -131,8 +131,13 @@ public class ColorThemeApplier {
 			}
 			try {
 				if (theme != null) {
-					Map<String, ColorThemeSetting> entries = theme.getEntries();
-					editor.map(entries);
+					Map<String, Map<String, ColorThemeMapping>> mappings = theme.getMappings();
+					if(mappings != null){
+						editor.map(theme.getEntries(), mappings.get(applyToPluginId));
+						
+					}else{
+						editor.map(theme.getEntries(), null);
+					}
 				} else {
 					editor.clear();
 				}

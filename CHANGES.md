@@ -1,11 +1,57 @@
-0.13.0
-======
+1.1.0
+=====
+* Added support for [Protocol Buffers Development Tools](https://code.google.com/p/protobuf-dt).
+* Added support for the [TypeScript IDE for Eclipse](http://typecsdev.com/).
+* Added support for the [Apache IvyDE](http://ant.apache.org/ivy/ivyde/).
+* Fixed outdated mapping for the Go editor (goclipse).
+* Explicitly import hamcrest core bundle for tests.
+
+1.0.0 (2014-10-26)
+==================
+* Added support for Gepetto's new module editor.
+* Added support for the [LESS Plugin](http://www.normalesup.org/~simonet/soft/ow/eclipse-less.fr.html).
+* Allow themes to override mappings.
+* Highlight characters in Scala IDE.
+* Added support for Scala IDE Play editor.
+
+0.14.0 (2014-07-15)
+===================
+* Added the Solarized Dark theme.
+* Added the Solarized Light theme.
+* Added support for the [AngularJS Eclipse Plugin](https://github.com/angelozerr/angularjs-eclipse).
+* Added support for the [JsonTools](https://bitbucket.org/denmiroch/jsontools/wiki/Home).
+* Added support for the [Eclipse Json Editor Plugin](http://sourceforge.net/projects/eclipsejsonedit/).
+* Added support for the [Properties Editor](http://propedit.sourceforge.jp/index_en.html).
+* Added support for Geppetto 4+.
+* Added support for Nodeclipse/Enide Gradle Editor.
+* Added support for Nodeclipse Chromium Debugger JS Editor.
+* Added support for Nodeclipse Minimalist Jade Editor.
+
+0.13.1 (2014-05-04)
+===================
+* Fixed installation errors in Eclipse <4.
+* Used a different colour for brackets in ErlIDE.
+* Fixed selection colours in the frontenddev theme.
+
+0.13.0 (2013-11-21)
+===================
 * Fixed occurrence and inactive code highlighting in C/C++.
 * Added support for the Puppet DSL editor (Gepetto).
 * Added support for the Twig editor.
 * Added support for Json Eclipse Plugin.
 * Added support for the Yaml editor (Yedit).
 * Added support for the Xtend editor.
+* Fixed background in XML, HTML and CSS editor.
+* Added support for the Markdown editor.
+* Theme the debug and CVS console.
+* Added support for the Spket JavaScript and XML editors.
+* Added support for the XSL editor.
+* Added support for the DTD editor.
+* Added support for the Haskell editor (EclipseFP).
+* Fixed exception caused by empty selections.
+* Fixed some issues with Scala IDE.
+* Support parsing of XML files in encodings other than UTF-8.
+* Made sure that the preferences work even if the preview fails to load.
 
 0.12.0 (2012-07-24)
 ===================

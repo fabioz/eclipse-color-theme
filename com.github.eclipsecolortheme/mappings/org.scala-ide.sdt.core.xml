@@ -1,23 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
 <eclipseColorThemeMapping plugin="org.scala-ide.sdt.core" created="2011-03-30 18:31:19">
-    <mappings>
-      <mapping pluginKey="syntaxColouring.singleLineComment.colour" themeKey="singleLineComment" />
-      <mapping pluginKey="syntaxColouring.multiLineComment.colour" themeKey="multiLineComment" />
-      <mapping pluginKey="syntaxColouring.scaladoc.colour" themeKey="javadoc" />
-      <mapping pluginKey="syntaxColouring.operator.colour" themeKey="operator" />
-      <mapping pluginKey="syntaxColouring.keyword.colour" themeKey="keyword" />
-      <mapping pluginKey="syntaxColouring.return.colour" themeKey="keyword" />
-      <mapping pluginKey="syntaxColouring.string.colour" themeKey="string" />
-      <mapping pluginKey="syntaxColouring.multiLineString.colour" themeKey="string" />
-      <mapping pluginKey="syntaxColouring.bracket.colour" themeKey="bracket" />
-      <mapping pluginKey="syntaxColouring.default.colour" themeKey="foreground" />
-      <mapping pluginKey="syntaxColouring.xml.comment" themeKey="multiLineComment" />
-      <mapping pluginKey="syntaxColouring.xml.attributeValue" themeKey="string" />
-      <mapping pluginKey="syntaxColouring.xml.attributeName" themeKey="keyword" />
-      <mapping pluginKey="syntaxColouring.xml.equals" themeKey="foreground" />
-      <mapping pluginKey="syntaxColouring.xml.tagDelimiter" themeKey="foreground" />
-      <mapping pluginKey="syntaxColouring.xml.tagName" themeKey="foreground" />
-      <mapping pluginKey="syntaxColouring.xml.processingInstruction" themeKey="foreground" />
-      <mapping pluginKey="syntaxColouring.xml.cdata" themeKey="foreground" />
-    </mappings>
+  <mappings>
+    <mapping pluginKey="syntaxColouring.singleLineComment.colour"         themeKey="singleLineComment" />
+    <mapping pluginKey="syntaxColouring.multiLineComment.colour"          themeKey="multiLineComment" />
+    <mapping pluginKey="syntaxColouring.scaladoc.colour"                  themeKey="javadoc" />
+    <mapping pluginKey="syntaxColouring.scaladocAnnotation.colour"        themeKey="javadocKeyword" />
+    <mapping pluginKey="syntaxColouring.operator.colour"                  themeKey="operator" />
+    <mapping pluginKey="syntaxColouring.keyword.colour"                   themeKey="keyword" />
+    <mapping pluginKey="syntaxColouring.return.colour"                    themeKey="keyword" />
+    <mapping pluginKey="syntaxColouring.character.colour"                 themeKey="string" />
+    <mapping pluginKey="syntaxColouring.string.colour"                    themeKey="string" />
+    <mapping pluginKey="syntaxColouring.multiLineString.colour"           themeKey="string" />
+    <mapping pluginKey="syntaxColouring.bracket.colour"                   themeKey="bracket" />
+    <mapping pluginKey="syntaxColouring.numberLiteral.colour"             themeKey="number" />
+    <mapping pluginKey="syntaxColouring.default.colour"                   themeKey="foreground" />
+
+    <mapping pluginKey="syntaxColouring.xml.comment.colour"               themeKey="multiLineComment" />
+    <mapping pluginKey="syntaxColouring.xml.attributeValue.colour"        themeKey="string" />
+    <mapping pluginKey="syntaxColouring.xml.attributeName.colour"         themeKey="keyword" />
+    <mapping pluginKey="syntaxColouring.xml.equals.colour"                themeKey="foreground" />
+    <mapping pluginKey="syntaxColouring.xml.tagDelimiter.colour"          themeKey="foreground" />
+    <mapping pluginKey="syntaxColouring.xml.tagName.colour"               themeKey="foreground" />
+    <mapping pluginKey="syntaxColouring.xml.processingInstruction.colour" themeKey="foreground" />
+    <mapping pluginKey="syntaxColouring.xml.cdata.colour"                 themeKey="singleLineComment" />
+
+    <mapping pluginKey="syntaxColouring.semantic.annotation.colour"       themeKey="annotation" />
+    <mapping pluginKey="syntaxColouring.semantic.caseClass.colour"        themeKey="class" />
+    <mapping pluginKey="syntaxColouring.semantic.caseObject.colour"       themeKey="enum" />
+    <mapping pluginKey="syntaxColouring.semantic.class.colour"            themeKey="class" />
+    <mapping pluginKey="syntaxColouring.semantic.lazyLocalVal.colour"     themeKey="enum" />
+    <mapping pluginKey="syntaxColouring.semantic.lazyTemplateVal.colour"  themeKey="abstractMethod" />
+    <mapping pluginKey="syntaxColouring.semantic.localVal.colour"         themeKey="staticFinalField" />
+    <mapping pluginKey="syntaxColouring.semantic.localVar.colour"         themeKey="localVariable" />
+    <mapping pluginKey="syntaxColouring.semantic.method.colour"           themeKey="methodDeclaration" />
+    <mapping pluginKey="syntaxColouring.semantic.object.colour"           themeKey="enum" />
+    <mapping pluginKey="syntaxColouring.semantic.package.colour"          themeKey="enum" />
+    <mapping pluginKey="syntaxColouring.semantic.methodParam.colour"      themeKey="parameterVariable" />
+    <mapping pluginKey="syntaxColouring.semantic.templateVal.colour"      themeKey="abstractMethod" />
+    <mapping pluginKey="syntaxColouring.semantic.templateVar.colour"      themeKey="localVariableDeclaration" />
+    <mapping pluginKey="syntaxColouring.semantic.trait.colour"            themeKey="interface" />
+    <mapping pluginKey="syntaxColouring.semantic.type.colour"             themeKey="typeArgument" />
+    <mapping pluginKey="syntaxColouring.semantic.typeParameter.colour"    themeKey="typeParameter" />
+
+    <!-- Support the proper Eclipse naming in the case the scala-sbt moves in that direction -->
+    <mapping pluginKey="syntaxColoring.singleLineComment.color"         themeKey="singleLineComment" />
+    <mapping pluginKey="syntaxColoring.multiLineComment.color"          themeKey="multiLineComment" />
+    <mapping pluginKey="syntaxColoring.scaladoc.color"                  themeKey="javadoc" />
+    <mapping pluginKey="syntaxColoring.scaladocAnnotation.color"        themeKey="javadocKeyword" />
+    <mapping pluginKey="syntaxColoring.operator.color"                  themeKey="operator" />
+    <mapping pluginKey="syntaxColoring.keyword.color"                   themeKey="keyword" />
+    <mapping pluginKey="syntaxColoring.return.color"                    themeKey="keyword" />
+    <mapping pluginKey="syntaxColoring.string.color"                    themeKey="string" />
+    <mapping pluginKey="syntaxColoring.multiLineString.color"           themeKey="string" />
+    <mapping pluginKey="syntaxColoring.bracket.color"                   themeKey="bracket" />
+    <mapping pluginKey="syntaxColoring.numberLiteral.color"             themeKey="number" />
+    <mapping pluginKey="syntaxColoring.default.color"                   themeKey="foreground" />
+
+    <mapping pluginKey="syntaxColoring.xml.comment.color"               themeKey="multiLineComment" />
+    <mapping pluginKey="syntaxColoring.xml.attributeValue.color"        themeKey="string" />
+    <mapping pluginKey="syntaxColoring.xml.attributeName.color"         themeKey="keyword" />
+    <mapping pluginKey="syntaxColoring.xml.equals.color"                themeKey="foreground" />
+    <mapping pluginKey="syntaxColoring.xml.tagDelimiter.color"          themeKey="foreground" />
+    <mapping pluginKey="syntaxColoring.xml.tagName.color"               themeKey="foreground" />
+    <mapping pluginKey="syntaxColoring.xml.processingInstruction.color" themeKey="foreground" />
+    <mapping pluginKey="syntaxColoring.xml.cdata.color"                 themeKey="singleLineComment" />
+
+    <mapping pluginKey="syntaxColoring.semantic.annotation.color"       themeKey="annotation" />
+    <mapping pluginKey="syntaxColoring.semantic.caseClass.color"        themeKey="class" />
+    <mapping pluginKey="syntaxColoring.semantic.caseObject.color"       themeKey="enum" />
+    <mapping pluginKey="syntaxColoring.semantic.class.color"            themeKey="class" />
+    <mapping pluginKey="syntaxColoring.semantic.lazyLocalVal.color"     themeKey="enum" />
+    <mapping pluginKey="syntaxColoring.semantic.lazyTemplateVal.color"  themeKey="abstractMethod" />
+    <mapping pluginKey="syntaxColoring.semantic.localVal.color"         themeKey="staticFinalField" />
+    <mapping pluginKey="syntaxColoring.semantic.localVar.color"         themeKey="localVariable" />
+    <mapping pluginKey="syntaxColoring.semantic.method.color"           themeKey="methodDeclaration" />
+    <mapping pluginKey="syntaxColoring.semantic.object.color"           themeKey="enum" />
+    <mapping pluginKey="syntaxColoring.semantic.package.color"          themeKey="enum" />
+    <mapping pluginKey="syntaxColoring.semantic.methodParam.color"      themeKey="parameterVariable" />
+    <mapping pluginKey="syntaxColoring.semantic.templateVal.color"      themeKey="abstractMethod" />
+    <mapping pluginKey="syntaxColoring.semantic.templateVar.color"      themeKey="localVariableDeclaration" />
+    <mapping pluginKey="syntaxColoring.semantic.trait.color"            themeKey="interface" />
+    <mapping pluginKey="syntaxColoring.semantic.type.color"             themeKey="typeArgument" />
+    <mapping pluginKey="syntaxColoring.semantic.typeParameter.color"    themeKey="typeParameter" />
+  </mappings>
 </eclipseColorThemeMapping>

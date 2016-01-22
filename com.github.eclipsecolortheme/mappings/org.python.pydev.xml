@@ -5,14 +5,16 @@
         <mapping pluginKey="CODE_COLOR" themeKey="foreground"/>
         <mapping pluginKey="KEYWORD_COLOR" themeKey="keyword"/>
         <mapping pluginKey="SELF_COLOR" themeKey="keyword"/>
-        <mapping pluginKey="FUNC_NAME_COLOR" themeKey="method"/>
-        <mapping pluginKey="BACKQUOTES_COLOR" themeKey="foreground"/>
+        <mapping pluginKey="FUNC_NAME_COLOR" themeKey="methodDeclaration"/>
+        <mapping pluginKey="BACKQUOTES_COLOR" themeKey="deprecatedMember"/>
         <mapping pluginKey="NUMBER_COLOR" themeKey="number"/>
-        <mapping pluginKey="STRING_COLOR" themeKey="string"/>
-        <mapping pluginKey="COMMENT_COLOR" themeKey="multiLineComment"/>
+        <mapping pluginKey="STRING_COLOR" themeKey="constant"/>
+        <mapping pluginKey="UNICODE_COLOR" themeKey="string"/>
+        <mapping pluginKey="COMMENT_COLOR" themeKey="singleLineComment"/>
         <mapping pluginKey="DECORATOR_COLOR" themeKey="annotation"/>
         <mapping pluginKey="CLASS_NAME_COLOR" themeKey="class"/>
         <mapping pluginKey="PARENS_COLOR" themeKey="operator"/>
         <mapping pluginKey="OPERATORS_COLOR" themeKey="operator"/>
+        <mapping pluginKey="DOCSTRING_MARKUP_COLOR" themeKey="javadocTag"/>
     </mappings>
 </eclipseColorThemeMapping>

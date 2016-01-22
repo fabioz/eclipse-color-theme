@@ -23,6 +23,12 @@
          point="com.github.eclipsecolortheme.mapper">
       <mapper
             class="com.github.eclipsecolortheme.mapper.GenericMapper"
+            name="protobuf"
+            pluginId="com.google.eclipse.protobuf.Protobuf"
+            xml="mappings/com.google.eclipse.protobuf.Protobuf.xml">
+      </mapper>
+      <mapper
+            class="com.github.eclipsecolortheme.mapper.GenericMapper"
             name="Make"
             pluginId="org.eclipse.cdt.make.ui"
             xml="mappings/org.eclipse.cdt.make.ui.xml">
@@ -68,6 +74,18 @@
             name="Puppet Geppetto"
             pluginId="org.cloudsmith.geppetto.pp.dsl.PP"
             xml="mappings/org.cloudsmith.geppetto.pp.dsl.PP.xml">
+      </mapper>
+      <mapper
+            class="com.github.eclipsecolortheme.mapper.GenericMapper"
+            name="Puppet Geppetto 4+ module editor"
+            pluginId="com.puppetlabs.geppetto.module.dsl.Module"
+            xml="mappings/com.puppetlabs.geppetto.module.dsl.Module.xml">
+      </mapper>
+      <mapper
+            class="com.github.eclipsecolortheme.mapper.GenericMapper"
+            name="Puppet Geppetto 4+ manifest editor"
+            pluginId="com.puppetlabs.geppetto.pp.dsl.PP"
+            xml="mappings/com.puppetlabs.geppetto.pp.dsl.PP.xml">
       </mapper>
       <mapper
             class="com.github.eclipsecolortheme.mapper.TextEditorMapper"
@@ -153,6 +171,55 @@
             pluginId="com.adobe.flexide.css.core"
             xml="mappings/com.adobe.flexide.css.core.xml">
       </mapper>
+      <mapper
+            class="com.github.eclipsecolortheme.mapper.GenericMapper"
+            name="Markdown"
+            pluginId="winterwell.markdown"
+            xml="mappings/winterwell.markdown.xml">
+      </mapper>
+      <!-- <mapper
+            class="com.github.eclipsecolortheme.mapper.GenericMapper"
+            name="Console"
+            pluginId="org.eclipse.debug.ui"
+            xml="mappings/org.eclipse.debug.ui.xml">
+      </mapper> -->
+      <mapper
+            class="com.github.eclipsecolortheme.mapper.GenericMapper"
+            name="CVS"
+            pluginId="org.eclipse.team.cvs.ui"
+            xml="mappings/org.eclipse.team.cvs.ui.xml">
+      </mapper>
+      <mapper
+            class="com.github.eclipsecolortheme.mapper.GenericMapper"
+            name="Spket JavaScript"
+            pluginId="com.spket.js"
+            xml="mappings/com.spket.js.xml">
+      </mapper>
+      <mapper
+            class="com.github.eclipsecolortheme.mapper.GenericMapper"
+            name="Spket XML"
+            pluginId="com.spket.xml"
+            xml="mappings/com.spket.xml.xml">
+      </mapper>
+
+      <mapper
+            class="com.github.eclipsecolortheme.mapper.WebEditorMapper"
+            name="XSL"
+            pluginId="org.eclipse.wst.xsl.ui"
+            xml="mappings/org.eclipse.wst.xsl.ui.xml">
+      </mapper>
+      <mapper
+            class="com.github.eclipsecolortheme.mapper.WebEditorMapper"
+            name="DTD"
+            pluginId="org.eclipse.wst.dtd.ui"
+            xml="mappings/org.eclipse.wst.dtd.ui.xml">
+      </mapper>
+      <mapper
+            class="com.github.eclipsecolortheme.mapper.E4CSSMapper"
+            name="e4 CSS"
+            pluginId="org.eclipse.e4.CSS"
+            xml="mappings/org.eclipse.e4.CSS.xml">
+      </mapper>
 
    <mapper
          class="com.github.eclipsecolortheme.mapper.GenericMapper"
@@ -162,9 +229,27 @@
    </mapper>
    <mapper
          class="com.github.eclipsecolortheme.mapper.GenericMapper"
+         name="Scala IDE Play framework"
+         pluginId="org.scala-ide.play2"
+         xml="mappings/org.scala-ide.play2.xml">
+   </mapper>
+   <mapper
+         class="com.github.eclipsecolortheme.mapper.GenericMapper"
          name="FreeMarker"
          pluginId="org.jboss.ide.eclipse.freemarker"
          xml="mappings/org.jboss.ide.eclipse.freemarker.xml">
+   </mapper>
+   <mapper
+        class="com.github.eclipsecolortheme.mapper.GenericMapper"
+        name="Gradle"
+        pluginId="org.nodeclipse.enide.editors.gradle"
+        xml="mappings/org.nodeclipse.enide.editors.gradle.xml">
+   </mapper>
+   <mapper
+        class="com.github.eclipsecolortheme.mapper.GenericMapper"
+        name="Jade"
+        pluginId="org.nodeclipse.enide.editors.jade"
+        xml="mappings/org.nodeclipse.enide.editors.jade.xml">
    </mapper>
    <mapper
          class="com.github.eclipsecolortheme.mapper.DltkEditorMapper"
@@ -183,6 +268,12 @@
          name="CFML"
          pluginId="org.cfeclipse.cfml"
          xml="mappings/org.cfeclipse.cfml.xml">
+   </mapper>
+   <mapper
+         class="com.github.eclipsecolortheme.mapper.GenericMapper"
+         name="CFML"
+         pluginId="org.chromium.debug.ui"
+         xml="mappings/org.chromium.debug.ui.xml">
    </mapper>
    <mapper
          class="com.github.eclipsecolortheme.mapper.DltkEditorMapper"
@@ -223,8 +314,8 @@
    <mapper
          class="com.github.eclipsecolortheme.mapper.GenericMapper"
          name="Go"
-         pluginId="goclipse"
-         xml="mappings/goclipse.xml">
+         pluginId="com.googlecode.goclipse.ui"
+         xml="mappings/com.googlecode.goclipse.ui.xml">
    </mapper>
    <mapper
          class="com.github.eclipsecolortheme.mapper.WebEditorMapper"
@@ -234,9 +325,21 @@
    </mapper>
    <mapper
          class="com.github.eclipsecolortheme.mapper.GenericMapper"
-         name="Json"
+         name="Json (Json Eclipse Plugin)"
          pluginId="org.sourceforge.jsonedit.core"
          xml="mappings/org.sourceforge.jsonedit.core.xml">
+   </mapper>
+   <mapper
+         class="com.github.eclipsecolortheme.mapper.GenericMapper"
+         name="Json (Eclipse Json Editor Plugin)"
+         pluginId="jsonedit-core"
+         xml="mappings/jsonedit-core.xml">
+   </mapper>
+   <mapper
+         class="com.github.eclipsecolortheme.mapper.JsonToolsEditorMapper"
+         name="Json (JsonTools)"
+         pluginId="org.sweetlemonade.eclipse.json"
+         xml="mappings/org.sweetlemonade.eclipse.json.xml">
    </mapper>
    <mapper
          class="com.github.eclipsecolortheme.mapper.GenericMapper"
@@ -250,11 +353,59 @@
          pluginId="org.eclipse.xtend.core.Xtend"
          xml="mappings/org.eclipse.xtend.ide.xml">
    </mapper>
+   <mapper
+         class="com.github.eclipsecolortheme.mapper.GenericMapper"
+         name="Haskell"
+         pluginId="net.sf.eclipsefp.haskell.ui"
+         xml="mappings/net.sf.eclipsefp.haskell.ui.xml">
+   </mapper>
+   <mapper
+         class="com.github.eclipsecolortheme.mapper.GenericMapper"
+         name="TypeScript"
+         pluginId="com.palantir.typescript"
+         xml="mappings/com.palantir.typescript.xml">
+   </mapper>
+   <mapper
+         class="com.github.eclipsecolortheme.mapper.GenericMapper"
+         name="Properties (Properties Editor)"
+         pluginId="jp.gr.java_conf.ussiy.app.propedit"
+         xml="mappings/jp.gr.java_conf.ussiy.app.propedit.xml">
+   </mapper>
+   <mapper
+         class="com.github.eclipsecolortheme.mapper.WebEditorMapper"
+         name="AngularJS"
+         pluginId="org.eclipse.angularjs.ui"
+         xml="mappings/org.eclipse.angularjs.ui.xml">
+   </mapper>
+   <mapper
+        class="com.github.eclipsecolortheme.mapper.GenericMapper"
+        name="LESS"
+        pluginId="net.vtst.ow.eclipse.less.Less"
+        xml="mappings/net.vtst.ow.eclipse.less.Less.xml">
+   </mapper>
+   <mapper
+        class="com.github.eclipsecolortheme.mapper.GenericMapper"
+        name="TypeScript (AXMOR)"
+        pluginId="com.axmor.eclipse.typescript.editor"
+        xml="mappings/com.axmor.eclipse.typescript.editor.xml">
+   </mapper>
+   <mapper
+        class="com.github.eclipsecolortheme.mapper.GenericMapper"
+        name="IvyDE"
+        pluginId="org.apache.ivyde.eclipse"
+        xml="mappings/org.apache.ivyde.eclipse.xml">
+   </mapper>
    </extension>
    <extension
          point="com.github.eclipsecolortheme.theme">
       <theme
             file="themes/black-pastel.xml">
+      </theme>
+      <theme
+            file="themes/e4-dark.xml">
+      </theme>
+      <theme
+            file="themes/e4-light.xml">
       </theme>
       <theme
             file="themes/frontenddev.xml">
@@ -299,6 +450,9 @@
             file="themes/sublime-text-2.xml">
       </theme>
       <theme
+            file="themes/sublime-text-monokai-extended.xml">
+      </theme>
+      <theme
             file="themes/tango.xml">
       </theme>
       <theme
@@ -317,6 +471,9 @@
             file="themes/liclipse-dark.xml">
       </theme>
       <theme
+            file="themes/aptana3.xml">
+      </theme>
+      <theme
             file="themes/roboticket.xml">
       </theme>
       <theme
@@ -324,6 +481,12 @@
       </theme>
       <theme
             file="themes/retta.xml">
+      </theme>
+      <theme
+            file="themes/solarized-dark.xml">
+      </theme>
+      <theme
+            file="themes/solarized-light.xml">
       </theme>
    </extension>
 

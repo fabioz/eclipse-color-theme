@@ -6,9 +6,7 @@ import com.github.eclipsecolortheme.ColorThemeMapping;
 import com.github.eclipsecolortheme.ColorThemeSetting;
 
 public class TexlipseEditorMapper extends GenericMapper {
-
 	private class Mapping extends ColorThemeMapping {
-
 		public Mapping(String pluginKey, String themeKey) {
 			super(pluginKey, themeKey);
 		}
@@ -21,19 +19,18 @@ public class TexlipseEditorMapper extends GenericMapper {
 				String styleKey = pluginKey.replaceAll("Color", "Style");
 				if (setting.isBoldEnabled() != null && setting.isBoldEnabled()) {
 					preferences.putInt(styleKey, 1);
-				} else if (setting.isItalicEnabled() != null && setting.isItalicEnabled()) {
+				} else if (setting.isItalicEnabled() != null
+						&& setting.isItalicEnabled()) {
 					preferences.putInt(styleKey, 2);
 				} else {
 					preferences.remove(styleKey);
 				}
 			}
 		}
-
 	}
-	
+
 	@Override
-    protected ColorThemeMapping createMapping(String pluginKey, String themeKey) {
-    	return new Mapping(pluginKey, themeKey);
-    }
-	
+	protected ColorThemeMapping createMapping(String pluginKey, String themeKey) {
+		return new Mapping(pluginKey, themeKey);
+	}
 }
