@@ -452,6 +452,9 @@ public class ColorThemePreferencePage extends PreferencePage implements
 						if (!id.startsWith("com.brainwy.liclipse.")) {
 							continue;
 						}
+						if (!id.startsWith("org.brainwy.liclipsetext.")) {
+							continue;
+						}
 					}
 					/*
 					 * C++ editors are not closed/reopened because it messes
