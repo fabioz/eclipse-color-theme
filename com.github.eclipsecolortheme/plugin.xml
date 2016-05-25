@@ -136,6 +136,12 @@
             xml="mappings/com.brainwy.liclipse.editor.xml">
       </mapper>
       <mapper
+            class="com.github.eclipsecolortheme.mapper.LiClipseEditorMapper"
+            name="LiClipseText"
+            pluginId="org.brainwy.liclipsetext.editor"
+            xml="mappings/org.brainwy.liclipsetext.editor.xml">
+      </mapper>
+      <mapper
             class="com.github.eclipsecolortheme.mapper.PerlEditorMapper"
             name="Perl"
             pluginId="org.epic.perleditor"

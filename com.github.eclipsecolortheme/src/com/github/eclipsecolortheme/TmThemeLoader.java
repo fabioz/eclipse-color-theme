@@ -1,6 +1,6 @@
 /**
  * Copyright: Fabio Zadrozny
- * 
+ *
  * License: EPL
  */
 package com.github.eclipsecolortheme;
@@ -28,13 +28,13 @@ public class TmThemeLoader {
 		theme.setAuthor("");
 		theme.setWebsite("");
 		Map<String, ColorThemeSetting> entries = new HashMap<String, ColorThemeSetting>();
-		
+
 		NSDictionary rootDict = (NSDictionary)XMLPropertyListParser.parseDocument(document);
 		NSString name = (NSString) rootDict.get("name");
 		theme.setName(name.getContent());
-		
+
 		List<ColorThemeSetting> colorsWithoutForeground = new ArrayList<>();
-		
+
 		NSArray settingsRoot = (NSArray) rootDict.get("settings");
 		NSObject[] array = settingsRoot.getArray();
 		for (NSObject dict : array) {
@@ -54,14 +54,14 @@ public class TmThemeLoader {
 						colorThemeSetting.setBackgroundColor(((NSString)background).getContent());
 						colorThemeSetting.setUseCustomBackground(true);
 					}
-					
+
 					NSObject foreground = colorSettingsMap.get("foreground");
 					if(foreground instanceof NSString){
 						colorThemeSetting.setColor(((NSString)foreground).getContent());
 					}else{
 						colorsWithoutForeground.add(colorThemeSetting);
 					}
-					
+
 					NSObject fontName = colorSettingsMap.get("fontName");
 					NSObject fontSize = colorSettingsMap.get("fontSize");
 					if(fontName instanceof NSString && fontSize instanceof NSString){
@@ -71,7 +71,7 @@ public class TmThemeLoader {
 							colorThemeSetting.setFont(fontNameStr+"|"+fontSizeStr);
 						}
 					}
-					
+
 					NSObject fontStyle = colorSettingsMap.get("fontStyle");
 					if(fontStyle instanceof NSString){
 						NSString nsString = (NSString) fontStyle;
@@ -86,7 +86,7 @@ public class TmThemeLoader {
 								case "underline":
 									colorThemeSetting.setItalicEnabled(true);
 									break;
-								case "bolde":
+								case "bold":
 									colorThemeSetting.setBoldEnabled(true);
 									break;
 								case "strikethrough":
@@ -95,22 +95,22 @@ public class TmThemeLoader {
 								}
 							}
 						}
-						
+
 					}
-					
+
 					NSObject scope = rootMap.get("scope");
 					if(!(scope instanceof NSString)){
 						//this is the root.
-						
+
 						// Must have at least foreground/background
 						Color backgroundColor = colorThemeSetting.getBackgroundColor();
 						ColorThemeSetting backgroundColorSetting = new ColorThemeSetting(backgroundColor.asHex());
 						entries.put(ColorThemeKeys.BACKGROUND, backgroundColorSetting);
-						
+
 						colorThemeSetting.setBackgroundColor((RGB)null);
 						colorThemeSetting.setUseCustomBackground(false);
 						entries.put(ColorThemeKeys.FOREGROUND, colorThemeSetting);
-						
+
 						NSString nsString = (NSString)colorSettingsMap.get("selection");
 						String selection = nsString.getContent();
 						ColorThemeSetting selectionColorSetting = new ColorThemeSetting(selection);
@@ -118,12 +118,12 @@ public class TmThemeLoader {
 							selectionColorSetting.setColor(selectionColorSetting.getColor().blend(backgroundColor));
 						}
 						entries.put(ColorThemeKeys.SELECTION_BACKGROUND, selectionColorSetting);
-						
+
 						// foreground for the selection is the same as the regular foreground.
 						entries.put(ColorThemeKeys.SELECTION_FOREGROUND, new ColorThemeSetting(colorThemeSetting.getColor().asHex()));
-						
+
 						// Note: we're checking if the user has some alpha and if it has we apply it manually with the background we have.
-						
+
 						String lineHighlight = ((NSString)colorSettingsMap.get("lineHighlight")).getContent();
 						ColorThemeSetting currentLineSetting = new ColorThemeSetting(lineHighlight);
 						if(currentLineSetting.getColor().getAlpha() != 255){
@@ -131,7 +131,7 @@ public class TmThemeLoader {
 							currentLineSetting.setColor(currentLineSetting.getColor().blend(backgroundColor));
 						}
 						entries.put(ColorThemeKeys.CURRENT_LINE, currentLineSetting);
-						
+
 						colorSettingsMap.get("invisibles"); // We don't have such a mapping now
 						colorSettingsMap.get("caret"); // We don't have such a mapping now
 					}else{
@@ -162,40 +162,40 @@ public class TmThemeLoader {
 		new String[]{"comment.block.documentation", ColorThemeKeys.JAVADOC_KEYWORD},
 		new String[]{"comment.block", ColorThemeKeys.MULTI_LINE_COMMENT},
 		new String[]{"comment", ColorThemeKeys.SINGLE_LINE_COMMENT},
-		
+
 		new String[]{"constant.numeric", ColorThemeKeys.NUMBER},
 		new String[]{"constant.language", ColorThemeKeys.CONSTANT},
 		new String[]{"constant.character", ColorThemeKeys.LOCAL_VARIABLE_DECLARATION},
 		new String[]{"constant.other", ColorThemeKeys.ENUM},
 		new String[]{"constant", ColorThemeKeys.CONSTANT},
-		
+
 		new String[]{"entity.other.inherited-class", ColorThemeKeys.INHERITED_METHOD}, //Subclass declaration?
 		new String[]{"entity.name.function", ColorThemeKeys.METHOD_DECLARATION},
 		new String[]{"entity.name.tag", ColorThemeKeys.JAVADOC_TAG},
 		new String[]{"entity.other.attribute-name", ColorThemeKeys.FIELD}, //Tag attribute
 		new String[]{"entity.name", ColorThemeKeys.CLASS},
-		
+
 		new String[]{"string", ColorThemeKeys.STRING},
-		
+
 		new String[]{"variable.parameter", ColorThemeKeys.PARAMETER_VARIABLE},
 		new String[]{"variable", ColorThemeKeys.LOCAL_VARIABLE},
-		
+
 		new String[]{"keyword", ColorThemeKeys.KEYWORD},
-		
+
 		new String[]{"storage.type", ColorThemeKeys.METHOD},
-		
-		new String[]{"support.function", ColorThemeKeys.STATIC_METHOD}, 
-		new String[]{"support.class", ColorThemeKeys.TYPE_ARGUMENT}, 
-		new String[]{"support.type", ColorThemeKeys.TYPE_PARAMETER}, 
+
+		new String[]{"support.function", ColorThemeKeys.STATIC_METHOD},
+		new String[]{"support.class", ColorThemeKeys.TYPE_ARGUMENT},
+		new String[]{"support.type", ColorThemeKeys.TYPE_PARAMETER},
 		new String[]{"support.constant", ColorThemeKeys.STATIC_FINAL_FIELD},
-		new String[]{"support.variable", ColorThemeKeys.ABSTRACT_METHOD}, 
-		new String[]{"support", ColorThemeKeys.ABSTRACT_METHOD}, 
-		
+		new String[]{"support.variable", ColorThemeKeys.ABSTRACT_METHOD},
+		new String[]{"support", ColorThemeKeys.ABSTRACT_METHOD},
+
 		new String[]{"invalid.deprecated", ColorThemeKeys.DEPRECATED_MEMBER},
 		new String[]{"invalid", ColorThemeKeys.DELETION_INDICATION},
-		
+
 		new String[]{"punctuation", ColorThemeKeys.OPERATOR},
-		
+
 		// Lower priority replacements at the bottom (could repeat entries on some side)
 		new String[]{"storage", ColorThemeKeys.KEYWORD},
 		new String[]{"name", ColorThemeKeys.METHOD_DECLARATION},
@@ -207,11 +207,11 @@ public class TmThemeLoader {
 		new String[]{"markup.heading", ColorThemeKeys.KEYWORD},
 		new String[]{"punctuation.definition", ColorThemeKeys.KEYWORD},
 	};
-	
+
 	public static void onFoundElement(
-			String element, 
-			ColorThemeSetting colorThemeSetting, 
-			Map<String, ColorThemeSetting> entries, 
+			String element,
+			ColorThemeSetting colorThemeSetting,
+			Map<String, ColorThemeSetting> entries,
 			boolean isFoundInTextmate) {
 		if(isFoundInTextmate){
 			for(String[] s:TM_TO_COLOR_THEME_MAPPINGS){
@@ -260,7 +260,7 @@ public class TmThemeLoader {
 
 
 // Things from color theme
-//	
+//
 //	foreground*
 //	background*
 //	selectionForeground*
@@ -305,7 +305,7 @@ public class TmThemeLoader {
 //	typeArgument
 //	typeParameter
 //	constant*
-//	 
+//
 
 // Things from textmate
 
