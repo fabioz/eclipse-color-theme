@@ -49,5 +49,6 @@
     <selectionForeground color="#E0E0E0" />
     <vcsUncommitedBackground color="#2C5656" />
     <hyperlink color="#8ABC54" />
+    <selectedTabInitialBackground color="#7A7A7A" />
     <selectedTabActiveInitialBackground color="#76859E" />
 </colorTheme>
