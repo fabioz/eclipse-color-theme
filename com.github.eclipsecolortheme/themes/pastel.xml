@@ -43,5 +43,5 @@
     <foreground color="#E0E2E4" />
     <lineNumber color="#81969A" />
     <selectionBackground color="#95bed8" />
-    <selectionForeground color="#E0E2E4" />
+    <selectionForeground color="#000000" />
 </colorTheme>

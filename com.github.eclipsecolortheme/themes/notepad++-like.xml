@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <colorTheme id="91" name="Notepad++ Like" modified="2011-02-01 09:02:31" author="Vokiel">
-    <searchResultIndication color="#EFEFEF" />
-    <filteredSearchResultIndication color="#EFEFEF" />
-    <occurrenceIndication color="#EFEFEF" />
-    <writeOccurrenceIndication color="#EFEFEF" />
+    <searchResultIndication color="#75D975" />
+    <filteredSearchResultIndication color="#75D975" />
+    <occurrenceIndication color="#75D975" />
+    <writeOccurrenceIndication color="#75D975" />
     <findScope color="#BCADAD" />
     <deletionIndication color="#9b5656" />
-    <sourceHoverBackground color="#EEEEEE" />
+    <sourceHoverBackground color="#C0C0C0" />
     <singleLineComment color="#008000" />
     <multiLineComment color="#008000" />
     <commentTaskTag color="#008000" />
@@ -38,9 +38,9 @@
     <typeArgument color="#885d3b" />
     <typeParameter color="#885d3b" />
     <background color="#FFFFFF" />
-    <currentLine color="#EEEEEE" />
+    <currentLine color="#E8E8FF" />
     <foreground color="#8000FF" />
     <lineNumber color="#999999" />
-    <selectionBackground color="#EEEEEE" />
+    <selectionBackground color="#C0C0C0" />
     <selectionForeground color="#000000" />
 </colorTheme>

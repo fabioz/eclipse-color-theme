@@ -370,14 +370,36 @@ public final class ColorThemeManager implements IPropertyChangeListener {
 		com.github.eclipsecolortheme.Color backgroundColor = theme.get(ColorThemeKeys.BACKGROUND).getColor();
 		com.github.eclipsecolortheme.Color foregroundColor = theme.get(ColorThemeKeys.FOREGROUND).getColor();
 		if(backgroundColor.isDarkColor()){
+			RGB selectedTabRGB = backgroundColor.lighterRGB(.20);
+		    RGB selectedTabInitialRGB = foregroundColor.darkerRGB(.20);
+		    RGB selectedTabActiveInitialBackground = theme.get(ColorThemeKeys.KEYWORD).getColor().getRGB();
+		    if(selectedTabInitialRGB.red == selectedTabInitialRGB.green && selectedTabInitialRGB.green == selectedTabInitialRGB.blue){
+		    	if(selectedTabActiveInitialBackground.red == selectedTabActiveInitialBackground.green && selectedTabActiveInitialBackground.green == selectedTabActiveInitialBackground.blue){
+		    		if(com.github.eclipsecolortheme.Color.getLuminance(selectedTabInitialRGB) > com.github.eclipsecolortheme.Color.getLuminance(selectedTabActiveInitialBackground)){
+		    		    RGB temp = selectedTabActiveInitialBackground;
+		    		    selectedTabActiveInitialBackground = selectedTabInitialRGB;
+		    		    selectedTabInitialRGB = temp;
+		    		}
+		    	}
+		    }
+		    
 		    applyDefault(theme, ColorThemeKeys.SCROLL_BACKGROUND, backgroundColor.lighterRGB(.15));
 		    applyDefault(theme, ColorThemeKeys.SCROLL_FOREGROUND, backgroundColor.lighterRGB(.30));
-		    applyDefault(theme, ColorThemeKeys.SELECTED_TAB_BACKGROUND, backgroundColor.lighterRGB(.20));
+		    applyDefault(theme, ColorThemeKeys.SELECTED_TAB_BACKGROUND, selectedTabRGB);
+		    applyDefault(theme, ColorThemeKeys.SELECTED_TAB_INITIAL_BACKGROUND, selectedTabInitialRGB);
+			applyDefault(theme, ColorThemeKeys.SELECTED_TAB_ACTIVE_INITIAL_BACKGROUND, selectedTabActiveInitialBackground);
 		    applyDefault(theme, ColorThemeKeys.TREE_ARROWS_FOREGROUND, foregroundColor.darkerRGB(.20));
 		}else{
+			com.github.eclipsecolortheme.Color currentLineColor = theme.get(ColorThemeKeys.CURRENT_LINE).getColor();
+			RGB selectedTabRGB = currentLineColor.getRGB();
+			RGB selectedTabInitialRGB = currentLineColor.lighterRGB(.1);
+			RGB selectedTabActiveInitialRGB = currentLineColor.darkerRGB(.20);
+			
 			applyDefault(theme, ColorThemeKeys.SCROLL_BACKGROUND, backgroundColor.darkerRGB(.15));
 			applyDefault(theme, ColorThemeKeys.SCROLL_FOREGROUND, backgroundColor.darkerRGB(.30));
-			applyDefault(theme, ColorThemeKeys.SELECTED_TAB_BACKGROUND, backgroundColor.darkerRGB(.20));
+			applyDefault(theme, ColorThemeKeys.SELECTED_TAB_BACKGROUND, selectedTabRGB);
+			applyDefault(theme, ColorThemeKeys.SELECTED_TAB_INITIAL_BACKGROUND, selectedTabInitialRGB);
+			applyDefault(theme, ColorThemeKeys.SELECTED_TAB_ACTIVE_INITIAL_BACKGROUND, selectedTabActiveInitialRGB);
 			applyDefault(theme, ColorThemeKeys.TREE_ARROWS_FOREGROUND, foregroundColor.lighterRGB(.20));
 		}
 		
@@ -385,15 +407,24 @@ public final class ColorThemeManager implements IPropertyChangeListener {
 		
 		//Any key which doesn't have a default goes to the foreground color
 		for (String string : ColorThemeKeys.ALL_KEYS) {
-			applyDefault(theme, string, ColorThemeKeys.FOREGROUND);
+			if(ColorThemeKeys.KEYS_BACKGROUND_RELATED.contains(string)){
+				applyDefault(theme, string, ColorThemeKeys.BACKGROUND);
+			    
+			}else{
+				applyDefault(theme, string, ColorThemeKeys.FOREGROUND);
+			}
 		}
 		
-		com.github.eclipsecolortheme.Color fgColor = theme.get(ColorThemeKeys.FOREGROUND).getColor();
 		Set<Entry<String, ColorThemeSetting>> entrySet = theme.entrySet();
 		for (Entry<String, ColorThemeSetting> entry : entrySet) {
 			ColorThemeSetting value = entry.getValue();
 			if(value.getColor() == null){
-			    value.setColor(fgColor);
+			    if(ColorThemeKeys.KEYS_BACKGROUND_RELATED.contains(entry.getKey())){
+			    	value.setColor(backgroundColor);
+			        
+			    }else{
+			    	value.setColor(foregroundColor);
+			    }
 			}
 		}
 	}

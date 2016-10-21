@@ -2,7 +2,7 @@
 <colorTheme id="118" name="Wombat" modified="2011-02-02 19:35:46" author="Lars H. Nielsen" website="http://dengmao.wordpress.com/2007/01/22/vim-color-scheme-wombat/">
     <searchResultIndication color="#464467" />
     <filteredSearchResultIndication color="#3f3f6a" />
-    <occurrenceIndication color="#616161" />
+    <occurrenceIndication color="#004665" />
     <writeOccurrenceIndication color="#948567" />
     <findScope color="#BCADAD" />
     <sourceHoverBackground color="#a19879" />

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <colorTheme id="27" name="Tango" modified="2011-01-26 13:23:56" author="Roger Dudler">
-    <searchResultIndication color="#EFEFEF" />
-    <filteredSearchResultIndication color="#EFEFEF" />
-    <occurrenceIndication color="#EFEFEF" />
-    <writeOccurrenceIndication color="#EFEFEF" />
+    <searchResultIndication color="#97BCBC" />
+    <filteredSearchResultIndication color="#97BCBC" />
+    <occurrenceIndication color="#97BCBC" />
+    <writeOccurrenceIndication color="#97BCBC" />
     <findScope color="#BCADAD" />
     <deletionIndication color="#9b5656" />
     <sourceHoverBackground color="#EEEEEE" />
@@ -41,6 +41,6 @@
     <currentLine color="#EEEEEE" />
     <foreground color="#000000" />
     <lineNumber color="#999999" />
-    <selectionBackground color="#EEEEEE" />
-    <selectionForeground color="#000000" />
+    <selectionBackground color="#000000" />
+    <selectionForeground color="#EEEEEE" />
 </colorTheme>
