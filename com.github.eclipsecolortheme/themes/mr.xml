@@ -2,8 +2,8 @@
 <colorTheme id="32" name="Mr" modified="2011-01-26 22:56:17" author="Jongosi" website="http://TwinCreations.co.uk">
     <searchResultIndication color="#D8D8D8" />
     <filteredSearchResultIndication color="#D8D8D8" />
-    <occurrenceIndication color="#000000" />
-    <writeOccurrenceIndication color="#000000" />
+    <occurrenceIndication color="#F0D8A8" />
+    <writeOccurrenceIndication color="#F0D8A8" />
     <sourceHoverBackground color="#D8D8D8" />
     <singleLineComment color="#FF9900" />
     <multiLineComment color="#FF9900" />
@@ -40,6 +40,6 @@
     <currentLine color="#D8D8D8" />
     <foreground color="#333333" />
     <lineNumber color="#D8D8D8" />
-    <selectionBackground color="#D8D8D8" />
-    <selectionForeground color="#333333" />
+    <selectionBackground color="#328EFE" />
+    <selectionForeground color="#FFFFFF" />
 </colorTheme>

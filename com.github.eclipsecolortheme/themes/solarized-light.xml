@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <colorTheme id="1013" name="Solarized Light" modified="2014-05-21 09:43:48" author="Ethan Schoonover, George" website="http://ethanschoonover.com/solarized">
-    <searchResultIndication color="#ECE7D5" />
-    <filteredSearchResultIndication color="#ECE7D5" />
-    <occurrenceIndication color="#ECE7D5" />
-    <writeOccurrenceIndication color="#ECE7D5" />
+    <searchResultIndication color="#E9F3F3" />
+    <filteredSearchResultIndication color="#E9F3F3" />
+    <occurrenceIndication color="#E9F3F3" />
+    <writeOccurrenceIndication color="#E9F3F3" />
     <findScope color="#BCADAD" />
     <deletionIndication color="#657A81" />
     <sourceHoverBackground color="#ECE7D5" />
@@ -42,6 +42,8 @@
     <currentLine color="#EEE8D5" />
     <foreground color="#657A81" />
     <lineNumber color="#586E75" />
-    <selectionBackground color="#ECE7D5" />
-    <selectionForeground color="#596D73" />
+    <selectionBackground color="#596D73" />
+    <selectionForeground color="#ECE7D5" />
+    <selectedTabInitialBackground color="#ECE7D5" />
+    <selectedTabActiveInitialBackground color="#DBC067" />
 </colorTheme>
