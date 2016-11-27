@@ -79,7 +79,6 @@ public class ColorThemePreferencePage extends PreferencePage implements
 	private int initiallyApplyTo;
 	private Shell shell;
 	private Button themeStyledTextScrollbars;
-	private Button themeTreeTableScrollbars;
 
 	/** Creates a new color theme preference page. */
 	public ColorThemePreferencePage() {
@@ -171,14 +170,6 @@ public class ColorThemePreferencePage extends PreferencePage implements
 				.applyTo(themeStyledTextScrollbars);
 		themeStyledTextScrollbars.setSelection(store
 				.getBoolean(Activator.THEME_STYLED_TEXT_SCROLLBARS));
-
-		themeTreeTableScrollbars = new Button(themeDetails, SWT.CHECK);
-		themeTreeTableScrollbars
-		.setText("Apply scrollbar theming customization to Tree/Table widgets?");
-		GridDataFactory.swtDefaults().span(2, 1).grab(true, false)
-		.applyTo(themeTreeTableScrollbars);
-		themeTreeTableScrollbars.setSelection(store
-				.getBoolean(Activator.THEME_TREE_TABLE_SCROLLBARS));
 
 		// Message for default.
 		themeDefaultMessageLabel = new Label(themeDetails, SWT.NONE);
@@ -430,15 +421,6 @@ public class ColorThemePreferencePage extends PreferencePage implements
 						themeStyledTextScrollbars.getSelection());
 			}
 
-			boolean changedThemeTreeTableToolbars = preferenceStore
-					.getBoolean(Activator.THEME_TREE_TABLE_SCROLLBARS) != themeTreeTableScrollbars
-					.getSelection();
-			if (changedThemeTreeTableToolbars) {
-				preferenceStore.setValue(
-						Activator.THEME_TREE_TABLE_SCROLLBARS,
-						themeTreeTableScrollbars.getSelection());
-			}
-
 			int applyToWholeIDESelected = applyTo.getSelectionIndex();
 			boolean onlyLiClipseEditors = applyToWholeIDESelected == Activator.APPLY_THEME_TO_LICLIPSE;
 
@@ -480,7 +462,7 @@ public class ColorThemePreferencePage extends PreferencePage implements
 			if (lastSelectedThemeName != null
 					&& lastSelectedThemeName.equals(selectedThemeName)) {
 				if (lastApplyToWholeIDESelected == applyTo.getSelectionIndex()
-						&& !changedThemeStyledTextToolbars && !changedThemeTreeTableToolbars) {
+						&& !changedThemeStyledTextToolbars) {
 					// everything matches: as we already applied, do nothing and
 					// return.
 					return true;
@@ -492,8 +474,7 @@ public class ColorThemePreferencePage extends PreferencePage implements
 			preferenceStore.setValue(Activator.APPLY_THEME_TO,
 					applyToWholeIDESelected);
 			boolean restart = false;
-			if ((changedThemeTreeTableToolbars && !preferenceStore
-					.getBoolean(Activator.THEME_TREE_TABLE_SCROLLBARS)) || (applyToWholeIDESelected != initiallyApplyTo
+			if ((applyToWholeIDESelected != initiallyApplyTo
 					&& (initiallyApplyTo == Activator.APPLY_THEME_TO_WHOLE_IDE
 							|| applyToWholeIDESelected == Activator.APPLY_THEME_TO_WHOLE_IDE
 							|| initiallyApplyTo == Activator.APPLY_THEME_TO_KNOWN_PARTS || applyToWholeIDESelected == Activator.APPLY_THEME_TO_KNOWN_PARTS))) {
