@@ -79,7 +79,7 @@ public final class ColorThemeManager implements IPropertyChangeListener {
 	}
 
 	/** Creates a new color theme manager. */
-	private ColorThemeManager() {
+	public ColorThemeManager() {
 		themes = new HashMap<String, ColorTheme>();
 		Activator plugin = Activator.getDefault();
 		if(plugin != null){

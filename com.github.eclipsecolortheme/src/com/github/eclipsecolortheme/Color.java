@@ -113,15 +113,15 @@ public final class Color {
 		}
 	}
 
-	public int getR() {
+	public Integer getR() {
 		return r;
 	}
 
-	public int getG() {
+	public Integer getG() {
 		return g;
 	}
 
-	public int getB() {
+	public Integer getB() {
 		return b;
 	}
 
