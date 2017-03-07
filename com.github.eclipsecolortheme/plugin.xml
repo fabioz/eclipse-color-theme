@@ -265,6 +265,12 @@
    </mapper>
    <mapper
          class="com.github.eclipsecolortheme.mapper.GenericMapper"
+         name="RustDT"
+         pluginId="com.github.rustdt.ide.ui"
+         xml="mappings/com.github.rustdt.ide.ui.xml">
+   </mapper>
+   <mapper
+         class="com.github.eclipsecolortheme.mapper.GenericMapper"
          name="PDE"
          pluginId="org.eclipse.pde.ui"
          xml="mappings/org.eclipse.pde.ui.xml">
@@ -400,6 +406,12 @@
         name="IvyDE"
         pluginId="org.apache.ivyde.eclipse"
         xml="mappings/org.apache.ivyde.eclipse.xml">
+   </mapper>
+   <mapper
+         class="com.github.eclipsecolortheme.mapper.GenericMapper"
+         name="Mathematica"
+         pluginId="com.wolfram.eclipse.MEET"
+         xml="mappings/com.wolfram.eclipse.MEET.xml">
    </mapper>
    </extension>
    <extension
