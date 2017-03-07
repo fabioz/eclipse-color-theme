@@ -97,6 +97,11 @@ public final class ColorThemeManager implements IPropertyChangeListener {
 			readImportedThemes(themes);
 		}
 	}
+	
+	public void applyTheme(String theme) {
+		ColorTheme colorTheme = this.getTheme(theme);
+		ColorThemeApplier.applyThemeInternal(colorTheme);
+	}
 
 	private void readStockThemes(Map<String, ColorTheme> themes) {
 		IConfigurationElement[] config = Platform
