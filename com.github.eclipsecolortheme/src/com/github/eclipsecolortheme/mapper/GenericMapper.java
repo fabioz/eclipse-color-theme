@@ -35,6 +35,11 @@ public class GenericMapper extends ThemePreferenceMapper {
     public final void parseMappings(InputStream input)
             throws SAXException, IOException, ParserConfigurationException {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        factory.setFeature("http://xml.org/sax/features/namespaces", false);
+        factory.setFeature("http://xml.org/sax/features/validation", false);
+        factory.setFeature("http://apache.org/xml/features/nonvalidating/load-dtd-grammar", false);
+        factory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+
         DocumentBuilder builder = factory.newDocumentBuilder();
         Document document = builder.parse(input);
         parseMappings(document.getDocumentElement());
@@ -115,7 +120,7 @@ public class GenericMapper extends ThemePreferenceMapper {
             defaultBackground = new ColorThemeSetting();
         }
         for (String pluginKey : mappings.keySet()) {
-            ColorThemeMapping mapping = (overrideMappings != null && overrideMappings.containsKey(pluginKey)) ? 
+            ColorThemeMapping mapping = (overrideMappings != null && overrideMappings.containsKey(pluginKey)) ?
                     overrideMappings.get(pluginKey) : mappings.get(pluginKey);
             ColorThemeSetting setting = theme.get(mapping.getThemeKey());
             if (setting != null) {
