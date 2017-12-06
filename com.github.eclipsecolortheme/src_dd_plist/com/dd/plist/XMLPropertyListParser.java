@@ -62,6 +62,14 @@ public class XMLPropertyListParser {
         docBuilderFactory = DocumentBuilderFactory.newInstance();
         docBuilderFactory.setIgnoringComments(true);
         docBuilderFactory.setCoalescing(true);
+        try {
+			docBuilderFactory.setFeature("http://xml.org/sax/features/validation", false);
+			docBuilderFactory.setFeature("http://apache.org/xml/features/nonvalidating/load-dtd-grammar", false);
+			docBuilderFactory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+		} catch (ParserConfigurationException e) {
+			throw new RuntimeException(e);
+		}
+
     }
 
     /**
