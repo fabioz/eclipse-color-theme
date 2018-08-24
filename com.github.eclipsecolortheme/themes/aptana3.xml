@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<colorTheme id="1" name="Aptana 3" modified="2014-01-21 21:56:42" author="Fabio Zadrozny" website="https://sw-brainwy.rhcloud.com">
+<colorTheme id="1" name="Aptana 3" modified="2014-01-21 21:56:42" author="Fabio Zadrozny" website="https://www.brainwy.com">
     <abstractMethod color="#F8F8F8"  bold="false" underline="false" strikethrough="false" italic="false"/>
     <activeHyperlink color="#CDA869"  bold="false" underline="false" strikethrough="false" italic="false"/>
     <annotation color="#F9EE98"  bold="false" underline="false" strikethrough="false" italic="false"/>
