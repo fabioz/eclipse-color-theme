@@ -143,11 +143,14 @@ public class ColorThemePreferencePage extends PreferencePage implements
 				+ "Applying to all views / whole IDE will also change the Appearance\ntheme to the Base LiClipse Theme and may need a restart.");
 		applyTo.add("Apply only to LiClipse Editors");
 		applyTo.add("Apply to all Editors");
-		applyTo.add("Apply to all Editors and Known Views");
-		applyTo.add("Experimental: Apply to the whole IDE (including preferences and dialogs).");
+//		applyTo.add("Apply to all Editors and Known Views");
+		applyTo.add("Apply to the whole IDE (including preferences and dialogs).");
 		createGridDataFactory().align(SWT.FILL, SWT.CENTER).applyTo(applyTo);
 		IPreferenceStore store = getPreferenceStore();
 		initiallyApplyTo = store.getInt(Activator.APPLY_THEME_TO);
+		if(initiallyApplyTo > 2) {
+			initiallyApplyTo = 2;
+		}
 		applyTo.select(initiallyApplyTo);
 
 		// On Restart:
