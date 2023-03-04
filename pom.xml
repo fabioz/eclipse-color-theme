@@ -22,7 +22,7 @@
 		<repository>
 			<id>eclipse-platform</id>
 			<layout>p2</layout>
-			<url>http://download.eclipse.org/releases/2022-12</url>
+			<url>https://download.eclipse.org/releases/2022-12</url>
 		</repository>
 	</repositories>
 
