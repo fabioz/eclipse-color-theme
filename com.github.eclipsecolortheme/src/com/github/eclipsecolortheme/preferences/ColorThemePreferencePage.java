@@ -77,7 +77,7 @@ public class ColorThemePreferencePage extends PreferencePage implements IWorkben
 	private java.util.List<Control> invisibleWhenDefaultSelected = new ArrayList<Control>();
 	private int initiallyApplyTo;
 	private Shell shell;
-	private Button themeStyledTextScrollbars;
+//	private Button themeStyledTextScrollbars;
 
 	/** Creates a new color theme preference page. */
 	public ColorThemePreferencePage() {
@@ -164,10 +164,10 @@ public class ColorThemePreferencePage extends PreferencePage implements IWorkben
 		reapplyOnRestart.select(store.getInt(Activator.REAPPLY_ON_RESTART));
 		// End Option to apply preferences to the whole ide
 
-		themeStyledTextScrollbars = new Button(themeDetails, SWT.CHECK);
-		themeStyledTextScrollbars.setText("Apply scrollbar theming customization to StyledText editors?");
-		GridDataFactory.swtDefaults().span(2, 1).grab(true, false).applyTo(themeStyledTextScrollbars);
-		themeStyledTextScrollbars.setSelection(store.getBoolean(Activator.THEME_STYLED_TEXT_SCROLLBARS));
+//		themeStyledTextScrollbars = new Button(themeDetails, SWT.CHECK);
+//		themeStyledTextScrollbars.setText("Apply scrollbar theming customization to StyledText editors?");
+//		GridDataFactory.swtDefaults().span(2, 1).grab(true, false).applyTo(themeStyledTextScrollbars);
+//		themeStyledTextScrollbars.setSelection(store.getBoolean(Activator.THEME_STYLED_TEXT_SCROLLBARS));
 
 		// Message for default.
 		themeDefaultMessageLabel = new Label(themeDetails, SWT.NONE);
@@ -300,7 +300,7 @@ public class ColorThemePreferencePage extends PreferencePage implements IWorkben
 					+ "(but only on the scope selected above).\n" + "\n" + "A restart may be required afterwards.");
 
 			this.themeDefaultMessageLabel.setVisible(true);
-			this.themeStyledTextScrollbars.setVisible(false);
+//			this.themeStyledTextScrollbars.setVisible(false);
 		} else {
 			authorLabel.setText("Created by " + theme.getAuthor());
 			String website = theme.getWebsite();
@@ -355,7 +355,7 @@ public class ColorThemePreferencePage extends PreferencePage implements IWorkben
 			}
 			themeDefaultMessageLabel.setText("");
 			this.themeDefaultMessageLabel.setVisible(false);
-			this.themeStyledTextScrollbars.setVisible(true);
+//			this.themeStyledTextScrollbars.setVisible(true);
 		}
 		// applyTo.pack(true);
 		themeDefaultMessageLabel.pack(true);
@@ -408,12 +408,12 @@ public class ColorThemePreferencePage extends PreferencePage implements IWorkben
 
 			preferenceStore.setValue(Activator.REAPPLY_ON_RESTART, reapplyOnRestart.getSelectionIndex());
 
-			boolean changedThemeStyledTextToolbars = preferenceStore
-					.getBoolean(Activator.THEME_STYLED_TEXT_SCROLLBARS) != themeStyledTextScrollbars.getSelection();
-			if (changedThemeStyledTextToolbars) {
-				preferenceStore.setValue(Activator.THEME_STYLED_TEXT_SCROLLBARS,
-						themeStyledTextScrollbars.getSelection());
-			}
+//			boolean changedThemeStyledTextToolbars = preferenceStore
+//					.getBoolean(Activator.THEME_STYLED_TEXT_SCROLLBARS) != themeStyledTextScrollbars.getSelection();
+//			if (changedThemeStyledTextToolbars) {
+//				preferenceStore.setValue(Activator.THEME_STYLED_TEXT_SCROLLBARS,
+//						themeStyledTextScrollbars.getSelection());
+//			}
 
 			int applyToWholeIDESelected = applyTo.getSelectionIndex();
 			boolean onlyLiClipseEditors = applyToWholeIDESelected == Activator.APPLY_THEME_TO_LICLIPSE;
@@ -453,7 +453,8 @@ public class ColorThemePreferencePage extends PreferencePage implements IWorkben
 			}
 
 			if (lastSelectedThemeName != null && lastSelectedThemeName.equals(selectedThemeName)) {
-				if (lastApplyToWholeIDESelected == applyTo.getSelectionIndex() && !changedThemeStyledTextToolbars) {
+				if (lastApplyToWholeIDESelected == applyTo.getSelectionIndex() //&& !changedThemeStyledTextToolbars
+				        ) {
 					// everything matches: as we already applied, do nothing and
 					// return.
 					return true;
